@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>美丽狗的博客</title>
+    <link>https://mlidog.github.io/</link>
+    <description>一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。</description>
+    <language>zh-cn</language>
+    
+    <item>
+      <title>欢迎来到我的博客</title>
+      <link>https://mlidog.github.io/posts/welcome.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/posts/welcome.html</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[<p>你好，欢迎来到我的博客。</p>
+<p>这是搭建博客后发布的第一篇文章。以后这里会用来记录：</p>
+<ul>
+<li>学习编程时的笔记和踩坑经历；</li>
+<li>读书、电影和生活里值得留存的瞬间；</li>
+<li>一些零零碎碎的思考和想法。</li>
+</ul>
+<h2>写点什么好呢</h2>
+<p>如果你和我一样刚起步，不必担心写得好不好。博客首先是写给自己的：</p>
+<blockquote>
+<p>把你学到的讲清楚，是检验自己是否真懂的最好方式。</p>
+</blockquote>
+<p>所以第一篇写什么都行——哪怕只是简单记录一下今天做了什么，也是一个不错的开始。</p>
+<p>祝你在这里写得开心。</p>
+]]></description>
+    </item>
+
+    <item>
+      <title>Markdown 写作小抄</title>
+      <link>https://mlidog.github.io/posts/markdown-cheatsheet.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/posts/markdown-cheatsheet.html</guid>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[<p>写文章只需要会一点 Markdown——一种用普通文本表达格式的写法。下面是最常用的几种，照着用即可。</p>
+<h2>标题</h2>
+<p>在文字前面加 <code>#</code>，一个 <code>#</code> 是一级标题，两个是二级，最多到六级：</p>
+<pre><code class="language-markdown"># 一级标题
+## 二级标题
+### 三级标题
+</code></pre>
+<h2>正文与强调</h2>
+<p>直接写就是正文段落。想<strong>加粗</strong>就在文字两边各加两个星号，想<em>斜体</em>就各加一个：</p>
+<pre><code class="language-markdown">这是**加粗**，这是*斜体*，这是`行内代码`。
+</code></pre>
+<h2>列表</h2>
+<p>无序列表用 <code>-</code> 开头，有序列表用 <code>1.</code> 开头：</p>
+<pre><code class="language-markdown">- 第一件事
+- 第二件事
+
+1. 第一步
+2. 第二步
+</code></pre>
+<h2>链接与图片</h2>
+<pre><code class="language-markdown">[链接文字](https://example.com)
+![图片说明](图片地址)
+</code></pre>
+<h2>引用与分割线</h2>
+<p>段落开头加 <code>&gt;</code> 就是引用，单独一行三个 <code>---</code> 是分割线：</p>
+<pre><code class="language-markdown">&gt; 这是引用。
+
+---
+</code></pre>
+<h2>代码块</h2>
+<p>用三个反引号包起来，还可以在开头注明语言：</p>
+<pre><code class="language-markdown">```python
+print(&quot;Hello, world!&quot;)
+```
+</code></pre>
+<h2>表格</h2>
+<pre><code class="language-markdown">| 语法 | 作用 |
+| ---- | ---- |
+| `**` | 加粗 |
+| `*`  | 斜体 |
+</code></pre>
+<p>掌握这些就足够开始写了。多写几篇之后，你会自然想尝试更多花样的。</p>
+]]></description>
+    </item>
+
+    <item>
+      <title>为什么我选择了静态博客</title>
+      <link>https://mlidog.github.io/posts/why-static-blog.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/posts/why-static-blog.html</guid>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[<p>想拥有一个自己的博客，其实有很多条路可以走。我最后选择了「静态博客 + GitHub 托管」，理由有三点。</p>
+<h2>速度快，还免费</h2>
+<p>静态博客没有后台程序，打开网页就是一堆已经做好的 HTML 文件，加载特别快。托管在 GitHub Pages 上不花一分钱，对于一个刚开始写博客的人来说，这是很好的起点。</p>
+<h2>内容完全属于自己</h2>
+<p>所有文章都是普通文本文件，放在自己的仓库里。不用担心平台改规则、删内容，换地方也很容易——把文件夹带走就行。</p>
+<h2>顺便学会了前端</h2>
+<p>这也是最重要的一点。搭建和维护这个博客的过程中，会自然地接触到 HTML、CSS 和 Markdown：</p>
+<ol>
+<li>改样式练 CSS；</li>
+<li>改页面结构练 HTML；</li>
+<li>写文章练 Markdown。</li>
+</ol>
+<p>博客既是作品，也是练习场。这可能就是它最大的价值。</p>
+]]></description>
+    </item>
+  </channel>
+</rss>

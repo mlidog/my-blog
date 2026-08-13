@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美丽狗的博客</title>
+  <meta name="description" content="一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">美丽狗的博客</a>
+      <nav class="site-nav" id="siteNav" aria-label="主导航">
+        <a class="nav-link active" href="index.html" aria-current="page">首页</a>
+        <a class="nav-link" href="about.html">关于</a>
+        <a class="nav-link" href="tags.html">标签</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+    </div>
+  </header>
+  <main class="container">
+
+
+    <section class="hero">
+      <h1>美丽狗的博客</h1>
+      <p class="hero-sub">记录我用codex完成自己胡思乱想的secret box</p>
+    </section>
+    <section class="post-list" aria-label="文章列表">
+      
+      <article class="post-item">
+        <h2 class="post-title"><a href="posts/welcome.html">欢迎来到我的博客</a></h2>
+        <div class="post-meta">
+          <time datetime="2026-08-14">2026年8月14日</time>
+          <span class="dot">·</span>
+          <span>1 分钟阅读</span>
+          <span class="dot">·</span> <a class="tag" href="tags.html#tag-随笔">随笔</a>
+        </div>
+        <p class="post-excerpt">这是博客的第一篇文章，想写点什么都可以从这篇开始。</p>
+      </article>
+
+      <article class="post-item">
+        <h2 class="post-title"><a href="posts/markdown-cheatsheet.html">Markdown 写作小抄</a></h2>
+        <div class="post-meta">
+          <time datetime="2026-08-13">2026年8月13日</time>
+          <span class="dot">·</span>
+          <span>1 分钟阅读</span>
+          <span class="dot">·</span> <a class="tag" href="tags.html#tag-教程">教程</a><a class="tag" href="tags.html#tag-Markdown">Markdown</a>
+        </div>
+        <p class="post-excerpt">写文章用到的常用 Markdown 语法，照着抄就行。</p>
+      </article>
+
+      <article class="post-item">
+        <h2 class="post-title"><a href="posts/why-static-blog.html">为什么我选择了静态博客</a></h2>
+        <div class="post-meta">
+          <time datetime="2026-08-12">2026年8月12日</time>
+          <span class="dot">·</span>
+          <span>1 分钟阅读</span>
+          <span class="dot">·</span> <a class="tag" href="tags.html#tag-思考">思考</a><a class="tag" href="tags.html#tag-前端">前端</a>
+        </div>
+        <p class="post-excerpt">聊聊我选择“静态博客 + GitHub 托管”这条路的理由。</p>
+      </article>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span data-year></span> mlidog · 用code辅助、 Markdown 书写，构建成静态网页。</p>
+      <p class="footer-links">
+        <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+

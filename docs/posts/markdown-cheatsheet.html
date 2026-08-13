@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 写作小抄 · 美丽狗的博客</title>
+  <meta name="description" content="写文章用到的常用 Markdown 语法，照着抄就行。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">美丽狗的博客</a>
+      <nav class="site-nav" id="siteNav" aria-label="主导航">
+        <a class="nav-link active" href="../index.html" aria-current="page">首页</a>
+        <a class="nav-link" href="../about.html">关于</a>
+        <a class="nav-link" href="../tags.html">标签</a>
+      </nav>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+    </div>
+  </header>
+  <main class="container">
+
+
+    <article class="post">
+      <header class="post-header">
+        <h1>Markdown 写作小抄</h1>
+        <div class="post-meta">
+          <time datetime="2026-08-13">2026年8月13日</time>
+          <span class="dot">·</span>
+          <span>1 分钟阅读</span>
+          <span class="dot">·</span> <a class="tag" href="../tags.html#tag-教程">教程</a><a class="tag" href="../tags.html#tag-Markdown">Markdown</a>
+        </div>
+      </header>
+      <div class="post-content">
+        <p>写文章只需要会一点 Markdown——一种用普通文本表达格式的写法。下面是最常用的几种，照着用即可。</p>
+<h2>标题</h2>
+<p>在文字前面加 <code>#</code>，一个 <code>#</code> 是一级标题，两个是二级，最多到六级：</p>
+<pre><code class="language-markdown"># 一级标题
+## 二级标题
+### 三级标题
+</code></pre>
+<h2>正文与强调</h2>
+<p>直接写就是正文段落。想<strong>加粗</strong>就在文字两边各加两个星号，想<em>斜体</em>就各加一个：</p>
+<pre><code class="language-markdown">这是**加粗**，这是*斜体*，这是`行内代码`。
+</code></pre>
+<h2>列表</h2>
+<p>无序列表用 <code>-</code> 开头，有序列表用 <code>1.</code> 开头：</p>
+<pre><code class="language-markdown">- 第一件事
+- 第二件事
+
+1. 第一步
+2. 第二步
+</code></pre>
+<h2>链接与图片</h2>
+<pre><code class="language-markdown">[链接文字](https://example.com)
+![图片说明](图片地址)
+</code></pre>
+<h2>引用与分割线</h2>
+<p>段落开头加 <code>&gt;</code> 就是引用，单独一行三个 <code>---</code> 是分割线：</p>
+<pre><code class="language-markdown">&gt; 这是引用。
+
+---
+</code></pre>
+<h2>代码块</h2>
+<p>用三个反引号包起来，还可以在开头注明语言：</p>
+<pre><code class="language-markdown">```python
+print(&quot;Hello, world!&quot;)
+```
+</code></pre>
+<h2>表格</h2>
+<pre><code class="language-markdown">| 语法 | 作用 |
+| ---- | ---- |
+| `**` | 加粗 |
+| `*`  | 斜体 |
+</code></pre>
+<p>掌握这些就足够开始写了。多写几篇之后，你会自然想尝试更多花样的。</p>
+
+      </div>
+      
+      <nav class="post-pager" aria-label="上下篇文章">
+        <a class="pager-prev" href="welcome.html"><span>上一篇</span>欢迎来到我的博客</a>
+        <a class="pager-next" href="why-static-blog.html"><span>下一篇</span>为什么我选择了静态博客</a>
+      </nav>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span data-year></span> mlidog · 用code辅助、 Markdown 书写，构建成静态网页。</p>
+      <p class="footer-links">
+        <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
+      </p>
+    </div>
+  </footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
+

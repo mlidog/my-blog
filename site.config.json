@@ -1,0 +1,16 @@
+{
+  "title": "美丽狗的博客",
+  "subtitle": "记录我用codex完成自己胡思乱想的secret box",
+  "author": "mlidog",
+  "description": "一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。",
+  "baseUrl": "https://mlidog.github.io/",
+  "nav": [
+    { "label": "首页", "href": "index.html" },
+    { "label": "关于", "href": "about.html" },
+    { "label": "标签", "href": "tags.html" }
+  ],
+  "social": {
+    "github": "https://github.com/mlidog"
+  },
+  "footerNote": "用code辅助、 Markdown 书写，构建成静态网页。"
+}
