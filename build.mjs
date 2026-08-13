@@ -11,6 +11,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { marked } from './vendor/marked/lib/marked.esm.js';
 
@@ -21,6 +22,29 @@ const POSTS_DIR = path.join(CONTENT_DIR, 'posts');
 const ASSETS_DIR = path.join(ROOT, 'assets');
 const TEMPLATES_DIR = path.join(ROOT, 'templates');
 const OUT_DIR = path.join(ROOT, 'docs');
+
+/* 样式和脚本的版本号：内容一变，网址就变，浏览器就不会再用旧缓存。
+   自动扫描 assets/css 和 assets/js 里所有文件，新增文件也会被算进去。 */
+function assetVersion() {
+  const hash = crypto.createHash('sha1');
+  const walk = (dir) => {
+    if (!fs.existsSync(dir)) return;
+    const entries = fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
+    for (const entry of entries) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(file);
+      } else if (/\.(css|js)$/i.test(entry.name)) {
+        hash.update(entry.name);
+        hash.update(fs.readFileSync(file, 'utf8'));
+      }
+    }
+  };
+  walk(path.join(ASSETS_DIR, 'css'));
+  walk(path.join(ASSETS_DIR, 'js'));
+  return `?v=${hash.digest('hex').slice(0, 8)}`;
+}
+const ASSET_VERSION = assetVersion();
 
 marked.setOptions({ gfm: true, breaks: true });
 
@@ -125,12 +149,14 @@ function page(opts) {
     ROOT: prefix,
     SITE_TITLE: escapeHtml(CONFIG.title),
     NAV: navHtml(prefix, activeKey),
+    ASSET_VERSION,
   });
   const footer = fill(FOOTER_TMPL, {
     ROOT: prefix,
     AUTHOR: escapeHtml(CONFIG.author),
     FOOTER_NOTE: escapeHtml(CONFIG.footerNote || ''),
     SOCIAL: socialHtml(),
+    ASSET_VERSION,
   });
   return header + '\n' + opts.body + '\n' + footer + '\n';
 }
