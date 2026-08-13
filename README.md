@@ -8,7 +8,7 @@
 - 构建零依赖：项目自带 Markdown 渲染器，不需要联网安装任何东西；
 - 生成的是纯静态网页，速度快、免费托管；
 - 自带首页、文章页、关于页、标签页、RSS 订阅和 404 页面；
-- 代码整洁、带深色模式，也是学习前端的好素材。
+- 代码整洁、带深色模式切换和回到顶部按钮，也是学习前端的好素材。
 
 ## 项目结构
 
@@ -109,7 +109,7 @@ git push
 1. **改颜色和字体**：打开 `assets/css/style.css`，改最上面 `:root` 里的几个颜色值，刷新页面就能看到变化；
 2. **改页面的头和脚**：`templates/header.html` 是顶部导航，`templates/footer.html` 是底部版权信息；
 3. **改首页布局**：首页的结构在 `build.mjs` 里的 `renderHome()` 函数；
-4. **加一个小功能**：比如在 `assets/js/main.js` 里加个“回到顶部”按钮。
+4. **加一个小功能**：项目里已经有两个现成例子可以照着学——回到顶部（按钮在 `templates/footer.html`，逻辑在 `assets/js/main.js`）和深色模式切换（按钮在 `templates/header.html`，样式在 `assets/css/style.css`，逻辑在 `assets/js/main.js`）。
 
 每次改完记得重新构建一次。
 
@@ -124,6 +124,8 @@ git push
 **Pages 里找不到 “Deploy from a branch”？** 先确认 GitHub 仓库里已经有内容（仓库首页能看到文件和提交记录）。没有的话，在 GitHub Desktop 里完成第一次提交并推送，再回到 Pages 刷新。
 
 **Pages 提示 “Upgrade or make this repository public”？** 说明仓库是私有的，免费版不支持私有仓库的 Pages。把仓库设为公开，或者改用 Vercel / Cloudflare Pages 等免费托管（它们支持私有仓库）。
+
+**我改了 `docs/` 里的网页，重新构建后又变回去了？** 这是正常的：`docs/` 是构建脚本自动生成的结果，每次构建都会用源文件重新生成一遍，手动改的内容会被覆盖。改文章内容请编辑 `content/posts/` 里的 `.md` 文件；改样式编辑 `assets/css/style.css`；改页面头和尾编辑 `templates/` 里的两个文件，然后重新构建。
 
 **想在手机上预览？** 把 `docs` 文件夹放到任意静态托管（比如 GitHub Pages、Vercel）后，手机访问网址即可。
 

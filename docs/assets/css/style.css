@@ -38,6 +38,33 @@
   }
 }
 
+/* 手动切换主题（按钮在右上角，选择会记住） */
+html[data-theme="light"] {
+  --bg: #faf9f6;
+  --bg-soft: #f2efe8;
+  --card: #ffffff;
+  --ink: #2b2926;
+  --ink-soft: #6f6a63;
+  --line: #e7e3da;
+  --accent: #b0542a;
+  --accent-soft: rgba(176, 84, 42, 0.09);
+  --code-bg: #f4f1ea;
+  --shadow: 0 1px 2px rgba(43, 41, 38, 0.05);
+}
+
+html[data-theme="dark"] {
+  --bg: #191817;
+  --bg-soft: #232120;
+  --card: #1f1e1c;
+  --ink: #e8e4dd;
+  --ink-soft: #9d968d;
+  --line: #33302b;
+  --accent: #dc9066;
+  --accent-soft: rgba(220, 144, 102, 0.14);
+  --code-bg: #262421;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -54,6 +81,7 @@ body {
   line-height: 1.75;
   color: var(--ink);
   background: var(--bg);
+  transition: background-color 0.25s ease, color 0.25s ease;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -147,6 +175,24 @@ a:hover {
   height: 38px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.theme-toggle {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* ---------- 首页 ---------- */
@@ -511,6 +557,40 @@ a:hover {
   color: var(--accent);
 }
 
+/* ---------- 回到顶部按钮 ---------- */
+
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 1.2rem;
+  line-height: 1;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s, color 0.2s, border-color 0.2s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* ---------- 响应式 ---------- */
 
 @media (max-width: 640px) {
@@ -530,6 +610,11 @@ a:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
   }
 
   .site-nav {
@@ -569,7 +654,9 @@ a:hover {
 @media print {
   .site-header,
   .site-footer,
-  .post-pager {
+  .post-pager,
+  .back-to-top,
+  .theme-toggle {
     display: none;
   }
 

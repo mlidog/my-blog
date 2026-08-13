@@ -7,6 +7,18 @@
   <meta name="description" content="一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script>
+    /* 提前设置主题，避免刷新时闪一下 */
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -17,6 +29,7 @@
         <a class="nav-link" href="about.html">关于</a>
         <a class="nav-link" href="tags.html">标签</a>
       </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
       <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
     </div>
   </header>
@@ -37,7 +50,7 @@
           <span>1 分钟阅读</span>
           <span class="dot">·</span> <a class="tag" href="tags.html#tag-随笔">随笔</a>
         </div>
-        <p class="post-excerpt">这是博客的第一篇文章，想写点什么都可以从这篇开始。</p>
+        <p class="post-excerpt">这里是我搞耍的起点！。</p>
       </article>
 
       <article class="post-item">
@@ -71,6 +84,7 @@
       </p>
     </div>
   </footer>
+  <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部">↑</button>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

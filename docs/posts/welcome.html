@@ -4,9 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>欢迎来到我的博客 · 美丽狗的博客</title>
-  <meta name="description" content="这是博客的第一篇文章，想写点什么都可以从这篇开始。">
+  <meta name="description" content="这里是我搞耍的起点！。">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/style.css">
+  <script>
+    /* 提前设置主题，避免刷新时闪一下 */
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -17,6 +29,7 @@
         <a class="nav-link" href="../about.html">关于</a>
         <a class="nav-link" href="../tags.html">标签</a>
       </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
       <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
     </div>
   </header>
@@ -47,7 +60,7 @@
 <p>把你学到的讲清楚，是检验自己是否真懂的最好方式。</p>
 </blockquote>
 <p>所以第一篇写什么都行——哪怕只是简单记录一下今天做了什么，也是一个不错的开始。</p>
-<p>祝你在这里写得开心。</p>
+<p>祝你在这里写得开心。<br>（上面这一段是AI写的......所以这其实更多是写给我自己看的...）</p>
 
       </div>
       
@@ -65,6 +78,7 @@
       </p>
     </div>
   </footer>
+  <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部">↑</button>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>

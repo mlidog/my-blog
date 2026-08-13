@@ -1,4 +1,4 @@
-/* 博客的小交互：年份、移动端菜单、代码复制按钮 */
+/* 博客的小交互：年份、移动端菜单、代码复制、深色模式、回到顶部 */
 (function () {
   "use strict";
 
@@ -47,4 +47,39 @@
     });
     pre.appendChild(btn);
   });
+
+  // 深色模式切换（选择会记住，刷新后仍然有效）
+  var themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) {
+    var updateThemeIcon = function () {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      themeToggle.textContent = dark ? "☀️" : "🌙";
+      themeToggle.setAttribute("aria-label", dark ? "切换到浅色模式" : "切换到深色模式");
+    };
+    themeToggle.addEventListener("click", function () {
+      var dark = document.documentElement.getAttribute("data-theme") === "dark";
+      var next = dark ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (e) {
+        /* 隐私模式下可能无法写入，忽略即可 */
+      }
+      updateThemeIcon();
+    });
+    updateThemeIcon();
+  }
+
+  // 回到顶部：滚动超过一定距离后显示按钮
+  var backToTop = document.getElementById("backToTop");
+  if (backToTop) {
+    var onScroll = function () {
+      backToTop.classList.toggle("visible", window.scrollY > 400);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    backToTop.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 })();

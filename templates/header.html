@@ -7,6 +7,18 @@
   <meta name="description" content="{{DESCRIPTION}}">
   <link rel="icon" href="{{ROOT}}assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="{{ROOT}}assets/css/style.css">
+  <script>
+    /* 提前设置主题，避免刷新时闪一下 */
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -15,6 +27,7 @@
       <nav class="site-nav" id="siteNav" aria-label="主导航">
         {{NAV}}
       </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
       <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
     </div>
   </header>
