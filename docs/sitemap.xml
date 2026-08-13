@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://mlidog.github.io/index.html</loc></url>
-  <url><loc>https://mlidog.github.io/about.html</loc></url>
-  <url><loc>https://mlidog.github.io/tags.html</loc></url>
-  <url><loc>https://mlidog.github.io/posts/welcome.html</loc></url>
-  <url><loc>https://mlidog.github.io/posts/markdown-cheatsheet.html</loc></url>
-  <url><loc>https://mlidog.github.io/posts/why-static-blog.html</loc></url>
+  <url><loc>https://mlidog.github.io/my-blog/index.html</loc></url>
+  <url><loc>https://mlidog.github.io/my-blog/about.html</loc></url>
+  <url><loc>https://mlidog.github.io/my-blog/tags.html</loc></url>
+  <url><loc>https://mlidog.github.io/my-blog/posts/welcome.html</loc></url>
+  <url><loc>https://mlidog.github.io/my-blog/posts/markdown-cheatsheet.html</loc></url>
+  <url><loc>https://mlidog.github.io/my-blog/posts/why-static-blog.html</loc></url>
 </urlset>

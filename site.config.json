@@ -3,7 +3,7 @@
   "subtitle": "记录我用codex完成自己胡思乱想的secret box",
   "author": "mlidog",
   "description": "一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。",
-  "baseUrl": "https://mlidog.github.io/",
+  "baseUrl": "https://mlidog.github.io/my-blog/",
   "nav": [
     { "label": "首页", "href": "index.html" },
     { "label": "关于", "href": "about.html" },

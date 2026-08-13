@@ -88,6 +88,8 @@ description: 这篇文章写的是什么。
 
 > 注意：如果第 5 步找不到 “Deploy from a branch”，说明第 3 步的提交或推送还没完成——GitHub 上的仓库还是空的，Pages 里不会出现分支选项。回到 GitHub Desktop 完成首次提交并推送后再刷新页面即可。
 
+> 如果 Pages 页面提示 “Upgrade or make this repository public to enable Pages”：说明仓库是私有的。免费版 GitHub Pages 只支持公开仓库，把仓库设为公开即可（个人博客本来就是公开内容，代码公开也很正常）。方法：仓库网页 → **Settings → General**，拉到最底部 **Danger Zone → Change repository visibility → Change to public**，确认后回到 **Settings → Pages** 继续操作。
+
 发布成功后，把 `site.config.json` 里的 `baseUrl` 改成你的真实网址，重新构建并提交一次，RSS 订阅链接就正确了。
 
 以后发新文章：写文章 → 双击构建 → 回到 GitHub Desktop 提交并推送，就完成了。
@@ -120,6 +122,8 @@ git push
 **文章日期不对？** 检查 `date` 是不是 `2026-08-14` 这样的格式。
 
 **Pages 里找不到 “Deploy from a branch”？** 先确认 GitHub 仓库里已经有内容（仓库首页能看到文件和提交记录）。没有的话，在 GitHub Desktop 里完成第一次提交并推送，再回到 Pages 刷新。
+
+**Pages 提示 “Upgrade or make this repository public”？** 说明仓库是私有的，免费版不支持私有仓库的 Pages。把仓库设为公开，或者改用 Vercel / Cloudflare Pages 等免费托管（它们支持私有仓库）。
 
 **想在手机上预览？** 把 `docs` 文件夹放到任意静态托管（比如 GitHub Pages、Vercel）后，手机访问网址即可。
 

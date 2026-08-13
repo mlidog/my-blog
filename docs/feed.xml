@@ -2,14 +2,14 @@
 <rss version="2.0">
   <channel>
     <title>美丽狗的博客</title>
-    <link>https://mlidog.github.io/</link>
+    <link>https://mlidog.github.io/my-blog/</link>
     <description>一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。</description>
     <language>zh-cn</language>
     
     <item>
       <title>欢迎来到我的博客</title>
-      <link>https://mlidog.github.io/posts/welcome.html</link>
-      <guid isPermaLink="false">https://mlidog.github.io/posts/welcome.html</guid>
+      <link>https://mlidog.github.io/my-blog/posts/welcome.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/welcome.html</guid>
       <pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[<p>你好，欢迎来到我的博客。</p>
 <p>这是搭建博客后发布的第一篇文章。以后这里会用来记录：</p>
@@ -30,8 +30,8 @@
 
     <item>
       <title>Markdown 写作小抄</title>
-      <link>https://mlidog.github.io/posts/markdown-cheatsheet.html</link>
-      <guid isPermaLink="false">https://mlidog.github.io/posts/markdown-cheatsheet.html</guid>
+      <link>https://mlidog.github.io/my-blog/posts/markdown-cheatsheet.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/markdown-cheatsheet.html</guid>
       <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[<p>写文章只需要会一点 Markdown——一种用普通文本表达格式的写法。下面是最常用的几种，照着用即可。</p>
 <h2>标题</h2>
@@ -80,8 +80,8 @@ print(&quot;Hello, world!&quot;)
 
     <item>
       <title>为什么我选择了静态博客</title>
-      <link>https://mlidog.github.io/posts/why-static-blog.html</link>
-      <guid isPermaLink="false">https://mlidog.github.io/posts/why-static-blog.html</guid>
+      <link>https://mlidog.github.io/my-blog/posts/why-static-blog.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/why-static-blog.html</guid>
       <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[<p>想拥有一个自己的博客，其实有很多条路可以走。我最后选择了「静态博客 + GitHub 托管」，理由有三点。</p>
 <h2>速度快，还免费</h2>
