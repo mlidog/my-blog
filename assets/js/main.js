@@ -92,14 +92,36 @@
     });
   }
 
-  // 返回上一页：有浏览历史就返回，没有（比如直接打开的页面）就回首页
+  // 返回上一页：只在本站范围内返回
+  // 新标签页直接打开时没有站内记录，就留在首页，不会跳回外部页面
   var backButton = document.getElementById("backButton");
   if (backButton) {
+    var prevUrl = null;
+    try {
+      if (sessionStorage.getItem("blogInSite") === "1") {
+        prevUrl = sessionStorage.getItem("blogPrev");
+      }
+      sessionStorage.setItem("blogInSite", "1");
+      sessionStorage.setItem("blogPrev", location.href);
+    } catch (e) {
+      /* 存储不可用（如隐私模式）时，直接走“回首页”分支 */
+    }
+    if (prevUrl === location.href) {
+      prevUrl = null; // 刷新页面不算“上一页”
+    }
     backButton.addEventListener("click", function () {
-      if (window.history.length > 1) {
-        window.history.back();
+      if (prevUrl) {
+        window.location.href = prevUrl;
       } else {
-        window.location.href = backButton.getAttribute("data-home") || "index.html";
+        var home = backButton.getAttribute("data-home") || "index.html";
+        var currentFile = window.location.pathname.split("/").pop();
+        var homeFile = home.split("/").pop();
+        if (currentFile === homeFile) {
+          // 已经在首页，留在原地（滚回顶部即可）
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          window.location.href = home;
+        }
       }
     });
   }

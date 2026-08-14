@@ -258,11 +258,35 @@ a:hover {
   height: 60px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-left: auto; /* 让按钮组始终靠右（顶到页面右上角） */
+}
+
+.back-btn {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.back-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .brand {

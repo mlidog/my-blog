@@ -124,7 +124,7 @@ git push
 
 | 按钮 | 现在的位置 | 控制位置的代码 |
 | ---- | ---------- | -------------- |
-| 返回上一页 ← | 右下角浮动（按钮组最上面） | `templates/footer.html` 里的 `backButton`，逻辑在 `assets/js/main.js` |
+| 返回上一页 ← | 顶部导航栏左端（和右侧深色模式按钮对称） | `templates/header.html` 里的 `backButton`，样式在 `assets/css/style.css` 的 `.back-btn`，逻辑在 `assets/js/main.js` |
 | 回到顶部 ↑ | 右下角浮动 | `assets/css/style.css` 的 `.side-buttons`（改 `right`/`bottom`） |
 | 深色模式 🌙 | 顶部右侧 | `templates/header.html` 第 32 行（搬走这行就能换位置），按钮间距看 `.header-actions` |
 | 菜单 ☰ | 顶部右侧（手机才显示） | `templates/header.html` 第 33 行 |
