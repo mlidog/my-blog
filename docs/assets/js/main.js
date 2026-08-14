@@ -91,4 +91,16 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
+
+  // 返回上一页：有浏览历史就返回，没有（比如直接打开的页面）就回首页
+  var backButton = document.getElementById("backButton");
+  if (backButton) {
+    backButton.addEventListener("click", function () {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = backButton.getAttribute("data-home") || "index.html";
+      }
+    });
+  }
 })();
