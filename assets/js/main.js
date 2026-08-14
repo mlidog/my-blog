@@ -7,20 +7,29 @@
     el.textContent = String(new Date().getFullYear());
   });
 
-  // 移动端菜单
+  // 移动端侧边栏抽屉：点 ☰ 打开，点遮罩或 Esc 关闭，点链接自动关闭
   var toggle = document.getElementById("navToggle");
   var nav = document.getElementById("siteNav");
+  var overlay = document.getElementById("sidebarOverlay");
   if (toggle && nav) {
+    var closeNav = function () {
+      nav.classList.remove("open");
+      if (overlay) overlay.classList.remove("show");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "打开菜单");
+    };
     toggle.addEventListener("click", function () {
       var open = nav.classList.toggle("open");
+      if (overlay) overlay.classList.toggle("show", open);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
       toggle.setAttribute("aria-label", open ? "关闭菜单" : "打开菜单");
     });
+    if (overlay) overlay.addEventListener("click", closeNav);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeNav();
+    });
     nav.addEventListener("click", function (e) {
-      if (e.target.closest("a")) {
-        nav.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
+      if (e.target.closest("a")) closeNav();
     });
   }
 
@@ -74,7 +83,7 @@
   var backToTop = document.getElementById("backToTop");
   if (backToTop) {
     var onScroll = function () {
-      backToTop.classList.toggle("visible", window.scrollY > 400);
+      backToTop.classList.toggle("visible", window.scrollY > 350);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

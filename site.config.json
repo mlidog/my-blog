@@ -1,7 +1,9 @@
 {
   "title": "美丽狗的博客",
-  "subtitle": "记录我用codex完成自己胡思乱想的secret box",
+  "subtitle": "记录我用codex完成自己胡思乱想的secret box.",
+  "bio": "深圳大学建筑系大二在读，现在在探索各种新奇事物中！",
   "author": "mlidog",
+  "avatar": "assets/avatar.svg",
   "description": "一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。",
   "baseUrl": "https://mlidog.github.io/my-blog/",
   "nav": [
@@ -10,7 +12,8 @@
     { "label": "标签", "href": "tags.html" }
   ],
   "social": {
-    "github": "https://github.com/mlidog"
+    "github": "https://github.com/mlidog",
+    "bilibili":"https://space.bilibili.com/21791598?spm_id_from=333.1007.0.0"
   },
-  "footerNote": "用code辅助、 Markdown 书写，构建成静态网页。"
+  "footerNote": "用codex辅助、 Markdown 书写，构建成静态网页。"
 }

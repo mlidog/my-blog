@@ -7,7 +7,7 @@
 - 文章用 Markdown 写，简单得像写纯文本；
 - 构建零依赖：项目自带 Markdown 渲染器，不需要联网安装任何东西；
 - 生成的是纯静态网页，速度快、免费托管；
-- 自带首页、文章页、关于页、标签页、RSS 订阅和 404 页面；
+- 自带左侧边栏（个人资料 + 导航 + 小部件区）、首页、文章页、关于页、标签页、RSS 订阅和 404 页面；
 - 代码整洁、带深色模式切换和回到顶部按钮，也是学习前端的好素材。
 
 ## 项目结构
@@ -20,10 +20,15 @@ web1/
 ├── content/
 │   ├── about.md          ← 关于页的内容
 │   └── posts/            ← 你的文章都放这里（.md 文件）
-├── templates/            ← 网页的头部和底部模板（可自学修改）
+├── templates/
+│   ├── header.html       ← 网页头部结构（引入侧边栏）
+│   ├── footer.html       ← 网页底部结构
+│   ├── sidebar.html      ← 左侧边栏骨架（头像、导航、小部件区）
+│   └── widgets.html      ← 侧边栏小部件，想加部件改这里
 ├── assets/
 │   ├── css/style.css     ← 全部样式，改颜色和字体都在这里
-│   ├── js/main.js        ← 菜单、复制按钮等小交互
+│   ├── js/main.js        ← 侧边栏抽屉、复制按钮等小交互
+│   ├── avatar.svg        ← 默认头像（想换成自己的照片：把图片放进 assets 并改 site.config.json 的 avatar）
 │   └── favicon.svg       ← 网站小图标
 ├── vendor/               ← 内置的 Markdown 渲染器（不用管）
 └── docs/                 ← 构建出来的网站（发布时用这个文件夹）
@@ -109,9 +114,26 @@ git push
 1. **改颜色和字体**：打开 `assets/css/style.css`，改最上面 `:root` 里的几个颜色值，刷新页面就能看到变化；
 2. **改页面的头和脚**：`templates/header.html` 是顶部导航，`templates/footer.html` 是底部版权信息；
 3. **改首页布局**：首页的结构在 `build.mjs` 里的 `renderHome()` 函数；
-4. **加一个小功能**：项目里已经有两个现成例子可以照着学——回到顶部（按钮在 `templates/footer.html`，逻辑在 `assets/js/main.js`）和深色模式切换（按钮在 `templates/header.html`，样式在 `assets/css/style.css`，逻辑在 `assets/js/main.js`）。
+4. **加一个小功能**：项目里已经有几个现成例子可以照着学——左侧边栏（骨架在 `templates/sidebar.html`，资料在 `site.config.json` 的 `bio`/`avatar`）和侧边栏小部件（想加新部件，在 `templates/widgets.html` 里照示例加一个 `.widget` 块即可）。按钮和交互逻辑分别改 `templates/` 和 `assets/js/main.js`。
 
 每次改完记得重新构建一次。
+
+### 按钮位置速查
+
+想挪按钮，先分清两种定位方式：**浮动按钮**（回到顶部）靠 CSS 的 `position: fixed` 加 `top/right/bottom/left` 四个值定位；**页面里的普通按钮**（深色模式、菜单）靠 HTML 里的先后顺序和父容器的排列方式决定，想挪就把那行 HTML 搬走。
+
+| 按钮 | 现在的位置 | 控制位置的代码 |
+| ---- | ---------- | -------------- |
+| 回到顶部 ↑ | 右下角浮动 | `assets/css/style.css` 的 `.side-buttons`（改 `right`/`bottom`） |
+| 深色模式 🌙 | 顶部右侧 | `templates/header.html` 第 32 行（搬走这行就能换位置），按钮间距看 `.header-actions` |
+| 菜单 ☰ | 顶部右侧（手机才显示） | `templates/header.html` 第 33 行 |
+| 侧边栏整体 | 左侧固定 | `assets/css/style.css` 的 `.sidebar`（改 `left`/`top`/`bottom`/`width`） |
+| 代码块的“复制”按钮 | 每个代码块右上角 | `assets/css/style.css` 的 `.post-content .code-copy`（改 `top`/`right`） |
+
+两个最常用的例子：
+
+- **把“回到顶部”挪到左下角**：`.side-buttons` 里把 `right: 24px` 改成 `left: 24px`；
+- **把“深色模式”按钮挪进侧边栏**：剪切 `header.html` 第 32 行，粘贴到 `templates/widgets.html` 的任意位置（功能不受影响，因为按钮的 `id` 没变）。
 
 ## 缓存和版本号（不用手动管）
 

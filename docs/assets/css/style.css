@@ -40,9 +40,9 @@
 
 /* 手动切换主题（按钮在右上角，选择会记住） */
 html[data-theme="light"] {
-  --bg: #faf9f6;
-  --bg-soft: #f2efe8;
-  --card: #ffffff;
+  --bg: #e9e9e9;
+  --bg-soft: #d0cfcf;
+  --card: #fbfbfb;
   --ink: #2b2926;
   --ink-soft: #6f6a63;
   --line: #e7e3da;
@@ -107,6 +107,138 @@ a:hover {
   padding: 0 20px;
 }
 
+/* ---------- 整体布局：左侧边栏 + 右侧内容 ---------- */
+
+.layout {
+  min-height: 100vh;
+}
+
+.layout-main {
+  min-height: 100vh;
+  margin-left: 260px;
+}
+
+/* ---------- 左侧边栏 ---------- */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  z-index: 40;
+  overflow-y: auto;
+  background: var(--bg-soft);
+  border-right: 1px solid var(--line);
+  padding: 32px 22px;
+}
+
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.profile {
+  text-align: center;
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--card);
+  object-fit: cover;
+}
+
+.profile-name {
+  margin-top: 12px;
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.profile-bio {
+  margin-top: 6px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.profile-links {
+  margin-top: 10px;
+  font-size: 0.88rem;
+}
+
+.profile-links a {
+  color: var(--ink-soft);
+  margin: 0 6px;
+}
+
+.profile-links a:hover {
+  color: var(--accent);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.sidebar-nav .nav-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+
+.sidebar-nav .nav-link:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.sidebar-nav .nav-link.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.sidebar-widgets {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 22px;
+}
+
+.widget {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.widget-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.widget-stats {
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+
+/* 窄屏时侧边栏变成抽屉，这个遮罩用来点击关闭 */
+.sidebar-overlay {
+  display: none;
+}
+
 /* ---------- 顶部导航 ---------- */
 
 .site-header {
@@ -126,6 +258,13 @@ a:hover {
   height: 60px;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto; /* 让按钮组始终靠右（顶到页面右上角） */
+}
+
 .brand {
   font-family: var(--font-serif);
   font-size: 1.2rem;
@@ -137,31 +276,6 @@ a:hover {
 .brand:hover {
   color: var(--accent);
   text-decoration: none;
-}
-
-.site-nav {
-  display: flex;
-  gap: 4px;
-}
-
-.nav-link {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 999px;
-  color: var(--ink-soft);
-  font-size: 0.95rem;
-}
-
-.nav-link:hover {
-  color: var(--accent);
-  background: var(--accent-soft);
-  text-decoration: none;
-}
-
-.nav-link.active {
-  color: var(--accent);
-  background: var(--accent-soft);
-  font-weight: 500;
 }
 
 .nav-toggle {
@@ -557,13 +671,21 @@ a:hover {
   color: var(--accent);
 }
 
-/* ---------- 回到顶部按钮 ---------- */
+/* ---------- 浮动按钮组 ---------- */
 
-.back-to-top {
+/* 整个按钮组固定在右下角；想放回左边就把 right 改成 left */
+.side-buttons {
   position: fixed;
   right: 24px;
   bottom: 24px;
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 按钮组里每个按钮的通用样式 */
+.side-btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -574,10 +696,19 @@ a:hover {
   line-height: 1;
   box-shadow: var(--shadow);
   cursor: pointer;
+  transition: opacity 0.25s, transform 0.25s, color 0.2s, border-color 0.2s;
+}
+
+.side-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* 回到顶部按钮：默认隐藏，滚动到一定距离后显示 */
+.back-to-top {
   opacity: 0;
   transform: translateY(8px);
   pointer-events: none;
-  transition: opacity 0.25s, transform 0.25s, color 0.2s, border-color 0.2s;
 }
 
 .back-to-top.visible {
@@ -586,12 +717,62 @@ a:hover {
   pointer-events: auto;
 }
 
-.back-to-top:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+/* ---------- 响应式 ---------- */
+
+/* 窄屏：侧边栏收起来，变成从左边滑出的抽屉菜单 */
+@media (max-width: 900px) {
+  .layout-main {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    background: var(--bg);
+    box-shadow: var(--shadow);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .brand {
+    display: inline-block;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
-/* ---------- 响应式 ---------- */
+/* 宽屏：侧边栏常驻，顶部只留深色模式按钮 */
+@media (min-width: 901px) {
+  .brand {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+}
 
 @media (max-width: 640px) {
   .hero {
@@ -606,38 +787,9 @@ a:hover {
     font-size: 1.6rem;
   }
 
-  .nav-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .back-to-top {
+  .side-buttons {
     right: 16px;
     bottom: 16px;
-  }
-
-  .site-nav {
-    display: none;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    gap: 2px;
-    padding: 12px 20px 16px;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow);
-  }
-
-  .site-nav.open {
-    display: flex;
-  }
-
-  .nav-link {
-    padding: 10px 12px;
-    border-radius: 8px;
   }
 
   .post-pager {
@@ -655,9 +807,15 @@ a:hover {
   .site-header,
   .site-footer,
   .post-pager,
-  .back-to-top,
-  .theme-toggle {
+  .side-buttons,
+  .theme-toggle,
+  .sidebar,
+  .sidebar-overlay {
     display: none;
+  }
+
+  .layout-main {
+    margin-left: 0;
   }
 
   body {

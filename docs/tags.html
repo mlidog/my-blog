@@ -6,7 +6,7 @@
   <title>标签 · 美丽狗的博客</title>
   <meta name="description" content="一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=e95a19a6">
+  <link rel="stylesheet" href="assets/css/style.css?v=30f1806f">
   <script>
     /* 提前设置主题，避免刷新时闪一下 */
     (function () {
@@ -21,19 +21,50 @@
   </script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html">美丽狗的博客</a>
-      <nav class="site-nav" id="siteNav" aria-label="主导航">
-        <a class="nav-link" href="index.html">首页</a>
+  <div class="layout">
+    <aside class="sidebar" id="siteNav" aria-label="侧边栏">
+  <div class="sidebar-inner">
+    <div class="profile">
+      <img class="avatar" src="assets/avatar.svg" alt="头像">
+      <div class="profile-name">美丽狗的博客</div>
+      <div class="profile-bio">深圳大学建筑系大二在读，现在在探索各种新奇事物中！</div>
+      <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
+    </div>
+    <nav class="sidebar-nav" aria-label="侧边栏导航">
+      <a class="nav-link" href="index.html">首页</a>
         <a class="nav-link" href="about.html">关于</a>
         <a class="nav-link active" href="tags.html" aria-current="page">标签</a>
-      </nav>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+    </nav>
+    <div class="sidebar-widgets">
+      <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
+<div class="widget">
+  <h3 class="widget-title">站点信息</h3>
+  <p class="widget-stats">共 <strong>3</strong> 篇文章 · <strong>5</strong> 个标签</p>
+</div>
+
+<!-- 示例：以后想加“公告”小部件，把下面几行取消注释、改成你自己的内容即可
+<div class="widget">
+  <h3 class="widget-title">公告</h3>
+  <p>欢迎来到我的博客！</p>
+</div>
+-->
+
     </div>
-  </header>
-  <main class="container">
+  </div>
+</aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="layout-main">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="index.html">美丽狗的博客</a>
+          <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+          </div>
+        </div>
+      </header>
+      <main class="container">
 
 
     <article class="post">
@@ -69,17 +100,23 @@
       </section>
       </div>
     </article>
-  </main>
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span data-year></span> mlidog · 用code辅助、 Markdown 书写，构建成静态网页。</p>
-      <p class="footer-links">
-        <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
-      </p>
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>© <span data-year></span> mlidog · 用codex辅助、 Markdown 书写，构建成静态网页。</p>
+          <p class="footer-links">
+            <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
+          </p>
+        </div>
+      </footer>
     </div>
-  </footer>
-  <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部">↑</button>
-  <script src="assets/js/main.js?v=e95a19a6"></script>
+  </div>
+  <!-- 浮动按钮组（默认右下角）：想加新按钮，照下面这行再复制一份即可 -->
+  <div class="side-buttons">
+    <button class="back-to-top side-btn" id="backToTop" type="button" aria-label="回到顶部">↑</button>
+    <!-- 示例：<button class="side-btn" id="yourButton" type="button" aria-label="你的按钮">★</button> -->
+  </div>
+  <script src="assets/js/main.js?v=30f1806f"></script>
 </body>
 </html>
 

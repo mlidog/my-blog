@@ -122,6 +122,29 @@ function navHtml(prefix, activeKey) {
     .join('\n        ');
 }
 
+function renderSidebar(prefix, activeKey) {
+  const widgets = fill(
+    fs.readFileSync(path.join(TEMPLATES_DIR, 'widgets.html'), 'utf8'),
+    {
+      POST_COUNT: String(posts.length),
+      TAG_COUNT: String(tags.length),
+    }
+  );
+  const profileLinks = [];
+  if (CONFIG.social?.github) {
+    profileLinks.push(`<a href="${escapeHtml(CONFIG.social.github)}" target="_blank" rel="noopener">GitHub</a>`);
+  }
+  return fill(fs.readFileSync(path.join(TEMPLATES_DIR, 'sidebar.html'), 'utf8'), {
+    ROOT: prefix,
+    AVATAR: escapeHtml(CONFIG.avatar || 'assets/avatar.svg'),
+    SITE_TITLE: escapeHtml(CONFIG.title),
+    BIO: escapeHtml(CONFIG.bio || CONFIG.subtitle || ''),
+    PROFILE_LINKS: profileLinks.join(' · '),
+    NAV: navHtml(prefix, activeKey),
+    WIDGETS: widgets,
+  });
+}
+
 function socialHtml() {
   const links = [];
   if (CONFIG.social?.github) {
@@ -148,7 +171,7 @@ function page(opts) {
     DESCRIPTION: escapeHtml(description),
     ROOT: prefix,
     SITE_TITLE: escapeHtml(CONFIG.title),
-    NAV: navHtml(prefix, activeKey),
+    SIDEBAR: renderSidebar(prefix, activeKey),
     ASSET_VERSION,
   });
   const footer = fill(FOOTER_TMPL, {

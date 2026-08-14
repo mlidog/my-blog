@@ -21,14 +21,17 @@
   </script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="{{ROOT}}index.html">{{SITE_TITLE}}</a>
-      <nav class="site-nav" id="siteNav" aria-label="主导航">
-        {{NAV}}
-      </nav>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
-    </div>
-  </header>
-  <main class="container">
+  <div class="layout">
+    {{SIDEBAR}}
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="layout-main">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="brand" href="{{ROOT}}index.html">{{SITE_TITLE}}</a>
+          <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+          </div>
+        </div>
+      </header>
+      <main class="container">

@@ -2,7 +2,7 @@
 title: 欢迎来到我的博客
 date: 2026-08-14
 tags: [随笔]
-description: 这里是我搞耍的起点！。
+description: 这里是我搞耍的起点！
 ---
 
 你好，欢迎来到我的博客。

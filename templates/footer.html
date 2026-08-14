@@ -1,13 +1,19 @@
-  </main>
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>© <span data-year></span> {{AUTHOR}} · {{FOOTER_NOTE}}</p>
-      <p class="footer-links">
-        {{SOCIAL}}
-      </p>
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>© <span data-year></span> {{AUTHOR}} · {{FOOTER_NOTE}}</p>
+          <p class="footer-links">
+            {{SOCIAL}}
+          </p>
+        </div>
+      </footer>
     </div>
-  </footer>
-  <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部">↑</button>
+  </div>
+  <!-- 浮动按钮组（默认右下角）：想加新按钮，照下面这行再复制一份即可 -->
+  <div class="side-buttons">
+    <button class="back-to-top side-btn" id="backToTop" type="button" aria-label="回到顶部">↑</button>
+    <!-- 示例：<button class="side-btn" id="yourButton" type="button" aria-label="你的按钮">★</button> -->
+  </div>
   <script src="{{ROOT}}assets/js/main.js{{ASSET_VERSION}}"></script>
 </body>
 </html>
