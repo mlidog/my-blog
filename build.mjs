@@ -46,6 +46,30 @@ function assetVersion() {
 }
 const ASSET_VERSION = assetVersion();
 
+/* 页面版本号：配置、模板或文章一改动，内部链接就变，
+   点任何链接都会拿到最新页面，不会被浏览器缓存骗到。 */
+function siteVersion() {
+  const hash = crypto.createHash('sha1');
+  const addFile = (file) => {
+    hash.update(path.relative(ROOT, file));
+    hash.update(fs.readFileSync(file, 'utf8'));
+  };
+  addFile(path.join(ROOT, 'site.config.json'));
+  for (const file of fs.readdirSync(TEMPLATES_DIR)) {
+    addFile(path.join(TEMPLATES_DIR, file));
+  }
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(file);
+      else addFile(file);
+    }
+  };
+  walk(CONTENT_DIR);
+  return `?v=${hash.digest('hex').slice(0, 8)}`;
+}
+const SITE_VERSION = siteVersion();
+
 marked.setOptions({ gfm: true, breaks: true });
 
 /* ---------- 小工具 ---------- */
@@ -117,7 +141,7 @@ function navHtml(prefix, activeKey) {
   return CONFIG.nav
     .map((item) => {
       const active = item.href === activeKey;
-      return `<a class="nav-link${active ? ' active' : ''}" href="${prefix}${item.href}"${active ? ' aria-current="page"' : ''}>${escapeHtml(item.label)}</a>`;
+      return `<a class="nav-link${active ? ' active' : ''}" href="${prefix}${item.href}${SITE_VERSION}"${active ? ' aria-current="page"' : ''}>${escapeHtml(item.label)}</a>`;
     })
     .join('\n        ');
 }
@@ -142,6 +166,7 @@ function renderSidebar(prefix, activeKey) {
     PROFILE_LINKS: profileLinks.join(' · '),
     NAV: navHtml(prefix, activeKey),
     WIDGETS: widgets,
+    SITE_VERSION,
   });
 }
 
@@ -173,6 +198,7 @@ function page(opts) {
     SITE_TITLE: escapeHtml(CONFIG.title),
     SIDEBAR: renderSidebar(prefix, activeKey),
     ASSET_VERSION,
+    SITE_VERSION,
   });
   const footer = fill(FOOTER_TMPL, {
     ROOT: prefix,
@@ -225,7 +251,7 @@ const tags = [...tagMap.keys()].sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'))
 
 const tagHtml = (post, prefix) =>
   post.tags
-    .map((t) => `<a class="tag" href="${prefix}tags.html#${tagId(t)}">${escapeHtml(t)}</a>`)
+    .map((t) => `<a class="tag" href="${prefix}tags.html${SITE_VERSION}#${tagId(t)}">${escapeHtml(t)}</a>`)
     .join('');
 
 /* ---------- 生成页面 ---------- */
@@ -235,7 +261,7 @@ function renderHome() {
     .map(
       (post) => `
       <article class="post-item">
-        <h2 class="post-title"><a href="posts/${post.slug}.html">${escapeHtml(post.title)}</a></h2>
+        <h2 class="post-title"><a href="posts/${post.slug}.html${SITE_VERSION}">${escapeHtml(post.title)}</a></h2>
         <div class="post-meta">
           <time datetime="${post.date}">${formatDate(post.date)}</time>
           <span class="dot">·</span>
@@ -263,8 +289,8 @@ function renderPost(post, index) {
   const next = posts[index + 1];
   const pager = `
       <nav class="post-pager" aria-label="上下篇文章">
-        ${prev ? `<a class="pager-prev" href="${prev.slug}.html"><span>上一篇</span>${escapeHtml(prev.title)}</a>` : '<span></span>'}
-        ${next ? `<a class="pager-next" href="${next.slug}.html"><span>下一篇</span>${escapeHtml(next.title)}</a>` : '<span></span>'}
+        ${prev ? `<a class="pager-prev" href="${prev.slug}.html${SITE_VERSION}"><span>上一篇</span>${escapeHtml(prev.title)}</a>` : '<span></span>'}
+        ${next ? `<a class="pager-next" href="${next.slug}.html${SITE_VERSION}"><span>下一篇</span>${escapeHtml(next.title)}</a>` : '<span></span>'}
       </nav>`;
 
   const body = `
@@ -318,7 +344,7 @@ function renderTags() {
         .filter((p) => p.tags.includes(tag))
         .map(
           (p) =>
-            `<li><a href="posts/${p.slug}.html">${escapeHtml(p.title)}</a><time datetime="${p.date}">${formatDate(p.date)}</time></li>`
+            `<li><a href="posts/${p.slug}.html${SITE_VERSION}">${escapeHtml(p.title)}</a><time datetime="${p.date}">${formatDate(p.date)}</time></li>`
         )
         .join('\n');
       return `
@@ -346,7 +372,7 @@ function render404() {
     <article class="post">
       <div class="post-content">
         <h1>404</h1>
-        <p>这里什么都没有，回到<a href="index.html">首页</a>看看吧。</p>
+        <p>这里什么都没有，回到<a href="index.html${SITE_VERSION}">首页</a>看看吧。</p>
       </div>
     </article>`;
   return page({ body, title: '页面不存在' });
