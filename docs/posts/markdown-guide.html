@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 完整语法指南 · 美丽狗的博客</title>
+  <meta name="description" content="从基础到进阶，一次掌握 Markdown 的常用语法，并附一篇完整的示例文章。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/style.css?v=d8cee334">
+  <script>
+    /* 提前设置主题，避免刷新时闪一下 */
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="siteNav" aria-label="侧边栏">
+  <div class="sidebar-inner">
+    <div class="profile">
+      <img class="avatar" src="../assets/rikka.png?v=e690a305" alt="头像">
+      <div class="profile-name">美丽狗的博客</div>
+      <div class="profile-bio">这些东西会变成我的赛博遗产。</div>
+      <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
+    </div>
+    <nav class="sidebar-nav" aria-label="侧边栏导航">
+      <a class="nav-link active" href="../index.html?v=e690a305" aria-current="page">首页</a>
+        <a class="nav-link" href="../about.html?v=e690a305">关于</a>
+        <a class="nav-link" href="../tags.html?v=e690a305">标签</a>
+    </nav>
+    <div class="sidebar-widgets">
+      <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
+<div class="widget">
+  <h3 class="widget-title">站点信息</h3>
+  <p class="widget-stats">共 <strong>5</strong> 篇文章 · <strong>6</strong> 个标签</p>
+</div>
+
+<!-- 示例：以后想加“公告”小部件，把下面几行取消注释、改成你自己的内容即可
+<div class="widget">
+  <h3 class="widget-title">公告</h3>
+  <p>欢迎来到我的博客！</p>
+</div>
+-->
+
+    </div>
+  </div>
+</aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="layout-main">
+      <header class="site-header">
+        <div class="container header-inner">
+          <div class="header-left">
+            <button class="back-btn" id="backButton" type="button" aria-label="返回上一页" data-home="../index.html" hidden>←</button>
+            <a class="brand" href="../index.html?v=e690a305">美丽狗的博客</a>
+          </div>
+          <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+          </div>
+        </div>
+      </header>
+      <main class="container">
+
+
+    <article class="post">
+      <header class="post-header">
+        <h1>Markdown 完整语法指南</h1>
+        <div class="post-meta">
+          <time datetime="2026-08-15">2026年8月15日</time>
+          <span class="dot">·</span>
+          <span>6 分钟阅读</span>
+          <span class="dot">·</span> <a class="tag" href="../tags.html?v=e690a305#tag-教程">教程</a><a class="tag" href="../tags.html?v=e690a305#tag-Markdown">Markdown</a>
+        </div>
+      </header>
+      <div class="post-content">
+        <p>Markdown 是一种用纯文本就能排版文档的写法：不依赖鼠标点按钮，只要会打字，就能写出带标题、列表、代码块、表格的漂亮文章。这个博客的所有文章都是用 Markdown 写的，学会它，你就能自由地在这里写作。</p>
+<h2>写在前面：本博客的约定</h2>
+<p>每篇文章是 <code>content/posts/</code> 下的一个 <code>.md</code> 文件，开头有一个“信息头”（front matter），告诉博客这篇文章的标题、日期和标签：</p>
+<pre><code class="language-markdown">---
+title: 文章标题
+date: 2026-08-15
+tags: [教程, Markdown]
+description: 一句话介绍这篇文章。
+---
+</code></pre>
+<p>本博客开了“单换行即换行”的选项：普通文本直接回车就会显示为换行；但段落之间还是建议空一行，阅读更清晰。</p>
+<h2>一、基础语法</h2>
+<h3>1. 标题</h3>
+<p>在文字前面加 <code>#</code>，一个 <code>#</code> 是一级标题，两个是二级，最多到六级：</p>
+<pre><code class="language-markdown"># 一级标题（一般给文章大标题用）
+## 二级标题（正文里最常用的小节标题）
+### 三级标题
+#### 四级标题
+</code></pre>
+<p>标题和正文之间最好空一行。</p>
+<h3>2. 段落与换行</h3>
+<p>段落之间用空行隔开。想强制换行，直接回车即可（本博客设置）；如果要在别的编辑器里换行，可以在行尾加两个空格：</p>
+<pre><code class="language-markdown">这是第一段。
+
+这是第二段，和第一段之间空了一行。
+</code></pre>
+<h3>3. 强调：加粗、斜体、删除线</h3>
+<pre><code class="language-markdown">**加粗**：文字两边各加两个星号
+*斜体*：文字两边各加一个星号
+***加粗又斜体***：两边各加三个星号
+~~删除线~~：两边各加两个波浪号
+`行内代码`：用一对反引号包起来
+</code></pre>
+<p>效果：<strong>加粗</strong>、<em>斜体</em>、<em><strong>加粗又斜体</strong></em>、<del>删除线</del>、<code>行内代码</code>。</p>
+<h3>4. 列表</h3>
+<p>无序列表用 <code>-</code>、<code>*</code> 或 <code>+</code>，有序列表用数字加点：</p>
+<pre><code class="language-markdown">- 无序项一
+- 无序项二
+
+1. 有序项一
+2. 有序项二
+</code></pre>
+<p>嵌套列表：在下一行前面缩进两个空格（或一个 Tab）：</p>
+<pre><code class="language-markdown">- 第一层
+  - 第二层
+    - 第三层
+</code></pre>
+<p>任务清单：<code>- [ ]</code> 表示未完成，<code>- [x]</code> 表示已完成：</p>
+<pre><code class="language-markdown">- [x] 学会标题
+- [x] 学会列表
+- [ ] 学会表格
+</code></pre>
+<p>任务清单效果：</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 学会标题</li>
+<li><input checked="" disabled="" type="checkbox"> 学会列表</li>
+<li><input disabled="" type="checkbox"> 学会表格</li>
+</ul>
+<h3>5. 链接</h3>
+<pre><code class="language-markdown">[链接文字](https://example.com)
+[带提示的链接](https://example.com &quot;鼠标悬停时显示的文字&quot;)
+&lt;https://example.com&gt;（直接写网址会自动变成链接）
+</code></pre>
+<p>给链接起个名字、后面统一引用（适合长文章里多处引用同一个链接）：</p>
+<pre><code class="language-markdown">可以去[我的 GitHub][github]逛逛。
+
+[github]: https://github.com/mlidog
+</code></pre>
+<p>效果：<a href="https://github.com/mlidog">打开我的 GitHub</a> 和自动链接 <a href="https://example.com">https://example.com</a>。</p>
+<h3>6. 图片</h3>
+<pre><code class="language-markdown">![图片说明](图片地址)
+![带提示的图片](图片地址 &quot;提示文字&quot;)
+</code></pre>
+<p><code>图片说明</code> 在图片加载失败时会显示，所以别留空。想控制图片大小，可以用 HTML 的 <code>&lt;img&gt;</code> 标签：</p>
+<pre><code class="language-html">&lt;img src=&quot;图片地址&quot; alt=&quot;说明&quot; width=&quot;400&quot;&gt;
+</code></pre>
+<p>效果（用博客的头像演示）：</p>
+<p><img src="../../assets/avatar.svg" alt="博客头像"></p>
+<h3>7. 引用</h3>
+<p>段落开头加 <code>&gt;</code>，引用可以嵌套：</p>
+<pre><code class="language-markdown">&gt; 这是引用。
+&gt;
+&gt; &gt; 这是嵌套在里面的引用。
+</code></pre>
+<p>效果：</p>
+<blockquote>
+<p>这是引用。</p>
+<blockquote>
+<p>这是嵌套的引用。</p>
+</blockquote>
+</blockquote>
+<h3>8. 分割线</h3>
+<p>单独一行写三个或更多 <code>-</code>、<code>*</code>、<code>_</code>：</p>
+<pre><code class="language-markdown">---
+</code></pre>
+<p>效果（下面这条线就是分割线）：</p>
+<hr>
+<p>注意：分割线那一行上面要空一行，否则会被当成标题。</p>
+<h3>9. 代码</h3>
+<p>一句话里提到代码用行内代码；整段代码用三个反引号包起来，开头还可以注明语言，让代码高亮：</p>
+<pre><code class="language-markdown">```js
+console.log(&quot;你好，世界&quot;);
+```
+</code></pre>
+<p>支持的语言包括 <code>js</code>、<code>python</code>、<code>html</code>、<code>css</code>、<code>json</code>、<code>bash</code> 等，写上语言名就有对应高亮。如果代码里本身有反引号，把外层围栏加长一个就行，比如内层三个、外层四个。</p>
+<h3>10. 表格</h3>
+<p>用竖线分隔列，第二行用 <code>---</code> 分隔表头：</p>
+<pre><code class="language-markdown">| 语法 | 作用 | 难度 |
+| ---- | ---- | ---- |
+| `#` | 标题 | 简单 |
+| `**` | 加粗 | 简单 |
+| 表格 | 排列表格 | 中等 |
+</code></pre>
+<p>列的对齐方式可以通过冒号控制：</p>
+<pre><code class="language-markdown">| 左对齐 | 居中 | 右对齐 |
+| :----- | :--: | -----: |
+| 内容   | 内容 | 内容   |
+</code></pre>
+<p>效果：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>作用</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>#</code></td>
+<td>标题</td>
+<td>简单</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>加粗</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>表格</td>
+<td>排列表格</td>
+<td>中等</td>
+</tr>
+</tbody></table>
+<h3>11. 转义</h3>
+<p>想显示星号、井号这些特殊符号本身，在前面加反斜杠：</p>
+<pre><code class="language-markdown">\# 这不是标题，只是井号
+\*不是斜体\*
+</code></pre>
+<p>常用转义：<code>\*</code>、<code>\#</code>、<code>\-</code>、<code>\_</code>，反引号本身用两个反引号包住：<code>\`</code>。</p>
+<h2>二、进阶技巧</h2>
+<h3>组合使用</h3>
+<p>列表、引用、代码块可以互相嵌套。引用里放代码块：</p>
+<pre><code class="language-markdown">&gt; 一段引用：
+&gt;
+&gt; ```js
+&gt; console.log(&quot;引用里的代码&quot;);
+&gt; ```
+</code></pre>
+<p>列表里放代码块时，代码块要比列表项多缩进一层：</p>
+<pre><code class="language-markdown">- 第一步
+
+  ```js
+  console.log(&quot;缩进后的代码&quot;);
+  ```
+</code></pre>
+<h3>Emoji</h3>
+<p>直接粘贴 emoji 就行，比如 🌙 ☀️ 🎉。本站不支持 <code>:smile:</code> 这种代码写法，也不支持脚注。</p>
+<h3>用 HTML 兜底</h3>
+<p>Markdown 允许嵌入 HTML。想让某一行居中、插入视频、改颜色，都可以用 HTML 实现：</p>
+<pre><code class="language-html">&lt;center&gt;这一行居中&lt;/center&gt;
+</code></pre>
+<p>不过日常写作尽量少用，保持纯 Markdown 更清爽。</p>
+<h2>三、一篇完整的示例文章</h2>
+<p>把上面的语法串起来，一篇标准文章的源码长这样：</p>
+<pre><code class="language-markdown">---
+title: 我的第一篇完整文章
+date: 2026-08-15
+tags: [生活, 随笔]
+description: 用示例展示一篇完整文章的写法。
+---
+
+## 今天做了什么
+
+今天学会了 **Markdown**，感觉离*自由写作*又近了一步。
+
+## 三件小事
+
+1. 写了第一篇完整文章；
+2. 给博客加了一个新栏目；
+3. 学会了[引用链接][参考]。
+
+## 今日代码
+
+```python
+print(&quot;hello, world&quot;)
+```
+
+## 今日收获
+
+| 项目 | 完成 |
+| ---- | ---- |
+| 阅读 | ✅ |
+| 写作 | ✅ |
+
+&gt; 写作的意义，是把想法变成看得见的东西。
+
+[参考]: https://example.com
+</code></pre>
+<p>对照一下就能看到：标题、段落、列表、链接、代码块、表格、引用，一篇文章该有的都有了。</p>
+<h2>四、常见坑</h2>
+<ul>
+<li><strong>标题没生效</strong>：<code>#</code> 和文字之间要有空格，<code>#标题</code> 是不行的；</li>
+<li><strong>分割线变成标题</strong>：<code>---</code> 上方没有空行时会变成二级标题，记得空一行；</li>
+<li><strong>列表里的代码块乱掉</strong>：代码块要比列表项多缩进一层；</li>
+<li><strong>表格没显示</strong>：表格的每一行竖线数量要一致，表头下面必须有 <code>---</code> 那一行；</li>
+<li><strong>图片不显示</strong>：检查图片地址对不对、说明文字别留空；</li>
+<li><strong>粘贴过来格式乱了</strong>：很多编辑器会把空格自动转换，建议在纯文本模式下粘贴。</li>
+</ul>
+<p>掌握这些，Markdown 就够用了。剩下的，多写几篇文章自然就熟了。</p>
+
+      </div>
+      
+      <nav class="post-pager" aria-label="上下篇文章">
+        <a class="pager-prev" href="用codex写的CPP抢票脚本过程记录.html?v=e690a305"><span>上一篇</span>用codex写的CPP抢票脚本过程记录</a>
+        <a class="pager-next" href="welcome.html?v=e690a305"><span>下一篇</span>欢迎来到我的博客</a>
+      </nav>
+    </article>
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>© <span data-year></span> mlidog · 用codex辅助、 Markdown 书写，构建成静态网页。</p>
+          <p class="footer-links">
+            <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!-- 浮动按钮组（默认右下角）：想加新按钮，照下面这行再复制一份即可 -->
+  <div class="side-buttons">
+    <button class="back-to-top side-btn" id="backToTop" type="button" aria-label="回到顶部">↑</button>
+    <!-- 示例：<button class="side-btn" id="yourButton" type="button" aria-label="你的按钮">★</button> -->
+  </div>
+  <script src="../assets/js/main.js?v=d8cee334"></script>
+</body>
+</html>
+

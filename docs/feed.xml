@@ -7,6 +7,255 @@
     <language>zh-cn</language>
     
     <item>
+      <title>用codex写的CPP抢票脚本过程记录</title>
+      <link>https://mlidog.github.io/my-blog/posts/用codex写的CPP抢票脚本过程记录.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/用codex写的CPP抢票脚本过程记录.html</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[<p>这篇文章的起因是我在经历了数次CPP抢票失败（或者是极限抢到VIP票）后，痛定思痛想要动用科技的力量来造福大家（误<br>这篇文章详细记录了我是如何用codex写一个抢票脚本的过程。</p>
+<h1>抢票脚本的运行逻辑</h1>
+<p>在我第一轮问了codex抢票脚本的运行逻辑后得到了以下回答：</p>
+<blockquote>
+<h2>脚本的运行逻辑</h2>
+<p>抢票脚本的本质，是用程序代替人手完成「登录 → 盯场次 → 开售瞬间提交订单」，核心优势就是速度和稳定性——人点一下要几百毫秒，程序可以提前准备好、在开售的瞬间发起请求。<br>通常有两种实现方式：<br>直连接口（Python + requests）：直接调用 CPP 网页或 App 的购票接口，速度最快、最接近&quot;瞬间抢到&quot;。代价是需要先分析出下单接口长什么样。<br>模拟浏览器（Playwright）：让程序像真人一样操作页面，兼容性好、不容易触发风控，但速度略慢、资源占用高。很多成熟方案是两者结合：平时走接口，遇到验证码时切到浏览器。<br>一个完整的抢票流程大致是这样：<br>登录并保持会话——用你的账号登录，拿到 cookie/token。平台如果有滑块验证，这一步常常还是需要你手动帮一次。<br>校准时间——程序先向服务器要一次时间，算出本机和服务器的时间差，避免&quot;本机 12:00:00 开抢，服务器其实还差 0.3 秒&quot;这种致命误差。<br>预加载目标——开售前把活动、场次、票种、数量全部查好，锁定要买的目标，下单参数提前准备。<br>等待开售瞬间——在目标时间前几百毫秒开始高频提交请求。<br>提交订单并处理结果——循环提交，识别「未开售」「已抢光」「排队中」「下单成功」等返回；一旦成功立刻停手，防止重复下单。<br>交给人工收尾——支付、二次验证、实名认证这些环节通常还是真人完成。<br>几个关键细节：要在浏览器开发者工具（F12 → 网络）里找到下单请求，把参数复制出来，脚本就是&quot;重复这个过程&quot;；请求头、cookie 要模仿真实浏览器；加一点随机延迟，频率别太离谱，否则会被平台风控盯上；每步写日志，方便排查。</p>
+</blockquote>
+<h1>初步操作方法</h1>
+<p>在我向codex说明了我的操作环境（PC端用模拟器抢票）后，codex给出如下操作方法：</p>
+<blockquote>
+<p>第一步：装模拟器和 CPP App<br>下载 雷电模拟器 或 MuMu 模拟器（都免费，Windows 上很成熟）。<br>安装时选 Android 7 以上的系统版本，并关闭 root 权限（两个模拟器设置里都有开关）——票务类 App 对 root 和模拟器有检测，关掉能降低被风控的概率。<br>装好后，在模拟器自带的应用商店搜 CPP，或者去官网下载 APK 直接拖进模拟器窗口安装。<br>第二步：配置 Fiddler 抓包<br>下载安装 Fiddler Classic（免费版就够用）。<br>打开 Fiddler → Tools → Options → HTTPS，勾选 Decrypt HTTPS traffic，让它能解密 HTTPS 流量。<br>查看你电脑的局域网 IP：打开命令提示符输入 ipconfig，记下无线网卡（WLAN）那一行的 IPv4 地址。<br>在模拟器里进入「设置 → WLAN」，长按已连接的 Wi-Fi 网络 → 修改网络 → 代理改为「手动」，主机名填刚才的 PC IP，端口填 8888（Fiddler 默认端口）。<br>在模拟器的浏览器里访问 http://&lt;你的IP&gt;:8888，下载 FiddlerRoot certificate 证书文件，然后到模拟器「设置 → 安全 → 安装证书」里把它装为 CA 证书。这一步只做一次。<br>第三步：走流程，抓出下单接口<br>打开模拟器里的 CPP App，正常登录（需要手动过验证码就手动过）。<br>手动走到选好票种、准备下单的页面。<br>回到 Fiddler，用筛选框只保留 CPP 相关的域名，找到「创建订单 / 下单」这个 POST 请求。<br>右键该请求 → Copy as cURL，把内容发给我。<br>到这里，后面就交给我了：我会根据这个请求写一个 Python 脚本，复用你的登录凭证，加上对时、开售瞬间提交、处理排队/售罄的逻辑，在你电脑上直接跑。模拟器和 PC 共用系统时间，时间校准也简单</p>
+</blockquote>
+<p>（PS:上面所有流程都可以交给codex在你的电脑上自动运行，你其实什么都不用做......）</p>
+<h3>唯一要注意的就是</h3>
+]]></description>
+    </item>
+
+    <item>
+      <title>Markdown 完整语法指南</title>
+      <link>https://mlidog.github.io/my-blog/posts/markdown-guide.html</link>
+      <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/markdown-guide.html</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 GMT</pubDate>
+      <description><![CDATA[<p>Markdown 是一种用纯文本就能排版文档的写法：不依赖鼠标点按钮，只要会打字，就能写出带标题、列表、代码块、表格的漂亮文章。这个博客的所有文章都是用 Markdown 写的，学会它，你就能自由地在这里写作。</p>
+<h2>写在前面：本博客的约定</h2>
+<p>每篇文章是 <code>content/posts/</code> 下的一个 <code>.md</code> 文件，开头有一个“信息头”（front matter），告诉博客这篇文章的标题、日期和标签：</p>
+<pre><code class="language-markdown">---
+title: 文章标题
+date: 2026-08-15
+tags: [教程, Markdown]
+description: 一句话介绍这篇文章。
+---
+</code></pre>
+<p>本博客开了“单换行即换行”的选项：普通文本直接回车就会显示为换行；但段落之间还是建议空一行，阅读更清晰。</p>
+<h2>一、基础语法</h2>
+<h3>1. 标题</h3>
+<p>在文字前面加 <code>#</code>，一个 <code>#</code> 是一级标题，两个是二级，最多到六级：</p>
+<pre><code class="language-markdown"># 一级标题（一般给文章大标题用）
+## 二级标题（正文里最常用的小节标题）
+### 三级标题
+#### 四级标题
+</code></pre>
+<p>标题和正文之间最好空一行。</p>
+<h3>2. 段落与换行</h3>
+<p>段落之间用空行隔开。想强制换行，直接回车即可（本博客设置）；如果要在别的编辑器里换行，可以在行尾加两个空格：</p>
+<pre><code class="language-markdown">这是第一段。
+
+这是第二段，和第一段之间空了一行。
+</code></pre>
+<h3>3. 强调：加粗、斜体、删除线</h3>
+<pre><code class="language-markdown">**加粗**：文字两边各加两个星号
+*斜体*：文字两边各加一个星号
+***加粗又斜体***：两边各加三个星号
+~~删除线~~：两边各加两个波浪号
+`行内代码`：用一对反引号包起来
+</code></pre>
+<p>效果：<strong>加粗</strong>、<em>斜体</em>、<em><strong>加粗又斜体</strong></em>、<del>删除线</del>、<code>行内代码</code>。</p>
+<h3>4. 列表</h3>
+<p>无序列表用 <code>-</code>、<code>*</code> 或 <code>+</code>，有序列表用数字加点：</p>
+<pre><code class="language-markdown">- 无序项一
+- 无序项二
+
+1. 有序项一
+2. 有序项二
+</code></pre>
+<p>嵌套列表：在下一行前面缩进两个空格（或一个 Tab）：</p>
+<pre><code class="language-markdown">- 第一层
+  - 第二层
+    - 第三层
+</code></pre>
+<p>任务清单：<code>- [ ]</code> 表示未完成，<code>- [x]</code> 表示已完成：</p>
+<pre><code class="language-markdown">- [x] 学会标题
+- [x] 学会列表
+- [ ] 学会表格
+</code></pre>
+<p>任务清单效果：</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 学会标题</li>
+<li><input checked="" disabled="" type="checkbox"> 学会列表</li>
+<li><input disabled="" type="checkbox"> 学会表格</li>
+</ul>
+<h3>5. 链接</h3>
+<pre><code class="language-markdown">[链接文字](https://example.com)
+[带提示的链接](https://example.com &quot;鼠标悬停时显示的文字&quot;)
+&lt;https://example.com&gt;（直接写网址会自动变成链接）
+</code></pre>
+<p>给链接起个名字、后面统一引用（适合长文章里多处引用同一个链接）：</p>
+<pre><code class="language-markdown">可以去[我的 GitHub][github]逛逛。
+
+[github]: https://github.com/mlidog
+</code></pre>
+<p>效果：<a href="https://github.com/mlidog">打开我的 GitHub</a> 和自动链接 <a href="https://example.com">https://example.com</a>。</p>
+<h3>6. 图片</h3>
+<pre><code class="language-markdown">![图片说明](图片地址)
+![带提示的图片](图片地址 &quot;提示文字&quot;)
+</code></pre>
+<p><code>图片说明</code> 在图片加载失败时会显示，所以别留空。想控制图片大小，可以用 HTML 的 <code>&lt;img&gt;</code> 标签：</p>
+<pre><code class="language-html">&lt;img src=&quot;图片地址&quot; alt=&quot;说明&quot; width=&quot;400&quot;&gt;
+</code></pre>
+<p>效果（用博客的头像演示）：</p>
+<p><img src="../../assets/avatar.svg" alt="博客头像"></p>
+<h3>7. 引用</h3>
+<p>段落开头加 <code>&gt;</code>，引用可以嵌套：</p>
+<pre><code class="language-markdown">&gt; 这是引用。
+&gt;
+&gt; &gt; 这是嵌套在里面的引用。
+</code></pre>
+<p>效果：</p>
+<blockquote>
+<p>这是引用。</p>
+<blockquote>
+<p>这是嵌套的引用。</p>
+</blockquote>
+</blockquote>
+<h3>8. 分割线</h3>
+<p>单独一行写三个或更多 <code>-</code>、<code>*</code>、<code>_</code>：</p>
+<pre><code class="language-markdown">---
+</code></pre>
+<p>效果（下面这条线就是分割线）：</p>
+<hr>
+<p>注意：分割线那一行上面要空一行，否则会被当成标题。</p>
+<h3>9. 代码</h3>
+<p>一句话里提到代码用行内代码；整段代码用三个反引号包起来，开头还可以注明语言，让代码高亮：</p>
+<pre><code class="language-markdown">```js
+console.log(&quot;你好，世界&quot;);
+```
+</code></pre>
+<p>支持的语言包括 <code>js</code>、<code>python</code>、<code>html</code>、<code>css</code>、<code>json</code>、<code>bash</code> 等，写上语言名就有对应高亮。如果代码里本身有反引号，把外层围栏加长一个就行，比如内层三个、外层四个。</p>
+<h3>10. 表格</h3>
+<p>用竖线分隔列，第二行用 <code>---</code> 分隔表头：</p>
+<pre><code class="language-markdown">| 语法 | 作用 | 难度 |
+| ---- | ---- | ---- |
+| `#` | 标题 | 简单 |
+| `**` | 加粗 | 简单 |
+| 表格 | 排列表格 | 中等 |
+</code></pre>
+<p>列的对齐方式可以通过冒号控制：</p>
+<pre><code class="language-markdown">| 左对齐 | 居中 | 右对齐 |
+| :----- | :--: | -----: |
+| 内容   | 内容 | 内容   |
+</code></pre>
+<p>效果：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>作用</th>
+<th>难度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>#</code></td>
+<td>标题</td>
+<td>简单</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>加粗</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>表格</td>
+<td>排列表格</td>
+<td>中等</td>
+</tr>
+</tbody></table>
+<h3>11. 转义</h3>
+<p>想显示星号、井号这些特殊符号本身，在前面加反斜杠：</p>
+<pre><code class="language-markdown">\# 这不是标题，只是井号
+\*不是斜体\*
+</code></pre>
+<p>常用转义：<code>\*</code>、<code>\#</code>、<code>\-</code>、<code>\_</code>，反引号本身用两个反引号包住：<code>\`</code>。</p>
+<h2>二、进阶技巧</h2>
+<h3>组合使用</h3>
+<p>列表、引用、代码块可以互相嵌套。引用里放代码块：</p>
+<pre><code class="language-markdown">&gt; 一段引用：
+&gt;
+&gt; ```js
+&gt; console.log(&quot;引用里的代码&quot;);
+&gt; ```
+</code></pre>
+<p>列表里放代码块时，代码块要比列表项多缩进一层：</p>
+<pre><code class="language-markdown">- 第一步
+
+  ```js
+  console.log(&quot;缩进后的代码&quot;);
+  ```
+</code></pre>
+<h3>Emoji</h3>
+<p>直接粘贴 emoji 就行，比如 🌙 ☀️ 🎉。本站不支持 <code>:smile:</code> 这种代码写法，也不支持脚注。</p>
+<h3>用 HTML 兜底</h3>
+<p>Markdown 允许嵌入 HTML。想让某一行居中、插入视频、改颜色，都可以用 HTML 实现：</p>
+<pre><code class="language-html">&lt;center&gt;这一行居中&lt;/center&gt;
+</code></pre>
+<p>不过日常写作尽量少用，保持纯 Markdown 更清爽。</p>
+<h2>三、一篇完整的示例文章</h2>
+<p>把上面的语法串起来，一篇标准文章的源码长这样：</p>
+<pre><code class="language-markdown">---
+title: 我的第一篇完整文章
+date: 2026-08-15
+tags: [生活, 随笔]
+description: 用示例展示一篇完整文章的写法。
+---
+
+## 今天做了什么
+
+今天学会了 **Markdown**，感觉离*自由写作*又近了一步。
+
+## 三件小事
+
+1. 写了第一篇完整文章；
+2. 给博客加了一个新栏目；
+3. 学会了[引用链接][参考]。
+
+## 今日代码
+
+```python
+print(&quot;hello, world&quot;)
+```
+
+## 今日收获
+
+| 项目 | 完成 |
+| ---- | ---- |
+| 阅读 | ✅ |
+| 写作 | ✅ |
+
+&gt; 写作的意义，是把想法变成看得见的东西。
+
+[参考]: https://example.com
+</code></pre>
+<p>对照一下就能看到：标题、段落、列表、链接、代码块、表格、引用，一篇文章该有的都有了。</p>
+<h2>四、常见坑</h2>
+<ul>
+<li><strong>标题没生效</strong>：<code>#</code> 和文字之间要有空格，<code>#标题</code> 是不行的；</li>
+<li><strong>分割线变成标题</strong>：<code>---</code> 上方没有空行时会变成二级标题，记得空一行；</li>
+<li><strong>列表里的代码块乱掉</strong>：代码块要比列表项多缩进一层；</li>
+<li><strong>表格没显示</strong>：表格的每一行竖线数量要一致，表头下面必须有 <code>---</code> 那一行；</li>
+<li><strong>图片不显示</strong>：检查图片地址对不对、说明文字别留空；</li>
+<li><strong>粘贴过来格式乱了</strong>：很多编辑器会把空格自动转换，建议在纯文本模式下粘贴。</li>
+</ul>
+<p>掌握这些，Markdown 就够用了。剩下的，多写几篇文章自然就熟了。</p>
+]]></description>
+    </item>
+
+    <item>
       <title>欢迎来到我的博客</title>
       <link>https://mlidog.github.io/my-blog/posts/welcome.html</link>
       <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/welcome.html</guid>

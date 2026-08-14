@@ -3,6 +3,8 @@
  *
  * 用法：在项目根目录运行  node build.mjs
  * 或者直接双击「构建博客.bat」。
+ * 想实时预览：运行  node build.mjs --watch（或双击「监听构建.bat」），
+ * 修改 md / css / js / 模板后会自动重新构建。
  *
  * 它会把 content/posts/ 里的 Markdown 文章、
  * content/about.md 个人简介、assets/ 样式资源，
@@ -16,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 import { marked } from './vendor/marked/lib/marked.esm.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
-const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+let CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const CONTENT_DIR = path.join(ROOT, 'content');
 const POSTS_DIR = path.join(CONTENT_DIR, 'posts');
 const ASSETS_DIR = path.join(ROOT, 'assets');
@@ -44,7 +46,7 @@ function assetVersion() {
   walk(path.join(ASSETS_DIR, 'js'));
   return `?v=${hash.digest('hex').slice(0, 8)}`;
 }
-const ASSET_VERSION = assetVersion();
+let ASSET_VERSION = assetVersion();
 
 /* 页面版本号：配置、模板或文章一改动，内部链接就变，
    点任何链接都会拿到最新页面，不会被浏览器缓存骗到。 */
@@ -68,7 +70,7 @@ function siteVersion() {
   walk(CONTENT_DIR);
   return `?v=${hash.digest('hex').slice(0, 8)}`;
 }
-const SITE_VERSION = siteVersion();
+let SITE_VERSION = siteVersion();
 
 marked.setOptions({ gfm: true, breaks: true });
 
@@ -134,8 +136,8 @@ function tagId(tag) {
 
 /* ---------- 页面组装 ---------- */
 
-const HEADER_TMPL = fs.readFileSync(path.join(TEMPLATES_DIR, 'header.html'), 'utf8');
-const FOOTER_TMPL = fs.readFileSync(path.join(TEMPLATES_DIR, 'footer.html'), 'utf8');
+let HEADER_TMPL = fs.readFileSync(path.join(TEMPLATES_DIR, 'header.html'), 'utf8');
+let FOOTER_TMPL = fs.readFileSync(path.join(TEMPLATES_DIR, 'footer.html'), 'utf8');
 
 function navHtml(prefix, activeKey) {
   return CONFIG.nav
@@ -212,42 +214,39 @@ function page(opts) {
 
 /* ---------- 读取内容 ---------- */
 
-const postFiles = fs.readdirSync(POSTS_DIR).filter((f) => f.toLowerCase().endsWith('.md')).sort();
-
-const posts = postFiles.map((file) => {
-  const raw = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
-  const { meta, body } = parseFrontMatter(raw);
-  const slug = file.replace(/\.md$/i, '');
-  const title = meta.title || slug;
-  const date = /^\d{4}-\d{2}-\d{2}$/.test(meta.date) ? meta.date : '1970-01-01';
-  const tags = Array.isArray(meta.tags)
-    ? meta.tags
-    : typeof meta.tags === 'string' && meta.tags
-      ? meta.tags.split(',').map((s) => s.trim()).filter(Boolean)
-      : [];
-  const html = marked.parse(body);
-  const text = stripHtml(html);
-  return {
-    slug,
-    title,
-    date,
-    tags,
-    description: meta.description || '',
-    html,
-    text,
-    readingMinutes: readingTime(text),
-  };
-});
-
-posts.sort((a, b) => (a.date < b.date ? 1 : -1));
-
+let posts = [];
+let tags = [];
 const tagMap = new Map();
-for (const post of posts) {
-  for (const tag of post.tags) {
-    tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
-  }
+
+function readPosts() {
+  const postFiles = fs.readdirSync(POSTS_DIR).filter((f) => f.toLowerCase().endsWith('.md')).sort();
+  const list = postFiles.map((file) => {
+    const raw = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
+    const { meta, body } = parseFrontMatter(raw);
+    const slug = file.replace(/\.md$/i, '');
+    const title = meta.title || slug;
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(meta.date) ? meta.date : '1970-01-01';
+    const tags = Array.isArray(meta.tags)
+      ? meta.tags
+      : typeof meta.tags === 'string' && meta.tags
+        ? meta.tags.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+    const html = marked.parse(body);
+    const text = stripHtml(html);
+    return {
+      slug,
+      title,
+      date,
+      tags,
+      description: meta.description || '',
+      html,
+      text,
+      readingMinutes: readingTime(text),
+    };
+  });
+  list.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return list;
 }
-const tags = [...tagMap.keys()].sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
 
 const tagHtml = (post, prefix) =>
   post.tags
@@ -420,22 +419,68 @@ ${urls}
 
 /* ---------- 执行 ---------- */
 
-fs.mkdirSync(path.join(OUT_DIR, 'posts'), { recursive: true });
-fs.mkdirSync(path.join(OUT_DIR, 'assets'), { recursive: true });
-fs.cpSync(ASSETS_DIR, path.join(OUT_DIR, 'assets'), { recursive: true });
+function build() {
+  CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  HEADER_TMPL = fs.readFileSync(path.join(TEMPLATES_DIR, 'header.html'), 'utf8');
+  FOOTER_TMPL = fs.readFileSync(path.join(TEMPLATES_DIR, 'footer.html'), 'utf8');
+  ASSET_VERSION = assetVersion();
+  SITE_VERSION = siteVersion();
 
-fs.writeFileSync(path.join(OUT_DIR, 'index.html'), renderHome(), 'utf8');
-fs.writeFileSync(path.join(OUT_DIR, 'about.html'), renderAbout(), 'utf8');
-fs.writeFileSync(path.join(OUT_DIR, 'tags.html'), renderTags(), 'utf8');
-fs.writeFileSync(path.join(OUT_DIR, '404.html'), render404(), 'utf8');
+  posts = readPosts();
 
-posts.forEach((post, index) => {
-  fs.writeFileSync(path.join(OUT_DIR, 'posts', `${post.slug}.html`), renderPost(post, index), 'utf8');
-});
+  tagMap.clear();
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+    }
+  }
+  tags = [...tagMap.keys()].sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
 
-fs.writeFileSync(path.join(OUT_DIR, 'feed.xml'), renderFeed(), 'utf8');
-const sitePages = ['index.html', 'about.html', 'tags.html', ...posts.map((p) => `posts/${p.slug}.html`)];
-fs.writeFileSync(path.join(OUT_DIR, 'sitemap.xml'), renderSitemap(sitePages), 'utf8');
+  fs.mkdirSync(path.join(OUT_DIR, 'posts'), { recursive: true });
+  fs.mkdirSync(path.join(OUT_DIR, 'assets'), { recursive: true });
+  fs.cpSync(ASSETS_DIR, path.join(OUT_DIR, 'assets'), { recursive: true });
 
-console.log(`构建完成：${posts.length} 篇文章，${tags.length} 个标签`);
-console.log(`输出目录：${OUT_DIR}`);
+  fs.writeFileSync(path.join(OUT_DIR, 'index.html'), renderHome(), 'utf8');
+  fs.writeFileSync(path.join(OUT_DIR, 'about.html'), renderAbout(), 'utf8');
+  fs.writeFileSync(path.join(OUT_DIR, 'tags.html'), renderTags(), 'utf8');
+  fs.writeFileSync(path.join(OUT_DIR, '404.html'), render404(), 'utf8');
+
+  posts.forEach((post, index) => {
+    fs.writeFileSync(path.join(OUT_DIR, 'posts', `${post.slug}.html`), renderPost(post, index), 'utf8');
+  });
+
+  fs.writeFileSync(path.join(OUT_DIR, 'feed.xml'), renderFeed(), 'utf8');
+  const sitePages = ['index.html', 'about.html', 'tags.html', ...posts.map((p) => `posts/${p.slug}.html`)];
+  fs.writeFileSync(path.join(OUT_DIR, 'sitemap.xml'), renderSitemap(sitePages), 'utf8');
+
+  console.log(`构建完成：${posts.length} 篇文章，${tags.length} 个标签`);
+  console.log(`输出目录：${OUT_DIR}`);
+}
+
+function debounce(fn, ms) {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+}
+
+build();
+
+/* 监听模式：文件一保存就自动重新构建 */
+if (process.argv.includes('--watch')) {
+  const rebuild = debounce(() => {
+    try {
+      build();
+    } catch (err) {
+      console.error('构建出错：', err.message);
+    }
+  }, 200);
+
+  for (const dir of [CONTENT_DIR, ASSETS_DIR, TEMPLATES_DIR]) {
+    fs.watch(dir, { recursive: true }, rebuild);
+  }
+  fs.watch(path.join(ROOT, 'site.config.json'), rebuild);
+
+  console.log('监听模式已开启：修改文章/样式/脚本/模板/配置后会自动重新构建，按 Ctrl+C 停止。');
+}

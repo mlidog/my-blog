@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用codex写的CPP抢票脚本过程记录 · 美丽狗的博客</title>
+  <meta name="description" content="在PC端用mumu模拟器以fiddler抓包为基础，用自动脚本在CPP上抢票的过程记录。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/style.css?v=d8cee334">
+  <script>
+    /* 提前设置主题，避免刷新时闪一下 */
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="siteNav" aria-label="侧边栏">
+  <div class="sidebar-inner">
+    <div class="profile">
+      <img class="avatar" src="../assets/rikka.png?v=e690a305" alt="头像">
+      <div class="profile-name">美丽狗的博客</div>
+      <div class="profile-bio">这些东西会变成我的赛博遗产。</div>
+      <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
+    </div>
+    <nav class="sidebar-nav" aria-label="侧边栏导航">
+      <a class="nav-link active" href="../index.html?v=e690a305" aria-current="page">首页</a>
+        <a class="nav-link" href="../about.html?v=e690a305">关于</a>
+        <a class="nav-link" href="../tags.html?v=e690a305">标签</a>
+    </nav>
+    <div class="sidebar-widgets">
+      <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
+<div class="widget">
+  <h3 class="widget-title">站点信息</h3>
+  <p class="widget-stats">共 <strong>5</strong> 篇文章 · <strong>6</strong> 个标签</p>
+</div>
+
+<!-- 示例：以后想加“公告”小部件，把下面几行取消注释、改成你自己的内容即可
+<div class="widget">
+  <h3 class="widget-title">公告</h3>
+  <p>欢迎来到我的博客！</p>
+</div>
+-->
+
+    </div>
+  </div>
+</aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="layout-main">
+      <header class="site-header">
+        <div class="container header-inner">
+          <div class="header-left">
+            <button class="back-btn" id="backButton" type="button" aria-label="返回上一页" data-home="../index.html" hidden>←</button>
+            <a class="brand" href="../index.html?v=e690a305">美丽狗的博客</a>
+          </div>
+          <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+          </div>
+        </div>
+      </header>
+      <main class="container">
+
+
+    <article class="post">
+      <header class="post-header">
+        <h1>用codex写的CPP抢票脚本过程记录</h1>
+        <div class="post-meta">
+          <time datetime="2026-08-15">2026年8月15日</time>
+          <span class="dot">·</span>
+          <span>5 分钟阅读</span>
+          <span class="dot">·</span> <a class="tag" href="../tags.html?v=e690a305#tag-教程">教程</a><a class="tag" href="../tags.html?v=e690a305#tag-脚本">脚本</a>
+        </div>
+      </header>
+      <div class="post-content">
+        <p>这篇文章的起因是我在经历了数次CPP抢票失败（或者是极限抢到VIP票）后，痛定思痛想要动用科技的力量来造福大家（误<br>这篇文章详细记录了我是如何用codex写一个抢票脚本的过程。</p>
+<h1>抢票脚本的运行逻辑</h1>
+<p>在我第一轮问了codex抢票脚本的运行逻辑后得到了以下回答：</p>
+<blockquote>
+<h2>脚本的运行逻辑</h2>
+<p>抢票脚本的本质，是用程序代替人手完成「登录 → 盯场次 → 开售瞬间提交订单」，核心优势就是速度和稳定性——人点一下要几百毫秒，程序可以提前准备好、在开售的瞬间发起请求。<br>通常有两种实现方式：<br>直连接口（Python + requests）：直接调用 CPP 网页或 App 的购票接口，速度最快、最接近&quot;瞬间抢到&quot;。代价是需要先分析出下单接口长什么样。<br>模拟浏览器（Playwright）：让程序像真人一样操作页面，兼容性好、不容易触发风控，但速度略慢、资源占用高。很多成熟方案是两者结合：平时走接口，遇到验证码时切到浏览器。<br>一个完整的抢票流程大致是这样：<br>登录并保持会话——用你的账号登录，拿到 cookie/token。平台如果有滑块验证，这一步常常还是需要你手动帮一次。<br>校准时间——程序先向服务器要一次时间，算出本机和服务器的时间差，避免&quot;本机 12:00:00 开抢，服务器其实还差 0.3 秒&quot;这种致命误差。<br>预加载目标——开售前把活动、场次、票种、数量全部查好，锁定要买的目标，下单参数提前准备。<br>等待开售瞬间——在目标时间前几百毫秒开始高频提交请求。<br>提交订单并处理结果——循环提交，识别「未开售」「已抢光」「排队中」「下单成功」等返回；一旦成功立刻停手，防止重复下单。<br>交给人工收尾——支付、二次验证、实名认证这些环节通常还是真人完成。<br>几个关键细节：要在浏览器开发者工具（F12 → 网络）里找到下单请求，把参数复制出来，脚本就是&quot;重复这个过程&quot;；请求头、cookie 要模仿真实浏览器；加一点随机延迟，频率别太离谱，否则会被平台风控盯上；每步写日志，方便排查。</p>
+</blockquote>
+<h1>初步操作方法</h1>
+<p>在我向codex说明了我的操作环境（PC端用模拟器抢票）后，codex给出如下操作方法：</p>
+<blockquote>
+<p>第一步：装模拟器和 CPP App<br>下载 雷电模拟器 或 MuMu 模拟器（都免费，Windows 上很成熟）。<br>安装时选 Android 7 以上的系统版本，并关闭 root 权限（两个模拟器设置里都有开关）——票务类 App 对 root 和模拟器有检测，关掉能降低被风控的概率。<br>装好后，在模拟器自带的应用商店搜 CPP，或者去官网下载 APK 直接拖进模拟器窗口安装。<br>第二步：配置 Fiddler 抓包<br>下载安装 Fiddler Classic（免费版就够用）。<br>打开 Fiddler → Tools → Options → HTTPS，勾选 Decrypt HTTPS traffic，让它能解密 HTTPS 流量。<br>查看你电脑的局域网 IP：打开命令提示符输入 ipconfig，记下无线网卡（WLAN）那一行的 IPv4 地址。<br>在模拟器里进入「设置 → WLAN」，长按已连接的 Wi-Fi 网络 → 修改网络 → 代理改为「手动」，主机名填刚才的 PC IP，端口填 8888（Fiddler 默认端口）。<br>在模拟器的浏览器里访问 http://&lt;你的IP&gt;:8888，下载 FiddlerRoot certificate 证书文件，然后到模拟器「设置 → 安全 → 安装证书」里把它装为 CA 证书。这一步只做一次。<br>第三步：走流程，抓出下单接口<br>打开模拟器里的 CPP App，正常登录（需要手动过验证码就手动过）。<br>手动走到选好票种、准备下单的页面。<br>回到 Fiddler，用筛选框只保留 CPP 相关的域名，找到「创建订单 / 下单」这个 POST 请求。<br>右键该请求 → Copy as cURL，把内容发给我。<br>到这里，后面就交给我了：我会根据这个请求写一个 Python 脚本，复用你的登录凭证，加上对时、开售瞬间提交、处理排队/售罄的逻辑，在你电脑上直接跑。模拟器和 PC 共用系统时间，时间校准也简单</p>
+</blockquote>
+<p>（PS:上面所有流程都可以交给codex在你的电脑上自动运行，你其实什么都不用做......）</p>
+<h3>唯一要注意的就是</h3>
+
+      </div>
+      
+      <nav class="post-pager" aria-label="上下篇文章">
+        <span></span>
+        <a class="pager-next" href="markdown-guide.html?v=e690a305"><span>下一篇</span>Markdown 完整语法指南</a>
+      </nav>
+    </article>
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>© <span data-year></span> mlidog · 用codex辅助、 Markdown 书写，构建成静态网页。</p>
+          <p class="footer-links">
+            <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!-- 浮动按钮组（默认右下角）：想加新按钮，照下面这行再复制一份即可 -->
+  <div class="side-buttons">
+    <button class="back-to-top side-btn" id="backToTop" type="button" aria-label="回到顶部">↑</button>
+    <!-- 示例：<button class="side-btn" id="yourButton" type="button" aria-label="你的按钮">★</button> -->
+  </div>
+  <script src="../assets/js/main.js?v=d8cee334"></script>
+</body>
+</html>
+
