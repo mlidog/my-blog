@@ -92,36 +92,61 @@
     });
   }
 
-  // 返回上一页：只在本站范围内返回
-  // 新标签页直接打开时没有站内记录，就留在首页，不会跳回外部页面
+  // 返回上一页：用浏览栈记录本站访问路径，可以一直返回到首页；
+  // 首页没有可返回的站内页面，所以按钮不显示
   var backButton = document.getElementById("backButton");
   if (backButton) {
-    var prevUrl = null;
+    var STACK_KEY = "blogStack";
+    var current = location.href.split("?")[0].split("#")[0];
+    var currentFile = current.split("/").pop().toLowerCase();
+    var isHome = currentFile === "index.html";
+    var stack = [];
     try {
-      if (sessionStorage.getItem("blogInSite") === "1") {
-        prevUrl = sessionStorage.getItem("blogPrev");
-      }
-      sessionStorage.setItem("blogInSite", "1");
-      sessionStorage.setItem("blogPrev", location.href);
+      stack = JSON.parse(sessionStorage.getItem(STACK_KEY) || "[]");
+      if (!Array.isArray(stack)) stack = [];
     } catch (e) {
-      /* 存储不可用（如隐私模式）时，直接走“回首页”分支 */
+      stack = [];
     }
-    if (prevUrl === location.href) {
-      prevUrl = null; // 刷新页面不算“上一页”
+
+    // 当前页如果已经在栈里（刷新或返回回来的），先截掉它后面的记录
+    var idx = stack.indexOf(current);
+    if (idx !== -1) {
+      stack = stack.slice(0, idx + 1);
     }
+    // 当前页不在栈顶才压入，避免重复记录
+    if (stack[stack.length - 1] !== current) {
+      stack.push(current);
+    }
+    try {
+      sessionStorage.setItem(STACK_KEY, JSON.stringify(stack));
+    } catch (e) {
+      /* 存储不可用时按钮隐藏，功能降级为不可用，不影响其他功能 */
+    }
+
+    // 首页不显示返回按钮
+    backButton.hidden = isHome;
+
     backButton.addEventListener("click", function () {
-      if (prevUrl) {
-        window.location.href = prevUrl;
-      } else {
-        var home = backButton.getAttribute("data-home") || "index.html";
-        var currentFile = window.location.pathname.split("/").pop();
-        var homeFile = home.split("/").pop();
-        if (currentFile === homeFile) {
-          // 已经在首页，留在原地（滚回顶部即可）
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-          window.location.href = home;
+      var i = stack.indexOf(current);
+      if (i > 0) {
+        // 有站内上一页：退一步，并把当前页和后面的记录丢掉，避免循环
+        var target = stack[i - 1];
+        stack = stack.slice(0, i);
+        try {
+          sessionStorage.setItem(STACK_KEY, JSON.stringify(stack));
+        } catch (e) {
+          /* 忽略 */
         }
+        window.location.href = target;
+      } else {
+        // 没有站内上一页（比如直接打开的文章页），直接回首页
+        var home = backButton.getAttribute("data-home") || "index.html";
+        try {
+          sessionStorage.setItem(STACK_KEY, JSON.stringify([home.replace(/[?#].*$/, "")]));
+        } catch (e) {
+          /* 忽略 */
+        }
+        window.location.href = home;
       }
     });
   }
