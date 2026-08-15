@@ -248,6 +248,24 @@ function readPosts() {
   return list;
 }
 
+/* 把文章文件夹里的图片等非 md 文件复制到网站里，
+   这样文章里用相对路径（如 ./cpp/buy.png）就能直接显示。 */
+function copyPostAssets() {
+  const walk = (dir, rel) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const src = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(src, path.join(rel, entry.name));
+      } else if (!entry.name.toLowerCase().endsWith('.md')) {
+        const dest = path.join(OUT_DIR, 'posts', rel, entry.name);
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        fs.copyFileSync(src, dest);
+      }
+    }
+  };
+  walk(POSTS_DIR, '');
+}
+
 const tagHtml = (post, prefix) =>
   post.tags
     .map((t) => `<a class="tag" href="${prefix}tags.html${SITE_VERSION}#${tagId(t)}">${escapeHtml(t)}</a>`)
@@ -448,6 +466,7 @@ function build() {
   posts.forEach((post, index) => {
     fs.writeFileSync(path.join(OUT_DIR, 'posts', `${post.slug}.html`), renderPost(post, index), 'utf8');
   });
+  copyPostAssets();
 
   fs.writeFileSync(path.join(OUT_DIR, 'feed.xml'), renderFeed(), 'utf8');
   const sitePages = ['index.html', 'about.html', 'tags.html', ...posts.map((p) => `posts/${p.slug}.html`)];

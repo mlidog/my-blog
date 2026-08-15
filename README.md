@@ -70,6 +70,14 @@ description: 这篇文章写的是什么。
 - `description` 不写也没关系，会自动截取正文开头；
 - 文件名建议用英文或拼音（比如 `my-first-post.md`），避免空格。
 
+**文章里的图片**：把图片文件放在文章旁边（可以建子文件夹，比如 `content/posts/cpp/buy.png`），在文章里用相对路径引用即可：
+
+```markdown
+![如图](./cpp/buy.png)
+```
+
+构建时会自动把文章文件夹里的图片复制到网站里，本地和线上都能正常显示。
+
 不会 Markdown？项目里已经有一篇《[Markdown 写作小抄](docs/posts/markdown-cheatsheet.html)》，照着抄就行。
 
 ### 3. 构建 + 本地预览
