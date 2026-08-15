@@ -150,4 +150,36 @@
       }
     });
   }
+
+  // 点赞：记录在当前浏览器里（每台设备独立），刷新后保留
+  var likeBtn = document.getElementById("likeBtn");
+  if (likeBtn) {
+    var slug = likeBtn.getAttribute("data-slug") || "";
+    var LIKES_KEY = "blogLikes";
+    var liked = {};
+    try {
+      liked = JSON.parse(localStorage.getItem(LIKES_KEY) || "{}") || {};
+    } catch (e) {
+      liked = {};
+    }
+    var setLikeState = function (on) {
+      likeBtn.classList.toggle("liked", on);
+      likeBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      likeBtn.textContent = on ? "❤️ 已赞" : "🤍 点赞";
+    };
+    setLikeState(!!liked[slug]);
+    likeBtn.addEventListener("click", function () {
+      if (liked[slug]) {
+        delete liked[slug];
+      } else {
+        liked[slug] = true;
+      }
+      try {
+        localStorage.setItem(LIKES_KEY, JSON.stringify(liked));
+      } catch (e) {
+        /* 隐私模式下可能无法写入，忽略 */
+      }
+      setLikeState(!!liked[slug]);
+    });
+  }
 })();

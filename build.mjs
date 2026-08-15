@@ -304,6 +304,52 @@ function renderHome() {
   return page({ body, activeKey: 'index.html' });
 }
 
+/* 阅读量（不蒜子服务，免费免注册） */
+function renderViews() {
+  if (CONFIG.features?.readingCount === false) return '';
+  return `<span class="dot">·</span><span>阅读 <span id="busuanzi_value_page_pv"></span></span>`;
+}
+
+/* 点赞（保存在当前浏览器里；想要所有人共享的真实计数需要接 Twikoo 等后端） */
+function renderLikes(slug) {
+  if (CONFIG.features?.likes === false) return '';
+  return `
+      <div class="post-actions">
+        <button class="like-btn" id="likeBtn" type="button" data-slug="${escapeHtml(slug)}" aria-pressed="false">🤍 点赞</button>
+      </div>`;
+}
+
+/* 评论（Giscus，基于 GitHub Discussions；配置见 site.config.json 的 features.comments） */
+function renderComments() {
+  const c = CONFIG.features?.comments;
+  const configured = c && c.repo && c.repoId && c.categoryId;
+  if (!configured) {
+    return `
+      <section class="post-comments">
+        <h2>评论</h2>
+        <p class="comments-placeholder">评论功能已就位，配置后即可使用（步骤见 README「评论功能」一节）。</p>
+      </section>`;
+  }
+  return `
+      <section class="post-comments">
+        <h2>评论</h2>
+        <script src="https://giscus.app/client.js"
+          data-repo="${escapeHtml(c.repo)}"
+          data-repo-id="${escapeHtml(c.repoId)}"
+          data-category="${escapeHtml(c.category || 'Announcements')}"
+          data-category-id="${escapeHtml(c.categoryId)}"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="preferred_color_scheme"
+          data-lang="zh-CN"
+          crossorigin="anonymous"
+          async></script>
+      </section>`;
+}
+
 function renderPost(post, index) {
   const prev = posts[index - 1];
   const next = posts[index + 1];
@@ -313,6 +359,10 @@ function renderPost(post, index) {
         ${next ? `<a class="pager-next" href="${next.slug}.html${SITE_VERSION}"><span>下一篇</span>${escapeHtml(next.title)}</a>` : '<span></span>'}
       </nav>`;
 
+  const viewsHtml = renderViews();
+  const likesHtml = renderLikes(post.slug);
+  const commentsHtml = renderComments();
+
   const body = `
     <article class="post">
       <header class="post-header">
@@ -321,13 +371,16 @@ function renderPost(post, index) {
           <time datetime="${post.date}">${formatDate(post.date)}</time>
           <span class="dot">·</span>
           <span>${post.readingMinutes} 分钟阅读</span>
+          ${viewsHtml}
           ${post.tags.length ? `<span class="dot">·</span> ${tagHtml(post, '../')}` : ''}
         </div>
       </header>
       <div class="post-content">
         ${post.html}
       </div>
+      ${likesHtml}
       ${pager}
+      ${commentsHtml}
     </article>`;
   return page({
     body,

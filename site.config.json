@@ -15,5 +15,15 @@
     "github": "https://github.com/mlidog",
     "bilibili":"https://space.bilibili.com/21791598?spm_id_from=333.1007.0.0"
   },
+  "features": {
+    "readingCount": true,
+    "likes": true,
+    "comments": {
+      "repo": "mlidog/my-blog",
+      "repoId": "R_kgDOT3p_NA",
+      "category": "Announcements",
+      "categoryId": "DIC_kwDOT3p_NM4DDcxn"
+    }
+  },
   "footerNote": "用codex辅助、 Markdown 书写，构建成静态网页。"
 }

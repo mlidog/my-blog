@@ -193,6 +193,19 @@ git push
 
 如果哪天你想在模板里**手动**加版本号（一般用不上）：在 `templates/header.html` 或 `templates/footer.html` 的链接后面拼上 `{{ASSET_VERSION}}` 即可，构建时它会自动替换成当前版本号。想彻底手动控制，也可以写死 `?v=2`、`?v=3`，但记得每次更新都要改，容易忘，不推荐。
 
+## 阅读量 / 点赞 / 评论
+
+纯静态博客没有服务器，这三个功能用的是第三方服务：
+
+- **阅读量**：文章页自动显示“阅读 N”，由免费的“不蒜子”服务提供，不用注册、开箱即用；不想显示就把 `site.config.json` 里 `features.readingCount` 改成 `false`；
+- **点赞**：每篇文章底部有一个点赞按钮，状态保存在当前浏览器里（刷新后保留；换设备/浏览器会清零）。纯静态站做不了“所有人共享”的真实点赞数，想要全局真实计数需要接 Twikoo 这类带后端的系统，需要时可以找我配；
+- **评论**：基于 GitHub Discussions 的 Giscus，免费、无需自己的服务器。启用步骤：
+
+  1. 打开 GitHub 仓库 `mlidog/my-blog` → **Settings → General**，勾选 **Discussions** 启用讨论区；
+  2. 访问 [giscus.app](https://giscus.app)，仓库填 `mlidog/my-blog`，按页面提示安装 giscus 应用、选一个讨论分类；
+  3. 页面会生成一段配置，把其中的 `data-repo-id` 和 `data-category-id` 抄到 `site.config.json` 的 `features.comments` 里；
+  4. 重新构建并推送，文章底部就会出现评论框。
+
 ## 常见问题
 
 **改了内容页面没变化？** 内容都在 `docs/` 里，改完源文件后一定要重新运行构建脚本。
