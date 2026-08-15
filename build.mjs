@@ -364,7 +364,7 @@ function renderComments() {
       <section class="post-comments" id="post-comments">
         <h2>评论</h2>
         <div id="tcomment"></div>
-        <p class="comments-manage">想管理或删除评论？点击评论区右上角的「小齿轮」图标，输入管理员密码登录后即可在线删除。</p>
+        <p class="comments-manage">昵称不填时会自动分配「访客-xxxx」，可以随时改成自己喜欢的名字，浏览器会自动记住；邮箱和网址选填。想删除评论？点击评论区右上角的「小齿轮」，登录管理员密码后即可在线删除。</p>
       </section>`;
   }
   const configured = c && c.repo && c.repoId && c.categoryId;

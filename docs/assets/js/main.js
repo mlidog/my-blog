@@ -287,6 +287,22 @@
     var readSlug = postArticle.getAttribute("data-slug");
     if (twikooEnabled) {
       runWithTwikoo(function () {
+        // 首次访问自动分配一个默认昵称：存进 Twikoo 自己用的 localStorage（key: twikoo），
+        // 它会自动预填到评论框并记住；访客想改随时可以改成自己的名字
+        var guestMeta = {};
+        try {
+          guestMeta = JSON.parse(localStorage.getItem("twikoo") || "{}") || {};
+        } catch (e) {
+          guestMeta = {};
+        }
+        if (!guestMeta.nick) {
+          guestMeta.nick = "访客-" + Math.random().toString(36).slice(2, 6);
+          try {
+            localStorage.setItem("twikoo", JSON.stringify(guestMeta));
+          } catch (e) {
+            /* 存储不可用时忽略 */
+          }
+        }
         twikoo
           .init(Object.assign({ el: "#tcomment" }, twikooOptions()))
           .then(function () {
