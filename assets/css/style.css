@@ -91,6 +91,34 @@ img {
   border-radius: 8px;
 }
 
+/* ---- 文章图片工具类 ----
+   在 md 里用 <img> 标签引用，例如：
+   <img class="img-center" src="./cpp/buy.png" alt="说明" width="420">
+   大小用 width 属性控制，位置用下面的类控制。 */
+.img-center {
+  display: block;
+  margin: 1.4em auto;
+  border-radius: 10px;
+}
+
+.img-left {
+  float: left;
+  margin: 0.4em 18px 12px 0;
+  max-width: 45%;
+  border-radius: 10px;
+}
+
+.img-right {
+  float: right;
+  margin: 0.4em 0 12px 18px;
+  max-width: 45%;
+  border-radius: 10px;
+}
+
+.img-shadow {
+  box-shadow: var(--shadow);
+}
+
 a {
   color: var(--accent);
   text-decoration: none;

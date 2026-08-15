@@ -2,12 +2,11 @@
 title: 关于我
 ---
 
-这里可以简单介绍一下自己。
+mlidog（美丽狗）是大二在读的苦逼建筑生，现在正在学习各种前端知识以求转行！！
 
-比如：
 
-- 我是谁，正在做什么；
-- 为什么想写博客；
-- 想通过这个博客分享什么。
-
-把这段内容替换成你自己的介绍，保存后重新构建一次就行。
+- 微信：vvsuki3
+- QQ：844398407
+- 邮箱：844398407@qq.com
+- bilibili：[mlidog](https://space.bilibili.com/21791598?spm_id_from=333.1007.0.0)
+- github：[mlidog](https://github.com/mlidog)

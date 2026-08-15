@@ -289,9 +289,46 @@ print(&quot;hello, world&quot;)
       <guid isPermaLink="false">https://mlidog.github.io/my-blog/posts/codex-application.html</guid>
       <pubDate>Sat, 15 Aug 2026 00:00:00 GMT</pubDate>
       <description><![CDATA[<h1>写在前面：</h1>
-<p>这篇文章编纂于2026年8月15日，正碰上<a href="https://api-docs.deepseek.com/zh-cn/quick_start/pricing/">deepseekv4-flash模型涨价</a>，我没有比对目前市面上的各种模型的性价比，只在我个人的认识内认为deepseek要实惠一点,如果你有更好更具性价比的选择可以<a href="../about.html">联系我</a>（我也想要便宜的ww~），指导我更正这篇文章，万分感谢！  </p>
+<p>这篇文章编纂于2026年8月15日，正碰上<a href="https://api-docs.deepseek.com/zh-cn/quick_start/pricing/">deepseekv4模型涨价</a>，我没有比对目前市面上的各种模型的性价比，只在我个人的认识内认为deepseek要实惠一点,如果你有更好更具性价比的选择可以<a href="../about.html">联系我</a>（我也想要便宜的ww~），指导我更正这篇文章，万分感谢！    </p>
+<p>这篇文章只涵盖如何将deepseekv4-flash模型接入codex，并不涉猎对于原生codex的教程，例如：注册chatgpt账号、购买会员、调用OpenAI的各类模型等等。（因为太麻烦了我也不会......）</p>
 <hr>
-<h1>一、下载codex</h1>
+<h1>一、配置工作环境</h1>
+<ol>
+<li><a href="https://git-scm.com">安装git</a> &nbsp; <a href="https://git-scm.com">https://git-scm.com</a></li>
+<li><a href="https://www.nodejs.org">安装nodejs</a> &nbsp;<a href="https://www.nodejs.org">https://www.nodejs.org</a></li>
+<li><a href="https://code.visualstudio.com">安装vscode</a> &nbsp;<a href="https://code.visualstudio.com">https://code.visualstudio.com</a></li>
+</ol>
+<p>都是傻瓜式安装，在官网下好安装包后直接安装，然后点击next→next→next→...→finish就ok了。<br><small>（如果下载慢就挂梯子）</small></p>
+<h1>二、下载codex</h1>
+<p>由于2026/7/9 Codex桌面应用并入了ChatGPT桌面端，所以我们实际上下载的是ChatGPT桌面端。  </p>
+<p>直接在微软商店上搜索ChatGPT即可：<br><img src="./codexapp/gptdownlord.png" alt="chatgpt"><br><small>下载需要挂梯子（大概）</small><br>如果你没有修改过电脑保存的地址的话，那微软大概率是会自动给你下载到C盘的，你只需要在下载前在电脑系统设置中修改就可以了。<br><img src="./codexapp/syschange.png" alt="syschange"></p>
+<h3>下载完成后一定要先打开一次！即见到以下这个窗口：</h3>
+<p><img src="./codexapp/login.png" alt="login"><br>然后退出整个chatgpt程序。（最好在任务管理器中确保chatgpt退出了）<br><img src="./codexapp/quit.png" alt="quit"></p>
+<h1>三、注册deepseekAPI</h1>
+<ol>
+<li>前往<a href="https://platform.deepseek.com/" title="https://platform.deepseek.com">deepseek开放平台官网</a>,注册/登录deepseek账号。</li>
+<li>在开放平台充值，只用充个10块钱随便玩玩就可以，详细定价也可在<a href="https://api-docs.deepseek.com/zh-cn/quick_start/pricing/">deepseek开放平台</a>查询。<br><img src="./codexapp/charge.png" alt="charge"></li>
+<li>在开放平台申请一个API：<br><img src="./codexapp/apikey.png" alt="api"></li>
+<li><strong>妥善保管你的API key！妥善保管你的API key！！妥善保管你的API key！！！</strong></li>
+</ol>
+<h1>四、接入deepseekv4-flash的API接口</h1>
+<ol>
+<li>阅读deepseek官方的<a href="https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex">接入教程</a>，现在我们使用官方教程的方法一（一键配置脚本）给codex接入deepseekv4-flash模型。</li>
+<li><strong>打开你的powershell窗口，输入官网上的一键配置脚本：</strong></li>
+</ol>
+<pre><code>irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex
+</code></pre>
+<p>   powershell会输出以下窗口：<br><img src="./codexapp/powershell.png" alt="powershell1"><br><small>（1为配置deepseekv4-flash模型，2为配置deepseekv4-pro模型，3为重置codex配置）</small></p>
+<p><strong>我们选择1，配置deepseekv4-flash模型。</strong> </p>
+<p>随后会弹出需要我们输入API的窗口：<br><img src="./codexapp/apikeylog.png" alt="apikeylog"></p>
+<p><strong>我们输入刚刚在deepseek获取的API就可以了</strong></p>
+<p><img src="./codexapp/apidone.png" alt="apidone"><br><small>（图片里面是v4-pro模型，配置完成后我们显示是<code>deepseek-v4-flash</code>就可以了）</small></p>
+<p><strong>随后我们就可以重新进入codex</strong><br>初始界面应该是这样的：<br><img src="./codexapp/page1.png" alt="page1"><br>模型里面显示自定义是正常的，左下角显示的你使用的是deepseek就可以。  </p>
+<p>如果你进入codex时是英文，只需要挂着梯子在codex里面把语言调成简中/繁中，然后重启一遍codex就可以了。</p>
+<p>&nbsp;</p>
+<h3>至此，你就可以开始在电脑上愉快地使用codex了！</h3>
+<h3>Congratulation！</h3>
+<p>&nbsp;<br>codex真的挺好玩的，如果这篇文章对你有帮助我会倍感荣幸，感兴趣或者有问题可以进一步<a href="../about.html">联系我</a>！</p>
 ]]></description>
     </item>
 
