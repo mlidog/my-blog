@@ -6,7 +6,7 @@
   <title>Markdown 完整语法指南 · 美丽狗的博客</title>
   <meta name="description" content="从基础到进阶，一次掌握 Markdown 的常用语法，并附一篇完整的示例文章。">
   <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/style.css?v=39d88a16">
+  <link rel="stylesheet" href="../assets/css/style.css?v=14070373">
   <script>
     /* 提前设置主题，避免刷新时闪一下 */
     (function () {
@@ -25,17 +25,17 @@
     <aside class="sidebar" id="siteNav" aria-label="侧边栏">
   <div class="sidebar-inner">
     <div class="profile">
-      <img class="avatar" src="../assets/rikka.png?v=0678c7b8" alt="头像">
+      <img class="avatar" src="../assets/rikka.png?v=031c4e43" alt="头像">
       <div class="profile-name">美丽狗的博客</div>
       <div class="profile-bio">这些东西会变成我的赛博遗产。</div>
       <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
     </div>
     <nav class="sidebar-nav" aria-label="侧边栏导航">
-      <a class="nav-link active" href="../index.html?v=0678c7b8" aria-current="page">首页</a>
-        <a class="nav-link" href="../tags.html?v=0678c7b8">标签</a>
-        <a class="nav-link" href="../archive.html?v=0678c7b8">归档</a>
-        <a class="nav-link" href="../search.html?v=0678c7b8">搜索</a>
-        <a class="nav-link" href="../about.html?v=0678c7b8">关于</a>
+      <a class="nav-link active" href="../index.html?v=031c4e43" aria-current="page">首页</a>
+        <a class="nav-link" href="../tags.html?v=031c4e43">标签</a>
+        <a class="nav-link" href="../archive.html?v=031c4e43">归档</a>
+        <a class="nav-link" href="../search.html?v=031c4e43">搜索</a>
+        <a class="nav-link" href="../about.html?v=031c4e43">关于</a>
     </nav>
     <div class="sidebar-widgets">
       <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
@@ -61,7 +61,7 @@
         <div class="container header-inner">
           <div class="header-left">
             <button class="back-btn" id="backButton" type="button" aria-label="返回上一页" data-home="../index.html" hidden>←</button>
-            <a class="brand" href="../index.html?v=0678c7b8">美丽狗的博客</a>
+            <a class="brand" href="../index.html?v=031c4e43">美丽狗的博客</a>
           </div>
           <div class="header-actions">
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
@@ -79,8 +79,8 @@
           <time datetime="2026-08-15">2026年8月15日</time>
           <span class="dot">·</span>
           <span>6 分钟阅读</span>
-          <span class="dot">·</span><span>阅读 <span id="busuanzi_value_page_pv"></span></span>
-          <span class="dot">·</span> <a class="tag" href="../tags.html?v=0678c7b8#tag-教程">教程</a><a class="tag" href="../tags.html?v=0678c7b8#tag-Markdown">Markdown</a>
+          <span class="dot">·</span><span title="全网阅读量（Twikoo 统计）">阅读 <span id="twikoo_visitors">0</span></span>
+          <span class="dot">·</span> <a class="tag" href="../tags.html?v=031c4e43#tag-教程">教程</a><a class="tag" href="../tags.html?v=031c4e43#tag-Markdown">Markdown</a>
         </div>
       </header>
       <div class="post-content">
@@ -312,25 +312,13 @@ print(&quot;hello, world&quot;)
       
       <nav class="post-pager" aria-label="上下篇文章">
         <span></span>
-        <a class="pager-next" href="cpp-buy-record.html?v=0678c7b8"><span>下一篇</span>用codex写的CPP抢票脚本过程记录</a>
+        <a class="pager-next" href="cpp-buy-record.html?v=031c4e43"><span>下一篇</span>用codex写的CPP抢票脚本过程记录</a>
       </nav>
       
-      <section class="post-comments">
+      <section class="post-comments" id="post-comments">
         <h2>评论</h2>
-        <script src="https://giscus.app/client.js"
-          data-repo="mlidog/my-blog"
-          data-repo-id="R_kgDOT3p_NA"
-          data-category="Announcements"
-          data-category-id="DIC_kwDOT3p_NM4DDcxn"
-          data-mapping="pathname"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="bottom"
-          data-theme="preferred_color_scheme"
-          data-lang="zh-CN"
-          crossorigin="anonymous"
-          async></script>
+        <div id="tcomment"></div>
+        <p class="comments-manage">想管理或删除评论？点击评论区右上角的「小齿轮」图标，输入管理员密码登录后即可在线删除。</p>
       </section>
     </article>
       </main>
@@ -349,9 +337,9 @@ print(&quot;hello, world&quot;)
     <button class="back-to-top side-btn" id="backToTop" type="button" aria-label="回到顶部">↑</button>
     <!-- 示例：<button class="side-btn" id="yourButton" type="button" aria-label="你的按钮">★</button> -->
   </div>
-  <!-- 阅读量计数服务（不蒜子） -->
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  <script src="../assets/js/main.js?v=39d88a16"></script>
+    <script type="application/json" id="siteConfig">{"basePath":"/my-blog/","twikoo":{"envId":"https://mlidog-blog-comment.netlify.app/.netlify/functions/twikoo","region":""}}</script>
+    <script src="https://registry.npmmirror.com/twikoo/1.7.19/files/dist/twikoo.min.js" defer></script>
+  <script src="../assets/js/main.js?v=14070373"></script>
 </body>
 </html>
 

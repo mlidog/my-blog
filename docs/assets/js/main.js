@@ -183,38 +183,156 @@
     });
   }
 
-  // 本机阅读量：每打开一次文章页，在这台设备的浏览器里记一次
-  var postArticle = document.querySelector(".post[data-slug]");
-  if (postArticle) {
-    var READ_KEY = "blogReads";
+  // 阅读量 / 评论数：构建脚本会把站点配置注入到 #siteConfig。
+  // features.comments.twikoo 填了 envId 后，评论区换成 Twikoo，
+  // 阅读量和首页评论数都变成全网统计；没配置时退回本机计数 + Giscus 评论。
+  var siteConfig = null;
+  var siteConfigEl = document.getElementById("siteConfig");
+  if (siteConfigEl) {
+    try {
+      siteConfig = JSON.parse(siteConfigEl.textContent || "null");
+    } catch (e) {
+      siteConfig = null;
+    }
+  }
+  var twikooConfig = (siteConfig && siteConfig.twikoo) || null;
+  var twikooEnabled = !!(twikooConfig && twikooConfig.envId);
+  var basePath = (siteConfig && siteConfig.basePath) || "/";
+  // 把站内相对路径（如 posts/xxx.html）拼成和 location.pathname 一致的完整路径，
+  // Twikoo 就是按这个路径统计阅读量和评论数的
+  var fullPath = function (rel) {
+    return basePath.replace(/\/?$/, "/") + String(rel).replace(/^\/+/, "");
+  };
+  var twikooOptions = function () {
+    var opt = { envId: twikooConfig.envId };
+    if (twikooConfig.region) opt.region = twikooConfig.region;
+    return opt;
+  };
+  // Twikoo 脚本是延迟加载的（footer 里 <script defer>），可能比 main.js 晚一点到，
+  // 所以轮询等它加载完再执行；8 秒内没加载成功就静默放弃，不影响其他功能
+  var runWithTwikoo = function (cb) {
+    if (!twikooEnabled) return;
+    if (window.twikoo) {
+      cb();
+      return;
+    }
+    var waited = 0;
+    var timer = setInterval(function () {
+      waited += 100;
+      if (window.twikoo) {
+        clearInterval(timer);
+        cb();
+      } else if (waited >= 8000) {
+        clearInterval(timer);
+      }
+    }, 100);
+  };
+
+  // 首页：批量查询每篇文章的全网评论数（getCommentsCount 不需要先 init）
+  var commentLinks = document.querySelectorAll("[data-comment-url]");
+  var fillCommentCounts = function () {
+    if (!commentLinks.length) return;
+    var urls = [];
+    var seen = {};
+    Array.prototype.forEach.call(commentLinks, function (a) {
+      var u = fullPath(a.getAttribute("data-comment-url"));
+      if (!seen[u]) {
+        seen[u] = true;
+        urls.push(u);
+      }
+    });
+    twikoo
+      .getCommentsCount(Object.assign({ urls: urls }, twikooOptions()))
+      .then(function (res) {
+        var map = {};
+        (res || []).forEach(function (o) {
+          if (o && o.url != null) map[o.url] = o.count || 0;
+        });
+        commentLinks.forEach(function (a) {
+          var span = a.querySelector("[data-comments]");
+          if (!span) return;
+          var v = map[fullPath(a.getAttribute("data-comment-url"))];
+          if (v != null) span.textContent = String(v);
+        });
+      })
+      .catch(function () {
+        /* 网络或配置问题：静默失败 */
+      });
+  };
+
+  // 阅读数显示：Twikoo 模式下，打开文章页时 Twikoo 会记录全网阅读数并填充
+  // #twikoo_visitors，我们把那个真实数字存进浏览器；首页显示本地保存的最近值。
+  // 这样首页和文章页数字一致，又不会因为“打开首页”而给文章虚加阅读数
+  // （Twikoo 的 COUNTER_GET 每次调用都会 +1，不能拿来当只读查询用）。
+  var readSpans = document.querySelectorAll("[data-reads]");
+  var readLocalCounts = function () {
     var reads = {};
     try {
-      reads = JSON.parse(localStorage.getItem(READ_KEY) || "{}") || {};
+      reads = JSON.parse(localStorage.getItem("blogReads") || "{}") || {};
     } catch (e) {
       reads = {};
     }
+    readSpans.forEach(function (el) {
+      var v = parseInt(reads[el.getAttribute("data-reads")], 10);
+      el.textContent = String(v > 0 ? v : 0);
+    });
+  };
+
+  // 文章页：打开一次记一次。
+  // Twikoo 模式：初始化评论区，Twikoo 自动记录本页访问量并填充 #twikoo_visitors，
+  // 然后把真实阅读数同步到本地给首页用；
+  // 本机模式：在这台设备的浏览器里 +1
+  var postArticle = document.querySelector(".post[data-slug]");
+  if (postArticle) {
     var readSlug = postArticle.getAttribute("data-slug");
-    reads[readSlug] = (parseInt(reads[readSlug], 10) || 0) + 1;
-    try {
-      localStorage.setItem(READ_KEY, JSON.stringify(reads));
-    } catch (e) {
-      /* 存储不可用时忽略 */
+    if (twikooEnabled) {
+      runWithTwikoo(function () {
+        twikoo
+          .init(Object.assign({ el: "#tcomment" }, twikooOptions()))
+          .then(function () {
+            var visitorsEl = document.getElementById("twikoo_visitors");
+            if (!visitorsEl) return;
+            var n = parseInt(visitorsEl.textContent, 10);
+            if (isNaN(n)) return;
+            var reads = {};
+            try {
+              reads = JSON.parse(localStorage.getItem("blogReads") || "{}") || {};
+            } catch (e) {
+              reads = {};
+            }
+            reads[readSlug] = n;
+            try {
+              localStorage.setItem("blogReads", JSON.stringify(reads));
+            } catch (e) {
+              /* 存储不可用时忽略 */
+            }
+          })
+          .catch(function () {
+            /* 评论区加载失败：静默，不影响页面其他功能 */
+          });
+      });
+    } else {
+      var READ_KEY = "blogReads";
+      var reads = {};
+      try {
+        reads = JSON.parse(localStorage.getItem(READ_KEY) || "{}") || {};
+      } catch (e) {
+        reads = {};
+      }
+      reads[readSlug] = (parseInt(reads[readSlug], 10) || 0) + 1;
+      try {
+        localStorage.setItem(READ_KEY, JSON.stringify(reads));
+      } catch (e) {
+        /* 存储不可用时忽略 */
+      }
     }
   }
 
-  // 首页文章卡片：显示本机阅读量、点赞状态和评论入口
-  var readSpans = document.querySelectorAll("[data-reads]");
-  if (readSpans.length) {
-    var readsHome = {};
-    try {
-      readsHome = JSON.parse(localStorage.getItem("blogReads") || "{}") || {};
-    } catch (e) {
-      readsHome = {};
-    }
-    readSpans.forEach(function (el) {
-      el.textContent = String(parseInt(readsHome[el.getAttribute("data-reads")], 10) || 0);
-    });
-  }
+  // 首页/文章页：刷新阅读数显示（都读浏览器里保存的数字，两边一致）
+  if (readSpans.length) readLocalCounts();
+
+  // 首页：刷新全网评论数
+  if (!postArticle) runWithTwikoo(fillCommentCounts);
 
   var likeSpans = document.querySelectorAll("[data-likes]");
   if (likeSpans.length) {
@@ -286,4 +404,26 @@
         .join("");
     });
   }
+
+  // 浏览器“返回缓存”恢复页面时（比如从文章页点返回键回到首页），
+  // 重新刷新一遍阅读数、评论数和点赞显示，避免看到过时的数字；只刷新，不重复计数
+  window.addEventListener("pageshow", function (e) {
+    if (!e.persisted) return;
+    if (readSpans.length) readLocalCounts();
+    if (twikooEnabled) {
+      runWithTwikoo(fillCommentCounts);
+    }
+    var likeSpansRestore = document.querySelectorAll("[data-likes]");
+    if (likeSpansRestore.length) {
+      var likesRestore = {};
+      try {
+        likesRestore = JSON.parse(localStorage.getItem("blogLikes") || "{}") || {};
+      } catch (e2) {
+        likesRestore = {};
+      }
+      likeSpansRestore.forEach(function (el) {
+        el.textContent = likesRestore[el.getAttribute("data-likes")] ? "1" : "0";
+      });
+    }
+  });
 })();

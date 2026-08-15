@@ -24,7 +24,12 @@
       "repo": "mlidog/my-blog",
       "repoId": "R_kgDOT3p_NA",
       "category": "Announcements",
-      "categoryId": "DIC_kwDOT3p_NM4DDcxn"
+      "categoryId": "DIC_kwDOT3p_NM4DDcxn",
+      "twikoo": {
+        "envId": "https://mlidog-blog-comment.netlify.app/.netlify/functions/twikoo",
+        "region": "",
+        "cdn": ""
+      }
     }
   },
   "footerNote": "用codex辅助、 Markdown 书写，构建成静态网页。"

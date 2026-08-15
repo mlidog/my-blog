@@ -166,7 +166,7 @@ git push
 | 顶部导航条 | 242 行起“顶部导航” | — |
 | 深色模式两套配色 | 41 行起 `html[data-theme]` 变量 | 60 行切换逻辑 |
 | 首页文章列表 | 312 行起“首页” | — |
-| 首页文章卡片统计（本机阅读量/点赞/评论入口） | 312 行起“首页” | main.js 里的“本机阅读量”“首页文章卡片”分区 |
+| 首页文章卡片统计（阅读量/点赞/评论） | 312 行起“首页” | main.js 里的“阅读量 / 评论数”“首页文章卡片”分区 |
 | 文章页排版 | 401 行起“文章页” | 36 行代码块“复制”按钮 |
 | 上一篇/下一篇 | 559 行起 | — |
 | 标签页 | 598 行起 | — |
@@ -198,24 +198,45 @@ git push
 
 ## 阅读量 / 点赞 / 评论
 
-纯静态博客没有服务器，这三个功能用的是第三方服务：
+纯静态博客没有服务器，这三个功能的说明如下：
 
-- **阅读量**：文章页自动显示“阅读 N”，由免费的“不蒜子”服务提供，不用注册、开箱即用；不想显示就把 `site.config.json` 里 `features.readingCount` 改成 `false`；
-- **点赞**：每篇文章底部有一个点赞按钮，状态保存在当前浏览器里（刷新后保留；换设备/浏览器会清零）。纯静态站做不了“所有人共享”的真实点赞数，想要全局真实计数需要接 Twikoo 这类带后端的系统，需要时可以找我配；
-- **评论**：基于 GitHub Discussions 的 Giscus，免费、无需自己的服务器。启用步骤：
+- **阅读量**：默认是**本机阅读次数**（记录在这台设备的浏览器里，首页卡片和文章页显示同一个数字）。想变成**全网统计**（所有访客共享的真实阅读数），配置下面的 Twikoo 即可，还能顺便解锁首页的全网评论数；不想显示阅读量就把 `site.config.json` 里 `features.readingCount` 改成 `false`；
+- **点赞**：每篇文章底部有一个点赞按钮，状态保存在当前浏览器里（刷新后保留；换设备/浏览器会清零）。纯静态站暂时做不了“所有人共享”的真实点赞数，保持本机点赞；
+- **评论**：分两种模式，二选一自动切换：
+  - **没配置 Twikoo（默认）**：用基于 GitHub Discussions 的 Giscus，需要 GitHub 账号登录才能评论。启用步骤：
+    1. 打开 GitHub 仓库 `mlidog/my-blog` → **Settings → General**，勾选 **Discussions** 启用讨论区；
+    2. 访问 [giscus.app](https://giscus.app)，仓库填 `mlidog/my-blog`，按页面提示安装 giscus 应用、选一个讨论分类；
+    3. 页面会生成一段配置，把其中的 `data-repo-id` 和 `data-category-id` 抄到 `site.config.json` 的 `features.comments` 里；
+    4. 重新构建并推送，文章底部就会出现评论框。
+    这种模式下管理/删除评论要去 GitHub 仓库的 Discussions 页面操作（评论区下方有入口链接）。
+  - **配置了 Twikoo（推荐）**：评论区换成 Twikoo，任何访客不用登录就能评论；阅读量变成全网统计；首页每篇文章的 👁 阅读数和 💬 评论数都是全网真实数字；评论区右上角「小齿轮」登录管理员密码后，可以直接在网页里删除评论。
 
-  1. 打开 GitHub 仓库 `mlidog/my-blog` → **Settings → General**，勾选 **Discussions** 启用讨论区；
-  2. 访问 [giscus.app](https://giscus.app)，仓库填 `mlidog/my-blog`，按页面提示安装 giscus 应用、选一个讨论分类；
-  3. 页面会生成一段配置，把其中的 `data-repo-id` 和 `data-category-id` 抄到 `site.config.json` 的 `features.comments` 里；
-  4. 重新构建并推送，文章底部就会出现评论框。
+**开通 Twikoo（免费，一次配置以后不用管）：**
+
+> 背景：之前用的 LeanCloud 已经停止服务、无法注册新账号，所以这套方案改用免费开源的 Twikoo。
+
+1. 注册 [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register)（免费账号），创建一个 **Free（M0）** 集群；
+2. 集群创建好后点 **Connect → Drivers**，把连接字符串复制下来备用（形如 `mongodb+srv://用户名:密码@xxxx.mongodb.net/...`）；
+3. 部署 Twikoo 后端（任选一个，推荐 Netlify，国内访问快）：
+   - **Netlify**：打开 [twikoo-netlify 模板](https://github.com/twikoojs/twikoo-netlify)，点 **Deploy to Netlify**，把第 2 步的连接字符串填进 `MONGODB_URI`，并设置一个 `MASTER_PASSWORD`（管理员密码，评论区的「小齿轮」就靠它登录）；部署完记下**云函数地址**（形如 `https://xxx.netlify.app/.netlify/functions/twikoo`，注意要带 `/.netlify/functions/twikoo` 后缀）；
+   - **注意**：部署完如果打开站点提示要登录 Netlify 账号（Edge Access 保护），需要在 Netlify 的 **Site configuration → Access control → Edge Access** 里关闭访问保护，否则访客无法调用云函数；
+   - **Hugging Face**：也可以按 [Twikoo 官方后端文档](https://twikoo.js.org/backend.html) 的 Hugging Face 方案部署，得到形如 `https://xxx.hf.space` 的地址；
+4. 打开 `site.config.json`，在 `features.comments.twikoo` 里填：
+   - `envId`：第 3 步得到的**云函数地址**（必填，Netlify 的要带 `/.netlify/functions/twikoo` 后缀，如 `https://xxx.netlify.app/.netlify/functions/twikoo`）；
+   - `region`：留空即可（本方案用精简版脚本，只支持 Netlify / Hugging Face 这类“服务地址”部署，不支持腾讯云）；
+   - `cdn`：想换 Twikoo 脚本 CDN 才填，留空用默认的国内镜像；
+5. 双击「构建博客.bat」，再在 GitHub Desktop 提交推送。上线后所有访客：
+   - 打开文章时阅读数 +1，文章页显示全网真实数字，并自动同步到你的浏览器，首页卡片显示你最近打开文章时同步的数字（首页不会虚增阅读数）；
+   - 首页每篇文章显示真实评论数，点 💬 会跳到评论区；
+   - 评论区右上角「小齿轮」→ 输入第 3 步设置的 `MASTER_PASSWORD`，登录后即可在线删除评论。
+
+没填 `envId` 时一切照旧（本机阅读量 + Giscus 评论），填了之后自动切换到 Twikoo，两套配置互不影响。
 
 **首页卡片上的三个数字是什么意思？**
 
-- 首页每篇文章下面的 👁 阅读数，是**这台设备**（这个浏览器）打开过这篇文章的次数，记录在浏览器本地，用于自己统计；文章页顶部的“阅读 N”才是全网真实阅读量（不蒜子）；
-- 👍 后面的数字是本机点赞状态（1 = 在这台设备上点过赞，0 = 没点过）；
-- 💬 评论是入口链接，点进去就是文章底部的 Giscus 评论区。
-
-如果想在首页也显示**全网真实**的每篇阅读量/点赞数/评论数，需要接一个带后端的评论统计服务（如 Twikoo + LeanCloud），需要时可以找我配。
+- 👁 阅读数：没配 Twikoo 时是本机阅读次数；配了之后，文章页是全网真实阅读数，首页显示你最近打开这篇文章时同步到的全网数字（Twikoo 的阅读数接口每次查询都会 +1，所以首页不能直接实时查询，否则每次打开首页都会给文章虚加阅读数）；
+- 👍 点赞数：本机点赞状态（1 = 在这台设备上点过赞，0 = 没点过）；
+- 💬 评论数：没配 Twikoo 时是入口链接（点进评论区）；配了之后显示全网真实评论数，点击仍然跳到评论区。
 
 ## 常见问题
 

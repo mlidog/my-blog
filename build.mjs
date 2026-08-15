@@ -180,6 +180,41 @@ function socialHtml() {
   return links.join(' · ');
 }
 
+/* Twikoo 是否已配置：填了 envId 后，评论区换成 Twikoo，阅读量/评论数变成全网统计 */
+function twikooEnabled() {
+  const t = CONFIG.features?.comments?.twikoo;
+  return !!(t && t.envId);
+}
+
+/* 注入给前端用的站点配置：basePath 用来把站内相对路径拼成完整路径，
+   和 Twikoo 按 location.pathname 统计的 key 保持一致。 */
+function siteConfigHtml() {
+  let basePath = '/';
+  try {
+    basePath = new URL(CONFIG.baseUrl || '').pathname.replace(/\/+$/, '') + '/';
+  } catch {
+    /* baseUrl 没填时按根路径处理 */
+  }
+  const twikoo = twikooEnabled()
+    ? {
+        envId: CONFIG.features.comments.twikoo.envId,
+        region: CONFIG.features.comments.twikoo.region || '',
+      }
+    : null;
+  const json = JSON.stringify({ basePath, twikoo }).replace(/</g, '\\u003c');
+  return `  <script type="application/json" id="siteConfig">${json}</script>`;
+}
+
+/* Twikoo 评论脚本（CDN）：只在配置了 envId 时输出，默认用国内访问更快的 npmmirror 镜像；
+   想换 CDN 就在 site.config.json 的 features.comments.twikoo.cdn 里填自己的地址。 */
+function twikooCdnHtml() {
+  if (!twikooEnabled()) return '';
+  const custom = CONFIG.features.comments.twikoo.cdn;
+  const cdn =
+    custom || 'https://registry.npmmirror.com/twikoo/1.7.19/files/dist/twikoo.min.js';
+  return `  <script src="${escapeHtml(cdn)}" defer></script>`;
+}
+
 function fill(template, vars) {
   let out = template;
   for (const [key, value] of Object.entries(vars)) {
@@ -208,6 +243,8 @@ function page(opts) {
     FOOTER_NOTE: escapeHtml(CONFIG.footerNote || ''),
     SOCIAL: socialHtml(),
     ASSET_VERSION,
+    SITE_CONFIG: siteConfigHtml(),
+    TWIKOO_SCRIPT: twikooCdnHtml(),
   });
   return header + '\n' + opts.body + '\n' + footer + '\n';
 }
@@ -290,9 +327,9 @@ function renderHome() {
         </div>
         <p class="post-excerpt">${escapeHtml(post.description || makeExcerpt(post.html))}</p>
         <div class="post-stats">
-          <span class="stat" title="本机阅读次数（这个浏览器打开这篇文章的次数）">👁 <span data-reads="${escapeHtml(post.slug)}">0</span></span>
-          <span class="stat" title="本机点赞状态">👍 <span data-likes="${escapeHtml(post.slug)}">0</span></span>
-          <a class="stat" href="posts/${post.slug}.html${SITE_VERSION}#post-comments">💬 评论</a>
+          ${CONFIG.features?.readingCount === false ? '' : `<span class="stat" title="${twikooEnabled() ? '全网阅读量（最近打开这篇文章时同步）' : '本机阅读次数（这台浏览器打开这篇文章的次数）'}">👁 <span data-reads="${escapeHtml(post.slug)}">0</span></span>`}
+          <span class="stat" title="本机点赞状态（1 = 在这台设备上点过赞）">👍 <span data-likes="${escapeHtml(post.slug)}">0</span></span>
+          <a class="stat" href="posts/${post.slug}.html${SITE_VERSION}#post-comments" data-comment-url="posts/${post.slug}.html">💬 <span data-comments="${escapeHtml(post.slug)}">0</span></a>
         </div>
       </article>`
     )
@@ -309,12 +346,6 @@ function renderHome() {
   return page({ body, activeKey: 'index.html' });
 }
 
-/* 阅读量（不蒜子服务，免费免注册） */
-function renderViews() {
-  if (CONFIG.features?.readingCount === false) return '';
-  return `<span class="dot">·</span><span>阅读 <span id="busuanzi_value_page_pv"></span></span>`;
-}
-
 /* 点赞（保存在当前浏览器里；想要所有人共享的真实计数需要接 Twikoo 等后端） */
 function renderLikes(slug) {
   if (CONFIG.features?.likes === false) return '';
@@ -324,19 +355,28 @@ function renderLikes(slug) {
       </div>`;
 }
 
-/* 评论（Giscus，基于 GitHub Discussions；配置见 site.config.json 的 features.comments） */
+/* 评论：配置了 Twikoo 就用 Twikoo（支持全网阅读量、首页评论数、网页内删除评论）；
+   没配置 Twikoo 时退回 Giscus（基于 GitHub Discussions），再没配置就显示占位提示。 */
 function renderComments() {
   const c = CONFIG.features?.comments;
+  if (twikooEnabled()) {
+    return `
+      <section class="post-comments" id="post-comments">
+        <h2>评论</h2>
+        <div id="tcomment"></div>
+        <p class="comments-manage">想管理或删除评论？点击评论区右上角的「小齿轮」图标，输入管理员密码登录后即可在线删除。</p>
+      </section>`;
+  }
   const configured = c && c.repo && c.repoId && c.categoryId;
   if (!configured) {
     return `
-      <section class="post-comments">
+      <section class="post-comments" id="post-comments">
         <h2>评论</h2>
         <p class="comments-placeholder">评论功能已就位，配置后即可使用（步骤见 README「评论功能」一节）。</p>
       </section>`;
   }
   return `
-      <section class="post-comments">
+      <section class="post-comments" id="post-comments">
         <h2>评论</h2>
         <script src="https://giscus.app/client.js"
           data-repo="${escapeHtml(c.repo)}"
@@ -352,6 +392,7 @@ function renderComments() {
           data-lang="zh-CN"
           crossorigin="anonymous"
           async></script>
+        <p class="comments-manage"><a href="https://github.com/${escapeHtml(c.repo)}/discussions" target="_blank" rel="noopener">管理 / 删除评论（打开 GitHub Discussions）</a></p>
       </section>`;
 }
 
@@ -364,7 +405,6 @@ function renderPost(post, index) {
         ${next ? `<a class="pager-next" href="${next.slug}.html${SITE_VERSION}"><span>下一篇</span>${escapeHtml(next.title)}</a>` : '<span></span>'}
       </nav>`;
 
-  const viewsHtml = renderViews();
   const likesHtml = renderLikes(post.slug);
   const commentsHtml = renderComments();
 
@@ -376,7 +416,7 @@ function renderPost(post, index) {
           <time datetime="${post.date}">${formatDate(post.date)}</time>
           <span class="dot">·</span>
           <span>${post.readingMinutes} 分钟阅读</span>
-          ${viewsHtml}
+          ${CONFIG.features?.readingCount === false ? '' : twikooEnabled() ? `<span class="dot">·</span><span title="全网阅读量（Twikoo 统计）">阅读 <span id="twikoo_visitors">0</span></span>` : `<span class="dot">·</span><span title="本机阅读次数（这台浏览器打开这篇文章的次数）">阅读 <span data-reads="${escapeHtml(post.slug)}">0</span></span>`}
           ${post.tags.length ? `<span class="dot">·</span> ${tagHtml(post, '../')}` : ''}
         </div>
       </header>

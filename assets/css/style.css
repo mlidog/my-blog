@@ -706,6 +706,7 @@ a:hover {
   margin-top: 48px;
   padding-top: 28px;
   border-top: 1px solid var(--line);
+  scroll-margin-top: 90px; /* 从首页点“评论”跳过来时，别被顶部导航挡住 */
 }
 
 .post-comments h2 {
@@ -718,6 +719,20 @@ a:hover {
 .comments-placeholder {
   color: var(--ink-soft);
   font-size: 0.92rem;
+}
+
+.comments-manage {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.comments-manage a {
+  color: var(--ink-soft);
+}
+
+.comments-manage a:hover {
+  color: var(--accent);
 }
 
 /* ---------- 标签页 ---------- */
