@@ -75,4 +75,4 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex
 ### 至此，你就可以开始在电脑上愉快地使用codex了！
 ### Congratulation！
 &nbsp;
-codex真的挺好玩的，如果这篇文章对你有帮助我会倍感荣幸，感兴趣或者有问题可以进一步[联系我](../about.html)！
+codex真的挺好玩的，希望本文能给您带来些许帮助——这便是它最大的价值。感兴趣或者有问题可以进一步[联系我](../about.html)！
