@@ -241,7 +241,10 @@ function readPosts() {
       description: meta.description || '',
       html,
       text,
-      readingMinutes: readingTime(text),
+      // 支持在信息头里手动写 readingTime: 5，不写就自动估算
+      readingMinutes: /^\d+$/.test(String(meta.readingtime ?? ''))
+        ? Math.max(1, parseInt(meta.readingtime, 10))
+        : readingTime(text),
     };
   });
   list.sort((a, b) => (a.date < b.date ? 1 : -1));

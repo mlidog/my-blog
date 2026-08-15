@@ -3,6 +3,7 @@ title: 如何在你的电脑上简单且实惠地使用codex
 date: 2026-08-15
 tags: [教程, codex]
 description: 一次性教会你如何下载codex以及如何接入deepseekv4-flash模型来实惠地使用codex这个强大的AI-agent。
+readingtime: 8
 ---
 
 # 写在前面：

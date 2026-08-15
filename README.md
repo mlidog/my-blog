@@ -68,6 +68,7 @@ description: 这篇文章写的是什么。
 - `title` 和 `date` 必填，`date` 的格式是 `年-月-日`；
 - `tags` 可以写多个，用逗号隔开；
 - `description` 不写也没关系，会自动截取正文开头；
+- `readingTime` 可写可不写：默认按文章字数自动估算阅读时间；想手动指定就在信息头加一行，比如 `readingTime: 5`（单位：分钟）；
 - 文件名建议用英文或拼音（比如 `my-first-post.md`），避免空格。
 
 **文章里的图片**：把图片文件放在文章旁边（可以建子文件夹，比如 `content/posts/cpp/buy.png`），在文章里用相对路径引用即可：
