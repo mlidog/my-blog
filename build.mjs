@@ -396,7 +396,7 @@ function render404() {
 }
 
 function renderFeed() {
-  const base = CONFIG.baseUrl.replace(/\/+$/, '');
+  const base = (CONFIG.baseUrl || '').replace(/\/+$/, '');
   const items = posts
     .map((post) => {
       const pubDate = new Date(post.date + 'T00:00:00Z').toUTCString();
@@ -424,7 +424,7 @@ function renderFeed() {
 }
 
 function renderSitemap(pages) {
-  const base = CONFIG.baseUrl.replace(/\/+$/, '');
+  const base = (CONFIG.baseUrl || '').replace(/\/+$/, '');
   const urls = pages
     .map((p) => `  <url><loc>${base}/${p}</loc></url>`)
     .join('\n');

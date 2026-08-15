@@ -25,21 +25,21 @@
     <aside class="sidebar" id="siteNav" aria-label="侧边栏">
   <div class="sidebar-inner">
     <div class="profile">
-      <img class="avatar" src="../assets/rikka.png?v=dce122e8" alt="头像">
+      <img class="avatar" src="../assets/rikka.png?v=4250c7dc" alt="头像">
       <div class="profile-name">美丽狗的博客</div>
       <div class="profile-bio">这些东西会变成我的赛博遗产。</div>
       <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
     </div>
     <nav class="sidebar-nav" aria-label="侧边栏导航">
-      <a class="nav-link active" href="../index.html?v=dce122e8" aria-current="page">首页</a>
-        <a class="nav-link" href="../about.html?v=dce122e8">关于</a>
-        <a class="nav-link" href="../tags.html?v=dce122e8">标签</a>
+      <a class="nav-link active" href="../index.html?v=4250c7dc" aria-current="page">首页</a>
+        <a class="nav-link" href="../about.html?v=4250c7dc">关于</a>
+        <a class="nav-link" href="../tags.html?v=4250c7dc">标签</a>
     </nav>
     <div class="sidebar-widgets">
       <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
 <div class="widget">
   <h3 class="widget-title">站点信息</h3>
-  <p class="widget-stats">共 <strong>5</strong> 篇文章 · <strong>6</strong> 个标签</p>
+  <p class="widget-stats">共 <strong>6</strong> 篇文章 · <strong>7</strong> 个标签</p>
 </div>
 
 <!-- 示例：以后想加“公告”小部件，把下面几行取消注释、改成你自己的内容即可
@@ -59,7 +59,7 @@
         <div class="container header-inner">
           <div class="header-left">
             <button class="back-btn" id="backButton" type="button" aria-label="返回上一页" data-home="../index.html" hidden>←</button>
-            <a class="brand" href="../index.html?v=dce122e8">美丽狗的博客</a>
+            <a class="brand" href="../index.html?v=4250c7dc">美丽狗的博客</a>
           </div>
           <div class="header-actions">
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
@@ -77,7 +77,7 @@
           <time datetime="2026-08-15">2026年8月15日</time>
           <span class="dot">·</span>
           <span>7 分钟阅读</span>
-          <span class="dot">·</span> <a class="tag" href="../tags.html?v=dce122e8#tag-教程">教程</a><a class="tag" href="../tags.html?v=dce122e8#tag-脚本">脚本</a>
+          <span class="dot">·</span> <a class="tag" href="../tags.html?v=4250c7dc#tag-教程">教程</a><a class="tag" href="../tags.html?v=4250c7dc#tag-脚本">脚本</a>
         </div>
       </header>
       <div class="post-content">
@@ -95,7 +95,7 @@
 <blockquote>
 <p>第一步：装模拟器和 CPP App<br>下载 雷电模拟器 或 MuMu 模拟器（都免费，Windows 上很成熟）。<br>安装时选 Android 7 以上的系统版本，并关闭 root 权限（两个模拟器设置里都有开关）——票务类 App 对 root 和模拟器有检测，关掉能降低被风控的概率。<br>装好后，在模拟器自带的应用商店搜 CPP，或者去官网下载 APK 直接拖进模拟器窗口安装。<br>第二步：配置 Fiddler 抓包<br>下载安装 Fiddler Classic（免费版就够用）。<br>打开 Fiddler → Tools → Options → HTTPS，勾选 Decrypt HTTPS traffic，让它能解密 HTTPS 流量。<br>查看你电脑的局域网 IP：打开命令提示符输入 ipconfig，记下无线网卡（WLAN）那一行的 IPv4 地址。<br>在模拟器里进入「设置 → WLAN」，长按已连接的 Wi-Fi 网络 → 修改网络 → 代理改为「手动」，主机名填刚才的 PC IP，端口填 8888（Fiddler 默认端口）。<br>在模拟器的浏览器里访问 http://&lt;你的IP&gt;:8888，下载 FiddlerRoot certificate 证书文件，然后到模拟器「设置 → 安全 → 安装证书」里把它装为 CA 证书。这一步只做一次。<br>第三步：走流程，抓出下单接口<br>打开模拟器里的 CPP App，正常登录（需要手动过验证码就手动过）。<br>手动走到选好票种、准备下单的页面。<br>回到 Fiddler，用筛选框只保留 CPP 相关的域名，找到「创建订单 / 下单」这个 POST 请求。<br>右键该请求 → Copy as cURL，把内容发给我。<br>到这里，后面就交给我了：我会根据这个请求写一个 Python 脚本，复用你的登录凭证，加上对时、开售瞬间提交、处理排队/售罄的逻辑，在你电脑上直接跑。模拟器和 PC 共用系统时间，时间校准也简单</p>
 </blockquote>
-<p>（PS:上面的流程只有添加购票人、手动选票种、进入准备下单的页面需要你来操作，其他所有流程都可以让codex自动完成。  至于怎么在电脑上使用codex，可以看我的另一篇文章<a href="https://example.com">《如何在你的电脑上简单且实惠地使用codex》</a>）</p>
+<p>（PS:上面的流程只有添加购票人、手动选票种、进入准备下单的页面需要你来操作，其他所有流程都可以让codex自动完成。  至于怎么在电脑上使用codex，可以看我的另一篇文章<a href="codex-application.html">《如何在你的电脑上简单且实惠地使用codex》</a>）</p>
 <h3>注意事项：</h3>
 <ol>
 <li>在模拟器中设置手动代理时会出现“设置不了ip地址/根本没有设置界面”等等情况，这是因为模拟器上面用的是虚拟网络，一些模拟器隐藏了手动代理的入口，所以用ADB命令设置是最方便的：</li>
@@ -127,8 +127,8 @@
       </div>
       
       <nav class="post-pager" aria-label="上下篇文章">
-        <span></span>
-        <a class="pager-next" href="markdown-guide.html?v=dce122e8"><span>下一篇</span>Markdown 完整语法指南</a>
+        <a class="pager-prev" href="markdown-guide.html?v=4250c7dc"><span>上一篇</span>Markdown 完整语法指南</a>
+        <a class="pager-next" href="codex-application.html?v=4250c7dc"><span>下一篇</span>如何在你的电脑上简单且实惠地使用codex</a>
       </nav>
     </article>
       </main>
