@@ -8,8 +8,10 @@
   "baseUrl": "https://mlidog.github.io/my-blog/",
   "nav": [
     { "label": "首页", "href": "index.html" },
-    { "label": "关于", "href": "about.html" },
-    { "label": "标签", "href": "tags.html" }
+    { "label": "标签", "href": "tags.html" },
+    { "label": "归档", "href": "archive.html" },
+    { "label": "搜索", "href": "search.html" },
+    { "label": "关于", "href": "about.html" }
   ],
   "social": {
     "github": "https://github.com/mlidog",

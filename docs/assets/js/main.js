@@ -182,4 +182,108 @@
       setLikeState(!!liked[slug]);
     });
   }
+
+  // 本机阅读量：每打开一次文章页，在这台设备的浏览器里记一次
+  var postArticle = document.querySelector(".post[data-slug]");
+  if (postArticle) {
+    var READ_KEY = "blogReads";
+    var reads = {};
+    try {
+      reads = JSON.parse(localStorage.getItem(READ_KEY) || "{}") || {};
+    } catch (e) {
+      reads = {};
+    }
+    var readSlug = postArticle.getAttribute("data-slug");
+    reads[readSlug] = (parseInt(reads[readSlug], 10) || 0) + 1;
+    try {
+      localStorage.setItem(READ_KEY, JSON.stringify(reads));
+    } catch (e) {
+      /* 存储不可用时忽略 */
+    }
+  }
+
+  // 首页文章卡片：显示本机阅读量、点赞状态和评论入口
+  var readSpans = document.querySelectorAll("[data-reads]");
+  if (readSpans.length) {
+    var readsHome = {};
+    try {
+      readsHome = JSON.parse(localStorage.getItem("blogReads") || "{}") || {};
+    } catch (e) {
+      readsHome = {};
+    }
+    readSpans.forEach(function (el) {
+      el.textContent = String(parseInt(readsHome[el.getAttribute("data-reads")], 10) || 0);
+    });
+  }
+
+  var likeSpans = document.querySelectorAll("[data-likes]");
+  if (likeSpans.length) {
+    var likesHome = {};
+    try {
+      likesHome = JSON.parse(localStorage.getItem("blogLikes") || "{}") || {};
+    } catch (e) {
+      likesHome = {};
+    }
+    likeSpans.forEach(function (el) {
+      el.textContent = likesHome[el.getAttribute("data-likes")] ? "1" : "0";
+    });
+  }
+
+  // 搜索页：按标题和简介实时过滤文章
+  var searchInput = document.getElementById("searchInput");
+  var searchResults = document.getElementById("searchResults");
+  var searchIndexEl = document.getElementById("searchIndex");
+  if (searchInput && searchResults && searchIndexEl) {
+    var searchIndex = [];
+    try {
+      searchIndex = JSON.parse(searchIndexEl.textContent || "[]") || [];
+    } catch (e) {
+      searchIndex = [];
+    }
+    var searchVersion = searchIndexEl.getAttribute("data-version") || "";
+    var escSearch = function (s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    };
+    searchInput.addEventListener("input", function () {
+      var q = searchInput.value.trim().toLowerCase();
+      if (!q) {
+        searchResults.innerHTML = '<li class="search-empty">输入关键字开始搜索。</li>';
+        return;
+      }
+      var hits = searchIndex.filter(function (post) {
+        return (post.title + " " + post.description).toLowerCase().indexOf(q) !== -1;
+      });
+      if (!hits.length) {
+        searchResults.innerHTML = '<li class="search-empty">没有找到包含「' + escSearch(q) + '」的文章。</li>';
+        return;
+      }
+      searchResults.innerHTML = hits
+        .map(function (post) {
+          return (
+            '<li class="search-item">' +
+            '<a class="search-title" href="posts/' +
+            encodeURIComponent(post.slug) +
+            ".html" +
+            searchVersion +
+            '">' +
+            escSearch(post.title) +
+            "</a>" +
+            '<div class="search-meta"><time datetime="' +
+            escSearch(post.date) +
+            '">' +
+            escSearch(post.date) +
+            "</time></div>" +
+            '<p class="search-desc">' +
+            escSearch(post.description) +
+            "</p>" +
+            "</li>"
+          );
+        })
+        .join("");
+    });
+  }
 })();

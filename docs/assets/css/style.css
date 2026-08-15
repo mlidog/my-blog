@@ -429,6 +429,29 @@ a:hover {
   font-size: 0.98rem;
 }
 
+/* 首页每篇文章的统计行：本机阅读量 / 点赞 / 评论入口 */
+.post-stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 12px;
+  font-size: 0.86rem;
+  color: var(--ink-soft);
+}
+
+.post-stats .stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ink-soft);
+}
+
+.post-stats a.stat:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
 .tag {
   display: inline-block;
   padding: 2px 10px;
@@ -744,6 +767,78 @@ a:hover {
   color: var(--ink-soft);
   font-size: 0.88rem;
   white-space: nowrap;
+}
+
+/* ---------- 归档页 ---------- */
+
+.archive-summary {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  margin: 0.4em 0 1.4em;
+}
+
+/* ---------- 搜索页 ---------- */
+
+.search-hint {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 10px 0 22px;
+  font-size: 1rem;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.search-results {
+  list-style: none;
+  padding-left: 0;
+}
+
+.search-empty {
+  color: var(--ink-soft);
+  padding: 18px 0;
+}
+
+.search-item {
+  padding: 16px 4px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.search-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.search-title:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.search-meta {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.search-desc {
+  margin-top: 6px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
 }
 
 /* ---------- 页脚 ---------- */

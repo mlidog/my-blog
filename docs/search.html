@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>关于 · 美丽狗的博客</title>
+  <title>搜索 · 美丽狗的博客</title>
   <meta name="description" content="一个用codex辅助、 Markdown 写作、由静态博客项目生成的个人博客。">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css?v=39d88a16">
@@ -34,8 +34,8 @@
       <a class="nav-link" href="index.html?v=0678c7b8">首页</a>
         <a class="nav-link" href="tags.html?v=0678c7b8">标签</a>
         <a class="nav-link" href="archive.html?v=0678c7b8">归档</a>
-        <a class="nav-link" href="search.html?v=0678c7b8">搜索</a>
-        <a class="nav-link active" href="about.html?v=0678c7b8" aria-current="page">关于</a>
+        <a class="nav-link active" href="search.html?v=0678c7b8" aria-current="page">搜索</a>
+        <a class="nav-link" href="about.html?v=0678c7b8">关于</a>
     </nav>
     <div class="sidebar-widgets">
       <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
@@ -74,18 +74,15 @@
 
     <article class="post">
       <div class="post-content">
-        <h1>关于我</h1>
-<p>mlidog（美丽狗）是大二在读的苦逼建筑生，现在正在学习各种前端知识以求转行！！</p>
-<ul>
-<li>微信：vvsuki3</li>
-<li>QQ：844398407</li>
-<li>邮箱：<a href="mailto:844398407@qq.com">844398407@qq.com</a></li>
-<li>bilibili：<a href="https://space.bilibili.com/21791598?spm_id_from=333.1007.0.0">mlidog</a></li>
-<li>github：<a href="https://github.com/mlidog">mlidog</a></li>
-</ul>
-
+        <h1>搜索</h1>
+        <p class="search-hint">输入关键字，实时搜索每篇文章的标题和简介。</p>
+        <input class="search-input" id="searchInput" type="search" placeholder="输入关键字，如：codex、markdown…" autocomplete="off" aria-label="搜索文章">
+        <ul class="search-results" id="searchResults" aria-live="polite">
+          <li class="search-empty">输入关键字开始搜索。</li>
+        </ul>
       </div>
     </article>
+    <script type="application/json" id="searchIndex" data-version="?v=0678c7b8">[{"slug":"markdown-guide","title":"Markdown 完整语法指南","date":"2026-08-15","description":"从基础到进阶，一次掌握 Markdown 的常用语法，并附一篇完整的示例文章。"},{"slug":"cpp-buy-record","title":"用codex写的CPP抢票脚本过程记录","date":"2026-08-15","description":"在PC端用mumu模拟器以fiddler抓包为基础，用自动脚本在CPP上抢票的过程记录。"},{"slug":"codex-application","title":"如何在你的电脑上简单且实惠地使用codex","date":"2026-08-15","description":"一次性教会你如何下载codex以及如何接入deepseekv4-flash模型来实惠地使用codex这个强大的AI-agent。"},{"slug":"welcome","title":"欢迎来到我的博客","date":"2026-08-14","description":"这里是我搞耍的起点！"},{"slug":"markdown-cheatsheet","title":"Markdown 写作小抄","date":"2026-08-13","description":"写文章用到的常用 Markdown 语法，照着抄就行。"},{"slug":"why-static-blog","title":"为什么我选择了静态博客","date":"2026-08-12","description":"聊聊我选择“静态博客 + GitHub 托管”这条路的理由。"}]</script>
       </main>
       <footer class="site-footer">
         <div class="container footer-inner">

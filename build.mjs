@@ -289,6 +289,11 @@ function renderHome() {
           ${post.tags.length ? `<span class="dot">·</span> ${tagHtml(post, '')}` : ''}
         </div>
         <p class="post-excerpt">${escapeHtml(post.description || makeExcerpt(post.html))}</p>
+        <div class="post-stats">
+          <span class="stat" title="本机阅读次数（这个浏览器打开这篇文章的次数）">👁 <span data-reads="${escapeHtml(post.slug)}">0</span></span>
+          <span class="stat" title="本机点赞状态">👍 <span data-likes="${escapeHtml(post.slug)}">0</span></span>
+          <a class="stat" href="posts/${post.slug}.html${SITE_VERSION}#post-comments">💬 评论</a>
+        </div>
       </article>`
     )
     .join('\n');
@@ -364,7 +369,7 @@ function renderPost(post, index) {
   const commentsHtml = renderComments();
 
   const body = `
-    <article class="post">
+    <article class="post" data-slug="${escapeHtml(post.slug)}">
       <header class="post-header">
         <h1>${escapeHtml(post.title)}</h1>
         <div class="post-meta">
@@ -438,6 +443,66 @@ function renderTags() {
       </div>
     </article>`;
   return page({ body, activeKey: 'tags.html', title: '标签' });
+}
+
+/* 归档页：按月份分组展示所有文章 */
+function renderArchive() {
+  const groups = new Map();
+  for (const post of posts) {
+    const monthKey = post.date.slice(0, 7); // 形如 2026-08
+    const label = `${Number(post.date.slice(0, 4))}年${Number(post.date.slice(5, 7))}月`;
+    if (!groups.has(monthKey)) groups.set(monthKey, { label, items: [] });
+    groups.get(monthKey).items.push(post);
+  }
+  const sections = [...groups.entries()]
+    .map(([monthKey, group]) => {
+      const items = group.items
+        .map(
+          (p) =>
+            `<li><a href="posts/${p.slug}.html${SITE_VERSION}">${escapeHtml(p.title)}</a><time datetime="${p.date}">${p.date.slice(5)}</time></li>`
+        )
+        .join('\n');
+      return `
+      <section class="tag-group">
+        <h2>${group.label} <span class="tag-count">${group.items.length}</span></h2>
+        <ul class="tag-posts">${items}</ul>
+      </section>`;
+    })
+    .join('\n');
+  const body = `
+    <article class="post">
+      <div class="post-content">
+        <h1>归档</h1>
+        <p class="archive-summary">共 ${posts.length} 篇文章，按月份归档。</p>
+        ${sections || '<p>还没有文章。</p>'}
+      </div>
+    </article>`;
+  return page({ body, activeKey: 'archive.html', title: '归档' });
+}
+
+/* 搜索页：把每篇文章的标题、日期、简介以 JSON 形式内嵌到页面里，
+   由 main.js 在前端实时过滤，检索标题和简介中的关键字。 */
+function renderSearch() {
+  const index = posts.map((post) => ({
+    slug: post.slug,
+    title: post.title,
+    date: post.date,
+    description: post.description || makeExcerpt(post.html),
+  }));
+  const json = JSON.stringify(index).replace(/</g, '\\u003c');
+  const body = `
+    <article class="post">
+      <div class="post-content">
+        <h1>搜索</h1>
+        <p class="search-hint">输入关键字，实时搜索每篇文章的标题和简介。</p>
+        <input class="search-input" id="searchInput" type="search" placeholder="输入关键字，如：codex、markdown…" autocomplete="off" aria-label="搜索文章">
+        <ul class="search-results" id="searchResults" aria-live="polite">
+          <li class="search-empty">输入关键字开始搜索。</li>
+        </ul>
+      </div>
+    </article>
+    <script type="application/json" id="searchIndex" data-version="${SITE_VERSION}">${json}</script>`;
+  return page({ body, activeKey: 'search.html', title: '搜索' });
 }
 
 function render404() {
@@ -517,6 +582,8 @@ function build() {
   fs.writeFileSync(path.join(OUT_DIR, 'index.html'), renderHome(), 'utf8');
   fs.writeFileSync(path.join(OUT_DIR, 'about.html'), renderAbout(), 'utf8');
   fs.writeFileSync(path.join(OUT_DIR, 'tags.html'), renderTags(), 'utf8');
+  fs.writeFileSync(path.join(OUT_DIR, 'archive.html'), renderArchive(), 'utf8');
+  fs.writeFileSync(path.join(OUT_DIR, 'search.html'), renderSearch(), 'utf8');
   fs.writeFileSync(path.join(OUT_DIR, '404.html'), render404(), 'utf8');
 
   posts.forEach((post, index) => {
@@ -525,7 +592,7 @@ function build() {
   copyPostAssets();
 
   fs.writeFileSync(path.join(OUT_DIR, 'feed.xml'), renderFeed(), 'utf8');
-  const sitePages = ['index.html', 'about.html', 'tags.html', ...posts.map((p) => `posts/${p.slug}.html`)];
+  const sitePages = ['index.html', 'about.html', 'tags.html', 'archive.html', 'search.html', ...posts.map((p) => `posts/${p.slug}.html`)];
   fs.writeFileSync(path.join(OUT_DIR, 'sitemap.xml'), renderSitemap(sitePages), 'utf8');
 
   console.log(`构建完成：${posts.length} 篇文章，${tags.length} 个标签`);
