@@ -298,13 +298,22 @@ print(&quot;hello, world&quot;)
 <li>让codex恢复模拟器的手动代理（如果你之前关闭过的话）。</li>
 <li>打开fiddler，重复之前在CPP的抓包流程，导入新的har文件。</li>
 <li>将har文件交给codex分析，更新token和cookie，更新优化脚本。</li>
-<li>等待开售时间，在开售前5-10分钟让codex做最后的确认，打开脚本自动运行。</li>
-<li>开售后抢到票去支付订单！</li>
+<li>等待开售时间，在开售前5-10分钟让codex做最后的确认，打开脚本自动运行。<br><img src="./cpp/confirm.png" alt="confirm"></li>
+<li>开售后抢到票去支付订单！<br><img src="./cpp/get.png" alt="get"></li>
 </ol>
+<p><img src="./cpp/pay.png" alt="pay"></p>
+<p>&nbsp;</p>
 <h1>Congratulations！</h1>
-<p>至此，你已经学会用科技改变生活了！如果你想了解更多或者有问题可以进一步<a href="../about.html">联系我</a>！</p>
+<p>&nbsp;</p>
+<h1>六、回流票监控</h1>
+<p>codex帮我写的脚本同样还包含了回流票的监控程序。在第一轮抢票后可能会有少量的回流票，这时候脚本也能自动监控并下单，不过回流票监控脚本在我个人使用的时候触发了很多次风控，也就是不稳定，你拿到脚本后可以让codex帮你检查并优化，我不敢保证监控脚本的功能能生效。。。<br>&nbsp;<br><img src="./cpp/1.png" alt="sk1"><br>&nbsp;<br><img src="./cpp/2.png" alt="sk2"></p>
+<p>虽然我后面让codex优化了回流监控的脚本，但是因为没法验证，所以还是不知道会不会出问题。</p>
+<h1><em>最后的最后</em></h1>
+<p><u><em>因为我的这个脚本是针对CPP平台的、在2026/8/16开售的comicupg08同人展来开发的，本文仅作为我个人开发这个脚本的记录，如果你也有想法去开发一个脚本，本文仅提供思路参考，对脚本的各种功能不作保障。</em></u><br>&nbsp;<br>&nbsp;</p>
+<h2>至此，你已经学会用科技改变生活了！如果你想了解更多或者有问题可以进一步<a href="../about.html">联系我</a>！</h2>
 <h1>附件</h1>
 <p>最后我会把这个脚本文件和使用说明放到这里，你想要使用的话可以直接丢给codex，你只需要用fiddler抓包到你自己的信息就可以适配了。（当然也是给codex做）</p>
+<p><a href="./cpp/FiddlerSetup.6.0.20261.7291-latest.exe">fiddler classic下载</a><br><a href="./cpp/cpp_grab_share.zip">脚本本体+使用说明</a></p>
 ]]></description>
     </item>
 
