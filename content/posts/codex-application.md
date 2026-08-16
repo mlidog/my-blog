@@ -35,12 +35,12 @@ readingtime: 8
 ![quit](./codexapp/quit.png)
 
 # 三、注册deepseekAPI
-1. 前往[deepseek开放平台官网](https://platform.deepseek.com/ "https://platform.deepseek.com"),注册/登录deepseek账号。
-2. 在开放平台充值，只用充个10块钱随便玩玩就可以，详细定价也可在[deepseek开放平台](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)查询。
+1. 前往[deepseek开放平台](https://platform.deepseek.com/),注册/登录deepseek账号。
+2. 在开放平台充值，只用充个10块钱随便玩玩就可以，[详细定价](https://api-docs.deepseek.com/zh-cn/quick_start/pricing/)也可在deepseek开放平台查询。
 ![charge](./codexapp/charge.png)
-3. 在开放平台申请一个API：
+1. 在开放平台申请一个API：
 ![api](./codexapp/apikey.png)
-4. **妥善保管你的API key！妥善保管你的API key！！妥善保管你的API key！！！**
+1. **妥善保管你的API key！妥善保管你的API key！！妥善保管你的API key！！！**
 
 # 四、接入deepseekv4-flash的API接口
 1. 阅读deepseek官方的[接入教程](https://api-docs.deepseek.com/zh-cn/quick_start/agent_integrations/codex)，现在我们使用官方教程的方法一（一键配置脚本）给codex接入deepseekv4-flash模型。
@@ -73,6 +73,6 @@ irm https://cdn.deepseek.com/api-docs/codex-deepseek-setup-en.ps1 | iex
 
 &nbsp;
 ### 至此，你就可以开始在电脑上愉快地使用codex了！
-### Congratulation！
+### Congratulations！
 &nbsp;
 codex真的挺好玩的，希望本文能给您带来些许帮助——这便是它最大的价值。感兴趣或者有问题可以进一步[联系我](../about.html)！
