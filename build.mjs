@@ -288,15 +288,16 @@ function readPosts() {
   return list;
 }
 
-/* 把文章文件夹里的图片等非 md 文件复制到网站里，
-   这样文章里用相对路径（如 ./cpp/buy.png）就能直接显示。 */
+/* 把文章文件夹里的图片、压缩包等文件复制到网站里，
+   这样文章里用相对路径（如 ./cpp/buy.png）就能直接显示/下载。
+   顶层 .md 是文章源文件，不复制；子文件夹里的 .md（如 附件/xxx.md）会照常复制，方便读者下载原文。 */
 function copyPostAssets() {
   const walk = (dir, rel) => {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const src = path.join(dir, entry.name);
       if (entry.isDirectory()) {
         walk(src, path.join(rel, entry.name));
-      } else if (!entry.name.toLowerCase().endsWith('.md')) {
+      } else if (!(rel === '' && entry.name.toLowerCase().endsWith('.md'))) {
         const dest = path.join(OUT_DIR, 'posts', rel, entry.name);
         fs.mkdirSync(path.dirname(dest), { recursive: true });
         fs.copyFileSync(src, dest);

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的博客的搭建过程记录 · 美丽狗的博客</title>
+  <meta name="description" content="关于如何搭建我这个博客的详细记录，为你的博客的搭建提供思路参考。">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/style.css?v=f2ad2bf0">
+  <script>
+    /* 提前设置主题，避免刷新时闪一下 */
+    (function () {
+      try {
+        var saved = localStorage.getItem("theme");
+        var dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="siteNav" aria-label="侧边栏">
+  <div class="sidebar-inner">
+    <div class="profile">
+      <img class="avatar" src="../assets/rikka.png?v=c63fa2ef" alt="头像">
+      <div class="profile-name">美丽狗的博客</div>
+      <div class="profile-bio">这些东西会变成我的赛博遗产。</div>
+      <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
+    </div>
+    <nav class="sidebar-nav" aria-label="侧边栏导航">
+      <a class="nav-link active" href="../index.html?v=c63fa2ef" aria-current="page">首页</a>
+        <a class="nav-link" href="../tags.html?v=c63fa2ef">标签</a>
+        <a class="nav-link" href="../archive.html?v=c63fa2ef">归档</a>
+        <a class="nav-link" href="../search.html?v=c63fa2ef">搜索</a>
+        <a class="nav-link" href="../about.html?v=c63fa2ef">关于</a>
+    </nav>
+    <div class="sidebar-widgets">
+      <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
+<div class="widget">
+  <h3 class="widget-title">站点信息</h3>
+  <p class="widget-stats">共 <strong>7</strong> 篇文章 · <strong>8</strong> 个标签</p>
+</div>
+
+<!-- 示例：以后想加“公告”小部件，把下面几行取消注释、改成你自己的内容即可
+<div class="widget">
+  <h3 class="widget-title">公告</h3>
+  <p>欢迎来到我的博客！</p>
+</div>
+-->
+
+    </div>
+  </div>
+</aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="layout-main">
+      <header class="site-header">
+        <div class="container header-inner">
+          <div class="header-left">
+            <button class="back-btn" id="backButton" type="button" aria-label="返回上一页" data-home="../index.html" hidden>←</button>
+            <a class="brand" href="../index.html?v=c63fa2ef">美丽狗的博客</a>
+          </div>
+          <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="siteNav">☰</button>
+          </div>
+        </div>
+      </header>
+      <main class="container">
+
+
+    <article class="post" data-slug="blogbuild">
+      <header class="post-header">
+        <h1>我的博客的搭建过程记录</h1>
+        <div class="post-meta">
+          <time datetime="2026-08-16">2026年8月16日</time>
+          <span class="dot">·</span>
+          <span>7 分钟阅读</span>
+          <span class="dot">·</span><span title="全网阅读量（Twikoo 统计）">阅读 <span id="twikoo_visitors">0</span></span>
+          <span class="dot">·</span> <a class="tag" href="../tags.html?v=c63fa2ef#tag-教程">教程</a><a class="tag" href="../tags.html?v=c63fa2ef#tag-记录">记录</a>
+        </div>
+      </header>
+      <div class="post-content">
+        <h1>写在前面</h1>
+<p>从这个博客初创到现在已经三天了，用codex从零开始，从把网站搭起来到现在网站上线了各种功能,我想是时候记录一下我是如何将这个博客做到现在的了。如果你是和我一样的互联网小白，不妨看看这篇文章，看看我是如何用codex将我的博客方便快捷地搭建起来的！</p>
+<p>我也是在做一个阶段性的记录，我的博客现在的样式、内容和功能都还是特别的简陋原始，等到以后我的博客要是变成了特别华丽，再回来看现在这个状态，一定会很感慨的！！！</p>
+<ul>
+<li><h3>首先的首先，你需要一个codex来辅助，方法详见我的另一篇文章<a href="codex-application.html">《如何在你的电脑上简单且实惠地使用codex》</a>.</h3>
+</li>
+</ul>
+<h1>一、博客本地初建</h1>
+<p>最开始，我直接将我想要搭建博客的想法告诉了codex，让它给我介绍个人博客的常见模式和搭建流程。<br><img src="./blogbuild/ask.png" alt="ask"><br>codex的回复：</p>
+<blockquote>
+<h3>博客的基本逻辑：</h3>
+<p>可以把个人博客想象成&quot;开一家小店&quot;:<br>内容(文章) 是店里的商品,是你写的东西;<br>样式(页面) 是店面的装修,决定访客看到什么样子;<br>托管和域名(店址) 是开店的位置,决定了别人通过什么网址能找到你。<br>搭建博客的全部工作,就是回答这三个问题:你打算怎么写作和发布?你想要什么样的外观?你希望它挂在哪个网址上?<br>三条主流路线,难度从低到高</p>
+<ul>
+<li>路线一:用现成平台,零代码(最快)<br>在小红书、公众号、Notion、语雀这类平台上直接写。优点是完全不用碰代码,缺点是你受平台约束,页面基本不能自定义,内容也可能受平台规则影响。</li>
+<li>路线二:静态博客 + 免费托管(推荐给想动手的人)<br>用现成模板生成一个&quot;静态网站&quot;,再免费托管到 GitHub Pages 或 Vercel。优点是速度快、免费、完全属于你,也能深度自定义;缺点是需要学一点最基础的操作,比如改配置文件、用命令行上传。</li>
+<li>路线三:从零手写网站(最自由,也最费力)<br>用 HTML/CSS/JavaScript 自己写页面,或用 React 这类工具搭建。适合本身想学编程、把博客当练习项目的人。如果你只是想写东西,这条路性价比不高。</li>
+</ul>
+<h3>我推荐的入门路径:</h3>
+<p>路线二。具体来说,常见的做法是选一个现成的博客框架(比如 Hugo、Hexo、Astro),套一个喜欢的主题模板,之后你只需要写文章,框架会自动把文章变成网页,再一键发布到免费托管平台。整个过程不需要你精通编程,但你能拥有一个完全属于自己的博客。<br>一套典型流程是这样的:</p>
+<ol>
+<li>在电脑上装好基础工具(通常就一两个);</li>
+<li>用模板初始化一个博客项目(一次命令就能生成);</li>
+<li>选一个主题,改好你的名字、简介、头像这些基本信息;</li>
+<li>用 Markdown 写文章(一种很简单的纯文本格式,写起来就像记事本,但有标题、加粗、链接这些能力);</li>
+<li>本地预览确认没问题;</li>
+<li>推送到托管平台,获得一个免费网址(比如 你的名字.github.io);</li>
+<li>以后想发新文章,重复第 4 步和最后一步就行。</li>
+</ol>
+<h3>现在可以怎么开始</h3>
+<p>在你动手前,有一个选择会直接影响体验:你想不想用命令行? 静态博客的搭建步骤大多需要敲几条命令,虽然不难,但如果你完全没接触过,我们也可以走更省事的路线——比如我帮你把整个博客在你这个文件夹里搭好,你只需要负责写文章和点几下发布。<br>如果你愿意,我现在就可以帮你做其中一件事:<br>帮你搭一个现成的静态博客项目(推荐,一小时左右能上线);<br>先给你一份图文版详细教程,你照着一步步做;</p>
+</blockquote>
+<p>最终我选择了路线二，且直接让它帮我写了一份本地的静态博客项目：</p>
+<p><img src="./blogbuild/phase1.png" alt="phase1"></p>
+<h1>二、Github部署</h1>
+<ol>
+<li>注册并登录<a href="https://github.com/">Github</a>，创建你的github仓库用于存放你的博客项目的文件。<br><img src="./blogbuild/githubrepo.png" alt="githubrepo"><br>写上你仓库的名字并将它调成公开，名字关系到你的博客的子域名，详细可以问codex<code>介绍Github Pages仓库规则</code>。<br><img src="./blogbuild/githubrepo1.png" alt="githubrepo1"></li>
+<li><a href="https://desktop.github.com/download/">下载Github Desktop</a>,在Github Desktop上登录你的Github账号。</li>
+<li>如果codex帮你写好了git配置，那你只需要在Github Desktop上面克隆你之前创建好的仓库（clone repository），选择你博客的文件夹，这样以后就能在Github Desktop上面管理你的博客提交了。<br><img src="./blogbuild/gd1.png" alt="1"><br><img src="./blogbuild/gd2.png" alt="2"><br>以后文件后变化都会在这里显示<br><img src="./blogbuild/gd3.png" alt="3"></li>
+<li>如果codex没有写git配置（那你就叫它写一个），那你只需先将你创建的仓库克隆到本地，然后把codex给的文件放进去就可以了。<br><img src="./blogbuild/gd4.png" alt="4"><br><img src="./blogbuild/gd5.png" alt="5"></li>
+<li>提交你的博客文件到Github，这一步需要你填写提交的摘要（summary）。<br><img src="./blogbuild/gd6.png" alt="6"><br>填完后点<code>commit xxx to main</code></li>
+<li>将提交的文件推送到Github。<br><img src="./blogbuild/gd7.png" alt="7"></li>
+</ol>
+<p><small>（这两个随便点一个）</small></p>
+<ol start="7">
+<li>这时候回到Github，你会看见你提交的文件已经出现在仓库里面了。<br><img src="./blogbuild/gd8.png" alt="8"></li>
+<li>现在去<code>setting-Pages</code>里面配置网页托管，<code>source</code>里选择<code>Deploy from a branch</code>,下面的<code>branch</code>里面选择<code>main</code>、文件夹选择<code>/docs</code>。（仅选择/docs里面的文件作为网站的部署内容）<br><img src="./blogbuild/gd9.png" alt="9"><br>如果一切顺利，等1-2分钟就可以在<code>https://用户名.github.io/仓库名/</code>这个域名看到你的博客网站了。<br><img src="./blogbuild/blog1.png" alt="b1"></li>
+</ol>
+<p><small>这个是我的博客最初的样子</small></p>
+<h3>至此，你已经拥有了一个自己博客网站了！</h3>
+<h3>Congratulations！</h3>
+<hr>
+<h3>接下来就是优化网站的样式、功能和内容了，下面的优化内容仅作参考，你可能有比我更好的优化思路。</h3>
+<h1>样式</h1>
+<ul>
+<li>增加侧边栏，把导航和简介放到侧边栏</li>
+<li>增加头像，提高辨识度</li>
+</ul>
+<h1>功能</h1>
+<ul>
+<li>添加深色模式</li>
+<li>添加回到顶部、返回按钮</li>
+<li>添加阅读量、点赞、评论功能（这一步很麻烦、想要做到全网统计需要用到各种服务，详细可以问你的codex）</li>
+<li>添加归档和搜索功能</li>
+</ul>
+<h1>内容</h1>
+<ul>
+<li>各种记录和文章，纯看你个人了</li>
+</ul>
+<hr>
+<h1>写文章时有用的技巧</h1>
+<p>因为我是在vscode里面用md文件以markdown语法写文章的，每次写完都要打包形成html文件更新网站才能看到预览，操作非常的繁琐。现在我让codex写了个监听脚本，监听到我的md文件或者css文件变化了就自动运行打包脚本，再配上vscode的live server拓展，就可以做到实时预览网页了，非常好用。<br><img src="./blogbuild/pre.png" alt="pre"></p>
+<hr>
+<h1>最后</h1>
+<p>博客搭建过程还有挺多坑和经历没有写出来的，因为有点乱而且我前期也确实没做记录，我会在这里贴上我的网站的<a href="./blogbuild/README.md">README</a>文件（codex写的），它里面记录了一些搭建过程、一些教程和一些常见的疑问，有兴趣可以看看，当然如果你想了解更多或者有问题不妨直接<a href="../about.html">联系我</a>。</p>
+<ul>
+<li><a href="./blogbuild/README.md">README浏览</a></li>
+<li><a href="./blogbuild/README.md" download>README下载</a></li>
+</ul>
+
+      </div>
+      
+      <div class="post-actions">
+        <button class="like-btn" id="likeBtn" type="button" data-slug="blogbuild" aria-pressed="false">🤍 点赞</button>
+      </div>
+      
+      <nav class="post-pager" aria-label="上下篇文章">
+        <span></span>
+        <a class="pager-next" href="markdown-guide.html?v=c63fa2ef"><span>下一篇</span>Markdown 完整语法指南</a>
+      </nav>
+      
+      <section class="post-comments" id="post-comments">
+        <h2>评论</h2>
+        <div id="tcomment"></div>
+        <p class="comments-manage">昵称不填时会自动分配「访客-xxxx」，可以随时改成自己喜欢的名字，浏览器会自动记住；邮箱和网址选填。想删除评论？点击评论区右上角的「小齿轮」，登录管理员密码后即可在线删除。</p>
+      </section>
+    </article>
+      </main>
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <p>© <span data-year></span> mlidog · 一个用codex辅助完成的静态网页。</p>
+          <p class="footer-links">
+            <a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!-- 浮动按钮组（默认右下角）：想加新按钮，照下面这行再复制一份即可 -->
+  <div class="side-buttons">
+    <button class="back-to-top side-btn" id="backToTop" type="button" aria-label="回到顶部">↑</button>
+    <!-- 示例：<button class="side-btn" id="yourButton" type="button" aria-label="你的按钮">★</button> -->
+  </div>
+    <script type="application/json" id="siteConfig">{"basePath":"/my-blog/","twikoo":{"envId":"https://mlidog-blog-comment.netlify.app/.netlify/functions/twikoo","region":""}}</script>
+    <script src="https://registry.npmmirror.com/twikoo/1.7.19/files/dist/twikoo.min.js" defer></script>
+  <script src="../assets/js/main.js?v=f2ad2bf0"></script>
+</body>
+</html>
+

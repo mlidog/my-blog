@@ -25,23 +25,23 @@
     <aside class="sidebar" id="siteNav" aria-label="侧边栏">
   <div class="sidebar-inner">
     <div class="profile">
-      <img class="avatar" src="../assets/rikka.png?v=2fa08096" alt="头像">
+      <img class="avatar" src="../assets/rikka.png?v=c63fa2ef" alt="头像">
       <div class="profile-name">美丽狗的博客</div>
       <div class="profile-bio">这些东西会变成我的赛博遗产。</div>
       <div class="profile-links"><a href="https://github.com/mlidog" target="_blank" rel="noopener">GitHub</a></div>
     </div>
     <nav class="sidebar-nav" aria-label="侧边栏导航">
-      <a class="nav-link active" href="../index.html?v=2fa08096" aria-current="page">首页</a>
-        <a class="nav-link" href="../tags.html?v=2fa08096">标签</a>
-        <a class="nav-link" href="../archive.html?v=2fa08096">归档</a>
-        <a class="nav-link" href="../search.html?v=2fa08096">搜索</a>
-        <a class="nav-link" href="../about.html?v=2fa08096">关于</a>
+      <a class="nav-link active" href="../index.html?v=c63fa2ef" aria-current="page">首页</a>
+        <a class="nav-link" href="../tags.html?v=c63fa2ef">标签</a>
+        <a class="nav-link" href="../archive.html?v=c63fa2ef">归档</a>
+        <a class="nav-link" href="../search.html?v=c63fa2ef">搜索</a>
+        <a class="nav-link" href="../about.html?v=c63fa2ef">关于</a>
     </nav>
     <div class="sidebar-widgets">
       <!-- 小部件区：想加新部件，就在下面加一个 .widget 块，样式可参考 style.css 里的 .widget -->
 <div class="widget">
   <h3 class="widget-title">站点信息</h3>
-  <p class="widget-stats">共 <strong>6</strong> 篇文章 · <strong>7</strong> 个标签</p>
+  <p class="widget-stats">共 <strong>7</strong> 篇文章 · <strong>8</strong> 个标签</p>
 </div>
 
 <!-- 示例：以后想加“公告”小部件，把下面几行取消注释、改成你自己的内容即可
@@ -61,7 +61,7 @@
         <div class="container header-inner">
           <div class="header-left">
             <button class="back-btn" id="backButton" type="button" aria-label="返回上一页" data-home="../index.html" hidden>←</button>
-            <a class="brand" href="../index.html?v=2fa08096">美丽狗的博客</a>
+            <a class="brand" href="../index.html?v=c63fa2ef">美丽狗的博客</a>
           </div>
           <div class="header-actions">
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式">🌙</button>
@@ -80,11 +80,12 @@
           <span class="dot">·</span>
           <span>9 分钟阅读</span>
           <span class="dot">·</span><span title="全网阅读量（Twikoo 统计）">阅读 <span id="twikoo_visitors">0</span></span>
-          <span class="dot">·</span> <a class="tag" href="../tags.html?v=2fa08096#tag-教程">教程</a><a class="tag" href="../tags.html?v=2fa08096#tag-脚本">脚本</a>
+          <span class="dot">·</span> <a class="tag" href="../tags.html?v=c63fa2ef#tag-教程">教程</a><a class="tag" href="../tags.html?v=c63fa2ef#tag-脚本">脚本</a><a class="tag" href="../tags.html?v=c63fa2ef#tag-记录">记录</a>
         </div>
       </header>
       <div class="post-content">
-        <p>这篇文章的起因是我在经历了数次CPP抢票失败（或者是极限抢到VIP票）后，痛定思痛想要动用科技的力量来造福大家（误<br>这篇文章详细记录了我是如何用codex写一个抢票脚本的过程。</p>
+        <h1><em>写在最前</em></h1>
+<p><u><em>因为我的这个脚本是针对CPP平台的、在2026/8/16开售的comicupg08同人展来开发的，本文仅作为我个人开发这个脚本的记录，如果你也有想法去开发一个脚本，本文仅提供思路参考，对脚本的各种功能不作保障。</em></u><br>&nbsp;<br>&nbsp;<br>这篇文章的起因是我在经历了数次CPP抢票失败（或者是极限抢到VIP票）后，痛定思痛想要动用科技的力量来造福大家（误<br>这篇文章详细记录了我是如何用codex写一个抢票脚本的过程。</p>
 <hr>
 <h1>一、抢票脚本的运行逻辑</h1>
 <p>在我第一轮问了codex抢票脚本的运行逻辑后得到了以下回答：</p>
@@ -112,20 +113,31 @@
 <ol>
 <li>在模拟器中设置手动代理时会出现“设置不了ip地址/根本没有设置界面”等等情况，这是因为模拟器上面用的是虚拟网络，一些模拟器隐藏了手动代理的入口，所以用ADB命令设置是最方便的：</li>
 </ol>
-<p><small>（以下命令均用powershell运行）</small><br>首先让ADB连接mumu模拟器：</p>
+<p><small>（以下命令均用powershell运行）</small></p>
+<ul>
+<li><h3>①首先让ADB连接mumu模拟器：</h3>
+</li>
+</ul>
 <pre><code>\MuMuPlayer\nx_device\12.0\shell\adb.exe connect 127.0.0.1:16384
 </code></pre>
 <p><small>（注意你的mumu模拟器的位置和版本号，有可能跟我这一行命令不一致）</small>  </p>
-<p>然后设置fiddler代理：</p>
+<ul>
+<li><h3>②然后设置fiddler代理：</h3>
+</li>
+</ul>
 <pre><code>adb shell settings put global http_proxy 192.168.x.x:8888
 </code></pre>
-<p><small>（上面的192.168.x.x填你自己的ipv4地址）</small><br>最后确认生效：</p>
+<p><small>（上面的192.168.x.x填你自己的ipv4地址）</small></p>
+<ul>
+<li><h3>③最后确认生效：</h3>
+</li>
+</ul>
 <pre><code>adb shell settings get global http_proxy
 </code></pre>
 <p>显示<code>192.168.x.x:8888</code>说明代理成功了，模拟器的流量都会经过fiddler，实现端口抓包。  </p>
-<p>   鉴于以上流程还是太吃操作了，所以我还是强力推荐你使用codex一键完成：只要跟它说<code>“我需要你帮我完成模拟器的fiddler手动代理并检查是否成功”</code>就OK了。</p>
+<h3>（鉴于以上流程还是太吃操作了，所以我还是强力推荐你使用codex一键完成：只要跟它说<code>“我需要你帮我完成模拟器的fiddler手动代理并检查是否成功”</code>就OK了。）</h3>
 <ol start="2">
-<li>抓包CPP的购票端口这一步我完全是让codex自己做的（毕竟本人是计算机网络小白，根本看不懂fiddler里面大段大段的请求都是什么......），你只需要让做好购票前的准备，进入确认订单前的那个界面（最好可以随便买一张在售的票），然后去fiddler里面保存har文件，最后让codex分析har文件里面的端口请求就可以了，即：</li>
+<li>抓包CPP的购票端口这一步我完全是让codex自己做的（毕竟本人是计算机网络小白，根本看不懂fiddler里面大段大段的请求都是什么......），你只需要让做好购票前的准备，进入确认订单前的那个界面（最好可以随便买一张在售的票），然后去fiddler里面导出har文件，最后让codex分析har文件里面的端口请求就可以了，即：</li>
 </ol>
 <p><em><small>进入这个界面</small></em><br><img src="./cpp/buy.png" alt="购买界面"></p>
 <p>&nbsp;<br><em><small>（最好买一张在售的票）</small></em></p>
@@ -134,7 +146,7 @@
 <ol start="3">
 <li><p>由于我们第一次抓包的token和cookie会过期，所以开售日当天要启动fiddler再抓一遍包，更新token和cookie，检查登录凭证等等。当然你只需要在开售日当天让codex再帮你走一遍抓包流程就可以了。</p>
 </li>
-<li><p>因为此时你的模拟器启动了fiddler代理，所以他的流量都会经过fiddler的抓取，这个时候你有可能无法在模拟器玩一些网游（游戏的服务会拒绝代理流量），所以你想在模拟器上玩游戏的时候要关掉fiddler代理。（经历来源于我抓完包后发现玩不了明日方舟......）</p>
+<li><p>因为此时你的模拟器启动了fiddler代理，所以他的流量都会经过fiddler的抓取，这个时候你有可能无法在模拟器玩一些网游（游戏的服务器会拒绝代理流量），所以你想在模拟器上玩游戏的时候要关掉fiddler代理。（经历来源于我抓完包后发现玩不了明日方舟......）</p>
 </li>
 </ol>
 <h1>四、验证脚本运行</h1>
@@ -142,7 +154,7 @@
 <h1>五、开售日当天操作</h1>
 <ol>
 <li>让codex恢复模拟器的手动代理（如果你之前关闭过的话）。</li>
-<li>打开fiddler，重复之前在CPP的抓包流程，导入新的har文件。</li>
+<li>打开fiddler，重复之前在CPP的抓包流程，导出新的har文件。</li>
 <li>将har文件交给codex分析，更新token和cookie，更新优化脚本。</li>
 <li>等待开售时间，在开售前5-10分钟让codex做最后的确认，打开脚本自动运行。<br><img src="./cpp/confirm.png" alt="confirm"></li>
 <li>开售后抢到票去支付订单！<br><img src="./cpp/get.png" alt="get"></li>
@@ -152,14 +164,15 @@
 <h1>Congratulations！</h1>
 <p>&nbsp;</p>
 <h1>六、回流票监控</h1>
-<p>codex帮我写的脚本同样还包含了回流票的监控程序。在第一轮抢票后可能会有少量的回流票，这时候脚本也能自动监控并下单，不过回流票监控脚本在我个人使用的时候触发了很多次风控，也就是不稳定，你拿到脚本后可以让codex帮你检查并优化，我不敢保证监控脚本的功能能生效。。。<br>&nbsp;<br><img src="./cpp/1.png" alt="sk1"><br>&nbsp;<br><img src="./cpp/2.png" alt="sk2"></p>
+<p>codex帮我写的脚本同样还包含了回流票的监控程序。在第一轮抢票后可能会有少量的回流票，这时候脚本也能自动监控并下单，不过回流票监控脚本在我个人使用的时候触发了很多次风控，也就是不稳定，你拿到脚本后可以让codex帮你检查并优化，我不敢保证监控脚本的功能可以正常生效。。。<br>&nbsp;<br><img src="./cpp/1.png" alt="sk1"><br>&nbsp;<br><img src="./cpp/2.png" alt="sk2"></p>
 <p>虽然我后面让codex优化了回流监控的脚本，但是因为没法验证，所以还是不知道会不会出问题。</p>
-<h1><em>最后的最后</em></h1>
-<p><u><em>因为我的这个脚本是针对CPP平台的、在2026/8/16开售的comicupg08同人展来开发的，本文仅作为我个人开发这个脚本的记录，如果你也有想法去开发一个脚本，本文仅提供思路参考，对脚本的各种功能不作保障。</em></u><br>&nbsp;<br>&nbsp;</p>
 <h2>至此，你已经学会用科技改变生活了！如果你想了解更多或者有问题可以进一步<a href="../about.html">联系我</a>！</h2>
 <h1>附件</h1>
 <p>最后我会把这个脚本文件和使用说明放到这里，你想要使用的话可以直接丢给codex，你只需要用fiddler抓包到你自己的信息就可以适配了。（当然也是给codex做）</p>
-<p><a href="./cpp/FiddlerSetup.6.0.20261.7291-latest.exe">fiddler classic下载</a><br><a href="./cpp/cpp_grab_share.zip">脚本本体+使用说明</a></p>
+<ul>
+<li><a href="./cpp/FiddlerSetup.6.0.20261.7291-latest.exe">fiddler classic直装包下载</a></li>
+<li><a href="./cpp/cpp_grab_share.zip">脚本本体+使用说明</a></li>
+</ul>
 
       </div>
       
@@ -168,8 +181,8 @@
       </div>
       
       <nav class="post-pager" aria-label="上下篇文章">
-        <a class="pager-prev" href="markdown-guide.html?v=2fa08096"><span>上一篇</span>Markdown 完整语法指南</a>
-        <a class="pager-next" href="codex-application.html?v=2fa08096"><span>下一篇</span>如何在你的电脑上简单且实惠地使用codex</a>
+        <a class="pager-prev" href="markdown-guide.html?v=c63fa2ef"><span>上一篇</span>Markdown 完整语法指南</a>
+        <a class="pager-next" href="codex-application.html?v=c63fa2ef"><span>下一篇</span>如何在你的电脑上简单且实惠地使用codex</a>
       </nav>
       
       <section class="post-comments" id="post-comments">

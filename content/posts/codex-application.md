@@ -25,7 +25,7 @@ readingtime: 8
 
 直接在微软商店上搜索ChatGPT即可：
 ![chatgpt](./codexapp/gptdownlord.png)
-<small>下载需要挂梯子（大概）</small>
+<small>（如果下载慢就挂梯子）</small>
 如果你没有修改过电脑保存的地址的话，那微软大概率是会自动给你下载到C盘的，你只需要在下载前在电脑系统设置中修改就可以了。
 ![syschange](./codexapp/syschange.png)
 
