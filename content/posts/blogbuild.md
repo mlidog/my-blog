@@ -53,6 +53,10 @@ codex的回复：
 ![phase1](./blogbuild/phase1.png)
 
 # 二、Github部署
+
+### **在开始之前，请确保你的电脑上安装了[Git](https://git-scm.com) &nbsp;(https://git-scm.com) ,否则Github将不会接收本地仓库的文件！**
+
+
 1. 注册并登录[Github](https://github.com/)，创建你的github仓库用于存放你的博客项目的文件。
 ![githubrepo](./blogbuild/githubrepo.png) 
 写上你仓库的名字并将它调成公开，名字关系到你的博客的子域名，详细可以问codex`介绍Github Pages仓库规则`。

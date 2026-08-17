@@ -45,6 +45,7 @@
 <p>最终我选择了路线二，且直接让它帮我写了一份本地的静态博客项目：</p>
 <p><img src="./blogbuild/phase1.png" alt="phase1"></p>
 <h1>二、Github部署</h1>
+<h3><strong>在开始之前，请确保你的电脑上安装了<a href="https://git-scm.com">Git</a> &nbsp;(<a href="https://git-scm.com">https://git-scm.com</a>) ,否则Github将不会接收本地仓库的文件！</strong></h3>
 <ol>
 <li>注册并登录<a href="https://github.com/">Github</a>，创建你的github仓库用于存放你的博客项目的文件。<br><img src="./blogbuild/githubrepo.png" alt="githubrepo"><br>写上你仓库的名字并将它调成公开，名字关系到你的博客的子域名，详细可以问codex<code>介绍Github Pages仓库规则</code>。<br><img src="./blogbuild/githubrepo1.png" alt="githubrepo1"></li>
 <li><a href="https://desktop.github.com/download/">下载Github Desktop</a>,在Github Desktop上登录你的Github账号。</li>
