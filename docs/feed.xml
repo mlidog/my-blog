@@ -47,12 +47,12 @@
 <h1>二、Github部署</h1>
 <h3><strong>在开始之前，请确保你的电脑上安装了<a href="https://git-scm.com">Git</a> &nbsp;(<a href="https://git-scm.com">https://git-scm.com</a>) ,否则Github将不会接收本地仓库的文件！</strong></h3>
 <ol>
-<li>注册并登录<a href="https://github.com/">Github</a>，创建你的github仓库用于存放你的博客项目的文件。<br><img src="./blogbuild/githubrepo.png" alt="githubrepo"><br>写上你仓库的名字并将它调成公开，名字关系到你的博客的子域名，详细可以问codex<code>介绍Github Pages仓库规则</code>。<br><img src="./blogbuild/githubrepo1.png" alt="githubrepo1"></li>
-<li><a href="https://desktop.github.com/download/">下载Github Desktop</a>,在Github Desktop上登录你的Github账号。</li>
-<li>如果codex帮你写好了git配置，那你只需要在Github Desktop上面克隆你之前创建好的仓库（clone repository），选择你博客的文件夹，这样以后就能在Github Desktop上面管理你的博客提交了。<br><img src="./blogbuild/gd1.png" alt="1"><br><img src="./blogbuild/gd2.png" alt="2"><br>以后文件后变化都会在这里显示<br><img src="./blogbuild/gd3.png" alt="3"></li>
-<li>如果codex没有写git配置（那你就叫它写一个），那你只需先将你创建的仓库克隆到本地，然后把codex给的文件放进去就可以了。<br><img src="./blogbuild/gd4.png" alt="4"><br><img src="./blogbuild/gd5.png" alt="5"></li>
-<li>提交你的博客文件到Github，这一步需要你填写提交的摘要（summary）。<br><img src="./blogbuild/gd6.png" alt="6"><br>填完后点<code>commit xxx to main</code></li>
-<li>将提交的文件推送到Github。<br><img src="./blogbuild/gd7.png" alt="7"></li>
+<li>注册并登录<a href="https://github.com/">Github</a>，创建你的Github仓库用于存放你的博客项目的文件。<br> <img src="./blogbuild/githubrepo.png" alt="githubrepo"><br>写上你仓库的名字并将它调成公开，名字关系到你的博客的后缀，详细可以问codex<code>介绍Github Pages仓库规则</code>。<br> <img src="./blogbuild/githubrepo1.png" alt="githubrepo1"></li>
+<li>下载<a href="https://desktop.github.com/download/">Github Desktop</a>,在Github Desktop上登录你的Github账号。</li>
+<li>如果codex帮你写好了git配置（主要是关联远程仓库），那你只需要在Github Desktop上面添加你的本地文件夹（Add existing repository），这样以后就能在Github Desktop上面管理你的博客提交了。<br> <img src="./blogbuild/gd1.png" alt="1"><br> <img src="./blogbuild/gd2.png" alt="2"><br>以后文件后变化都会在这里显示<br> <img src="./blogbuild/gd3.png" alt="3"><br> &nbsp;<br><strong>注</strong>:如果codex写了配置但是没写关联远程仓库的脚本的话，应该会出现这个界面：<br> <img src="./blogbuild/test2.png" alt="test2"><br> <small>（点commit没反应）</small><br>这个时候我们就要点击上面的<code>Publish repository</code>来手动关联Github远程仓库<br> <img src="./blogbuild/set.png" alt="set"><br>关联好后就可以正常使用了。</li>
+<li>如果codex没有写git配置（那你就叫它写一个），那你只需先将你创建的仓库克隆到本地，然后把codex给的博客文件放进去就可以了。<br> <img src="./blogbuild/gd4.png" alt="4"><br> <img src="./blogbuild/gd5.png" alt="5"></li>
+<li>提交你的博客文件到Github，这一步需要你填写提交的摘要（summary）。<br> <img src="./blogbuild/gd6.png" alt="6"><br>填完后点<code>commit xxx to main</code></li>
+<li>将提交的文件推送到Github。<br> <img src="./blogbuild/gd7.png" alt="7"></li>
 </ol>
 <p><small>（这两个随便点一个）</small></p>
 <ol start="7">
