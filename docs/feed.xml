@@ -410,6 +410,7 @@ print(&quot;hello, world&quot;)
 <h2>至此，你已经学会用科技改变生活了！如果你想了解更多或者有问题可以进一步<a href="../about.html">联系我</a>！</h2>
 <h1>附件</h1>
 <p>最后我会把这个脚本文件和使用说明放到这里，你想要使用的话可以直接丢给codex，你只需要用fiddler抓包到你自己的信息就可以适配了。（当然也是给codex做）</p>
+<p><u>*<em><strong>本工具仅供学习交流，请勿用于商业倒卖</strong></em></u></p>
 <ul>
 <li><a href="./cpp/FiddlerSetup.6.0.20261.7291-latest.exe">fiddler classic直装包下载</a></li>
 <li><a href="./cpp/cpp_grab_share.zip">脚本本体+使用说明</a></li>

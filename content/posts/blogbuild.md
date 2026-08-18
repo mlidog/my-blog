@@ -119,5 +119,6 @@ codex的回复：
 ---
 # 最后
 博客搭建过程还有挺多坑和经历没有写出来的，因为有点乱而且我前期也确实没做记录，我会在这里贴上我的网站的[README](./blogbuild/README.md)文件（codex写的），它里面记录了一些搭建过程、一些教程和一些常见的疑问，有兴趣可以看看，当然如果你想了解更多或者有问题不妨直接[联系我](../about.html)。
+  
 - [README浏览](./blogbuild/README.md)
 - <a href="./blogbuild/README.md" download>README下载</a>
